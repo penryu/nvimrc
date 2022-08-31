@@ -55,6 +55,12 @@ return require('packer').startup({function(use)
       end,
    }
 
+   use { 'fidian/hexmode',
+      config = function()
+         vim.g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm'
+      end,
+   }
+
    use { "nvim-neo-tree/neo-tree.nvim",
       branch = "v2.x",
       requires = {
