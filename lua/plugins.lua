@@ -286,7 +286,6 @@ return require('packer').startup({function(use)
    use 'tpope/vim-vinegar'
 
    use { 'jakewvincent/mkdnflow.nvim',
-      rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
       requires = 'ellisonleao/glow.nvim',
       config = function()
          require('mkdnflow').setup({
