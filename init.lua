@@ -56,6 +56,8 @@ create_autocmd('FileType', {
       group = create_augroup('LuaIndent', {}),
    })
 
+create_command('Notes', 'FZF ~/Dropbox/Notes', {})
+
 -- Customize the terminal
 
 -- :sh opens term in new window
