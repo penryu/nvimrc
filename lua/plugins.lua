@@ -144,7 +144,7 @@ return require('packer').startup {
             -- in the form "LspDiagnosticsSignWarning"
 
             require('neo-tree').setup {
-               close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+               close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
                popup_border_style = 'rounded',
                enable_git_status = true,
                enable_diagnostics = true,
@@ -187,8 +187,8 @@ return require('packer').startup {
                   git_status = {
                      symbols = {
                         -- Change type
-                        added = '', -- or "✚", but this is redundant info if you use git_status_colors on the name
-                        modified = '', -- or "", but this is redundant info if you use git_status_colors on the name
+                        added = '✚', -- or "✚", but this is redundant info if you use git_status_colors on the name
+                        modified = '', -- or "", but this is redundant info if you use git_status_colors on the name
                         deleted = '✖', -- this can only be used in the git_status source
                         renamed = '', -- this can only be used in the git_status source
                         -- Status type
@@ -308,6 +308,8 @@ return require('packer').startup {
             }
 
             vim.cmd [[nnoremap \ :Neotree toggle<cr>]]
+            -- see `:help bar` if you're curious
+            vim.cmd [[nnoremap <bar> :Neotree git_status<cr>]]
          end,
       }
       use 'kovisoft/paredit'
@@ -328,7 +330,9 @@ return require('packer').startup {
       use 'tpope/vim-vinegar'
 
       use {
+         -- original fzf
          -- 'junegunn/fzf.vim', requires = 'junegunn/fzf',
+         -- drop-in replacement (same config) for fzf using skim (sk)
          'lotabout/skim.vim',
          requires = 'lotabout/skim',
          config = function()
