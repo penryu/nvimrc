@@ -12,8 +12,8 @@ g.did_load_filetypes = 0
 
 --require 'impatient'
 
-require('plugins')
-require('keys')
+require 'plugins'
+require 'keys'
 
 g.lazyredraw = true
 
@@ -45,28 +45,27 @@ o.ttimeout = false
 o.updatetime = 300
 o.backup, o.writebackup = false, false
 
-vim.opt.clipboard:append('unnamed')
+vim.opt.clipboard:append 'unnamed'
 
 create_autocmd('FileType', {
-      pattern = 'lua',
-      callback = function()
-         buf_set_option(0, 'shiftwidth', 3)
-         buf_set_option(0, 'softtabstop', 3)
-      end,
-      group = create_augroup('LuaIndent', {}),
-   })
+   pattern = 'lua',
+   callback = function()
+      buf_set_option(0, 'shiftwidth', 3)
+      buf_set_option(0, 'softtabstop', 3)
+   end,
+   group = create_augroup('LuaIndent', {}),
+})
 
-create_command('Notes', 'FZF ~/Dropbox/Notes', {})
+create_command('Notes', 'Files ~/Dropbox/Notes', {})
 
 -- Customize the terminal
 
 -- :sh opens term in new window
-create_command('Sh', 'new +terminal', {})
-
+create_command('Sh', 'new +terminal', { nargs = '*' })
 -- Go straight to insert mode
 create_autocmd('TermOpen', {
-      pattern = '*',
-      callback = function()
-         vim.cmd 'startinsert'
-      end,
-   })
+   pattern = '*',
+   callback = function()
+      vim.cmd 'startinsert'
+   end,
+})

@@ -1,5 +1,5 @@
 {
-    "coc.preferences.formatOnSaveFiletypes": ["python"],
+    "coc.preferences.formatOnSaveFiletypes": ["lua", "python"],
     "coc.source.around.priority": 1,
     "coc.source.buffer.priority": 0,
     "codeLens.enable": false,
@@ -17,6 +17,7 @@
     "python.linting.pytypeEnabled": true,
     "rust-analyzer.checkOnSave.command": "clippy",
     "rust-analyzer.updates.channel": "nightly",
+    "stylua.styluaPath": "/Users/penryu/.cargo/bin/stylua",
     "suggest.noselect": true,
     "suggest.removeDuplicateItems": true,
     "tsserver.formatOnType": true,
