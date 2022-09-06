@@ -69,6 +69,8 @@ return require('packer').startup {
          end,
       }
 
+      use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+
       -- Better viz of git line diffs
       use {
          'lewis6991/gitsigns.nvim',
