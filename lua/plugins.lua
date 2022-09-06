@@ -495,7 +495,9 @@ return require('packer').startup {
 
             " Bootstrap coc extensions
             let g:coc_global_extensions = [
+               \ 'coc-clangd',
                \ 'coc-css',
+               \ 'coc-docker',
                \ 'coc-eslint',
                \ 'coc-html',
                \ 'coc-json',
