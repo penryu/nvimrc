@@ -17,7 +17,6 @@
     "python.linting.pytypeEnabled": true,
     "rust-analyzer.checkOnSave.command": "clippy",
     "rust-analyzer.updates.channel": "nightly",
-    "stylua.styluaPath": "/Users/penryu/.cargo/bin/stylua",
     "suggest.noselect": true,
     "suggest.removeDuplicateItems": true,
     "tsserver.formatOnType": true,

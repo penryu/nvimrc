@@ -19,7 +19,7 @@ g.lazyredraw = true
 
 o.breakindent = true
 o.cmdheight = 2
-o.colorcolumn = '81,+1'
+o.colorcolumn = '+1'
 o.cursorline = true
 o.expandtab = true
 o.hlsearch = false
