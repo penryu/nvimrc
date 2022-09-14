@@ -562,8 +562,8 @@ return require('packer').startup {
                   globalstatus = true,
                   icons_enabled = false,
                   -- theme = 'everforest',
-                  theme = 'gruvbox',
-                  -- theme = 'wombat',
+                  -- theme = 'gruvbox',
+                  theme = 'wombat',
                },
                sections = {
                   lualine_b = {
