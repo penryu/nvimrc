@@ -319,17 +319,28 @@ return require('packer').startup {
          'preservim/tagbar',
          config = function()
             local nmap = require('keys').nmap
-            nmap('<Leader>t', ':TagbarToggle<cr>')
+            nmap('<Leader>ta', ':TagbarToggle<cr>')
             vim.g.tagbar_width = 32
          end,
       }
+      use 'ntpeters/vim-better-whitespace'
       use 'tpope/vim-commentary'
       use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
       use 'tpope/vim-fugitive'
       use 'sheerun/vim-polyglot'
       use 'machakann/vim-sandwich'
-      use 'ntpeters/vim-better-whitespace'
       use 'tpope/vim-vinegar'
+      use {
+         'liuchengxu/vista.vim',
+         config = function()
+            vim.cmd [[let g:vista_default_executive = 'coc']]
+
+            -- vim.g.vista_default_executive = 'coc'
+            -- vim.g.vista_executive_for = {
+            --    typescriptreact = 'coc',
+            -- }
+         end,
+      }
 
       use {
          -- original fzf
