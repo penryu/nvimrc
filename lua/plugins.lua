@@ -333,12 +333,9 @@ return require('packer').startup {
       use {
          'liuchengxu/vista.vim',
          config = function()
-            vim.cmd [[let g:vista_default_executive = 'coc']]
-
-            -- vim.g.vista_default_executive = 'coc'
-            -- vim.g.vista_executive_for = {
-            --    typescriptreact = 'coc',
-            -- }
+            local nmap = require('keys').nmap
+            vim.g.vista_default_executive = 'coc'
+            nmap('<Leader>tv', ':Vista!!<cr>')
          end,
       }
 
