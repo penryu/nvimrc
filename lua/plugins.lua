@@ -570,7 +570,7 @@ return require('packer').startup {
                   'neo-tree',
                },
                options = {
-                  globalstatus = true,
+                  globalstatus = false,
                   icons_enabled = false,
                   -- theme = 'everforest',
                   -- theme = 'gruvbox',
