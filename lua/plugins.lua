@@ -30,7 +30,7 @@ return require('packer').startup {
          config = function()
             vim.cmd [[ALEEnable]]
          end,
-         ft = { 'bash', 'clojure', 'sh', 'vim', 'zsh' },
+         ft = { 'bash', 'sh', 'vim', 'zsh' },
       }
 
       -- Updated apprentice colorscheme
@@ -506,12 +506,15 @@ return require('packer').startup {
             " Bootstrap coc extensions
             let g:coc_global_extensions = [
                \ 'coc-clangd',
+               \ 'coc-clojure',
+               \ 'coc-conjure',
                \ 'coc-css',
                \ 'coc-docker',
                \ 'coc-eslint',
                \ 'coc-html',
                \ 'coc-json',
                \ 'coc-lua',
+               \ 'coc-metals',
                \ 'coc-prettier',
                \ 'coc-pyright',
                \ 'coc-stylua',
