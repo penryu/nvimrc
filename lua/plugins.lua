@@ -507,7 +507,6 @@ return require('packer').startup {
             let g:coc_global_extensions = [
                \ 'coc-clangd',
                \ 'coc-clojure',
-               \ 'coc-conjure',
                \ 'coc-css',
                \ 'coc-docker',
                \ 'coc-eslint',
@@ -570,7 +569,7 @@ return require('packer').startup {
                   'neo-tree',
                },
                options = {
-                  globalstatus = false,
+                  globalstatus = true,
                   icons_enabled = false,
                   -- theme = 'everforest',
                   -- theme = 'gruvbox',
