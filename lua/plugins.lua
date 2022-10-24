@@ -87,6 +87,18 @@ return require('packer').startup {
       }
 
       use {
+         'junegunn/limelight.vim',
+         config = function()
+            vim.g.limelight_default_coefficient = 0.7
+            vim.g.limelight_paragraph_span = 1
+            vim.cmd [[
+               nmap <Leader>l <Plug>(Limelight)
+               xmap <Leader>l <Plug>(Limelight)
+            ]]
+         end,
+      }
+
+      use {
          'nvim-neo-tree/neo-tree.nvim',
          branch = 'v2.x',
          requires = {
@@ -327,6 +339,7 @@ return require('packer').startup {
       use 'tpope/vim-commentary'
       use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
       use 'tpope/vim-fugitive'
+      use 'preservim/vim-markdown'
       use 'sheerun/vim-polyglot'
       use 'machakann/vim-sandwich'
       use 'tpope/vim-vinegar'
