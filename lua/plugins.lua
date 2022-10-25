@@ -33,7 +33,6 @@ return require('packer').startup {
          ft = { 'bash', 'sh', 'vim', 'zsh' },
       }
 
-      -- Updated apprentice colorscheme
       use {
          'adisen99/apprentice.nvim',
          requires = { 'rktjmp/lush.nvim' },
@@ -326,7 +325,21 @@ return require('packer').startup {
             vim.cmd [[nnoremap <bar> :Neotree git_status<cr>]]
          end,
       }
+
+      use {
+         'folke/noice.nvim',
+         requires = {
+            'MunifTanjim/nui.nvim',
+         },
+         event = 'VimEnter',
+         config = function()
+            require('noice').setup()
+            require('telescope').load_extension 'noice'
+         end,
+      }
+
       use 'kovisoft/paredit'
+
       use {
          'preservim/tagbar',
          config = function()
@@ -335,6 +348,28 @@ return require('packer').startup {
             vim.g.tagbar_width = 32
          end,
       }
+
+      use {
+         'nvim-telescope/telescope.nvim',
+         requires = 'nvim-lua/plenary.nvim',
+      }
+
+      use {
+         'folke/todo-comments.nvim',
+         requires = 'nvim-lua/plenary.nvim',
+         config = function()
+            require('todo-comments').setup {}
+
+            vim.keymap.set('n', ']t', function()
+               require('todo-comments').jump_next()
+            end, { desc = 'Next todo comment' })
+
+            vim.keymap.set('n', '[t', function()
+               require('todo-comments').jump_prev()
+            end, { desc = 'Previous todo comment' })
+         end,
+      }
+
       use 'ntpeters/vim-better-whitespace'
       use 'tpope/vim-commentary'
       use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
@@ -586,6 +621,8 @@ return require('packer').startup {
                   icons_enabled = false,
                   -- theme = 'everforest',
                   -- theme = 'gruvbox',
+                  -- theme = 'iceberg',
+                  -- theme = 'nord',
                   theme = 'wombat',
                },
                sections = {
