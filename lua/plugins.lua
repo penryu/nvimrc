@@ -23,6 +23,14 @@ return require('packer').startup {
    function(use)
       use 'wbthomason/packer.nvim'
 
+      use {
+         'adisen99/apprentice.nvim',
+         requires = { 'rktjmp/lush.nvim' },
+         config = function()
+            vim.cmd 'colorscheme apprentice'
+         end,
+      }
+
       -- Alternative to coc. See if we can move stuff to coc or built-in LSP
       use {
          'dense-analysis/ale',
@@ -34,20 +42,50 @@ return require('packer').startup {
       }
 
       use {
-         'adisen99/apprentice.nvim',
-         requires = { 'rktjmp/lush.nvim' },
+         'fidian/hexmode',
          config = function()
-            vim.cmd 'colorscheme apprentice'
+            vim.g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm'
          end,
       }
 
-      -- Automatically restores sessions if no arguments given
       use {
-         'rmagatti/auto-session',
+         'folke/noice.nvim',
+         requires = {
+            'MunifTanjim/nui.nvim',
+         },
+         event = 'VimEnter',
          config = function()
-            require('auto-session').setup {
-               log_level = 'warn',
-               auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
+            require('noice').setup()
+            require('telescope').load_extension 'noice'
+         end,
+      }
+
+      use {
+         'folke/todo-comments.nvim',
+         requires = 'nvim-lua/plenary.nvim',
+         config = function()
+            require('todo-comments').setup {}
+
+            vim.keymap.set('n', ']t', function()
+               require('todo-comments').jump_next()
+            end, { desc = 'Next todo comment' })
+
+            vim.keymap.set('n', '[t', function()
+               require('todo-comments').jump_prev()
+            end, { desc = 'Previous todo comment' })
+         end,
+      }
+
+      use {
+         'folke/twilight.nvim',
+         config = function()
+            require('twilight').setup {
+               dimming = {
+                  alpha = 0.25,
+                  inactive = false,
+               },
+               context = 11,
+               treesitter = true,
             }
          end,
       }
@@ -68,336 +106,6 @@ return require('packer').startup {
          end,
       }
 
-      use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
-
-      -- Better viz of git line diffs
-      use {
-         'lewis6991/gitsigns.nvim',
-         config = function()
-            require('gitsigns').setup()
-         end,
-      }
-
-      use {
-         'fidian/hexmode',
-         config = function()
-            vim.g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm'
-         end,
-      }
-
-      use {
-         'junegunn/limelight.vim',
-         config = function()
-            vim.g.limelight_default_coefficient = 0.7
-            vim.g.limelight_paragraph_span = 1
-            vim.cmd [[
-               nmap <Leader>l <Plug>(Limelight)
-               xmap <Leader>l <Plug>(Limelight)
-            ]]
-         end,
-      }
-
-      use {
-         'nvim-neo-tree/neo-tree.nvim',
-         branch = 'v2.x',
-         requires = {
-            'nvim-lua/plenary.nvim',
-            'kyazdani42/nvim-web-devicons', -- not strictly required, but recommended
-            'MunifTanjim/nui.nvim',
-            {
-               -- only needed if you want to use the commands with "_with_window_picker" suffix
-               's1n7ax/nvim-window-picker',
-               tag = '1.*',
-               config = function()
-                  require('window-picker').setup {
-                     autoselect_one = true,
-                     include_current = false,
-                     filter_rules = {
-                        -- filter using buffer options
-                        bo = {
-                           -- if the file type is one of following, the window will be ignored
-                           filetype = {
-                              'neo-tree',
-                              'neo-tree-popup',
-                              'notify',
-                              'quickfix',
-                           },
-
-                           -- if the buffer type is one of following, the window will be ignored
-                           buftype = { 'terminal' },
-                        },
-                     },
-                     other_win_hl_color = '#e35e4f',
-                  }
-               end,
-            },
-         },
-         config = function()
-            -- Unless you are still migrating, remove the deprecated commands from v1.x
-            vim.cmd [[ let g:neo_tree_remove_legacy_commands = 1 ]]
-
-            -- If you want icons for diagnostic errors, you'll need to define them somewhere:
-            vim.fn.sign_define(
-               'DiagnosticSignError',
-               { text = ' ', texthl = 'DiagnosticSignError' }
-            )
-            vim.fn.sign_define(
-               'DiagnosticSignWarn',
-               { text = ' ', texthl = 'DiagnosticSignWarn' }
-            )
-            vim.fn.sign_define(
-               'DiagnosticSignInfo',
-               { text = ' ', texthl = 'DiagnosticSignInfo' }
-            )
-            vim.fn.sign_define(
-               'DiagnosticSignHint',
-               { text = '', texthl = 'DiagnosticSignHint' }
-            )
-            -- NOTE: this is changed from v1.x, which used the old style of highlight groups
-            -- in the form "LspDiagnosticsSignWarning"
-
-            require('neo-tree').setup {
-               close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
-               popup_border_style = 'rounded',
-               enable_git_status = true,
-               enable_diagnostics = true,
-               default_component_configs = {
-                  container = {
-                     enable_character_fade = true,
-                  },
-                  indent = {
-                     indent_size = 2,
-                     padding = 1, -- extra padding on left hand side
-                     -- indent guides
-                     with_markers = true,
-                     indent_marker = '│',
-                     last_indent_marker = '└',
-                     highlight = 'NeoTreeIndentMarker',
-                     -- expander config, needed for nesting files
-                     with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
-                     expander_collapsed = '',
-                     expander_expanded = '',
-                     expander_highlight = 'NeoTreeExpander',
-                  },
-                  icon = {
-                     folder_closed = '',
-                     folder_open = '',
-                     folder_empty = 'ﰊ',
-                     -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
-                     -- then these will never be used.
-                     default = '*',
-                     highlight = 'NeoTreeFileIcon',
-                  },
-                  modified = {
-                     symbol = '[+]',
-                     highlight = 'NeoTreeModified',
-                  },
-                  name = {
-                     trailing_slash = false,
-                     use_git_status_colors = true,
-                     highlight = 'NeoTreeFileName',
-                  },
-                  git_status = {
-                     symbols = {
-                        -- Change type
-                        added = '✚', -- or "✚", but this is redundant info if you use git_status_colors on the name
-                        modified = '', -- or "", but this is redundant info if you use git_status_colors on the name
-                        deleted = '✖', -- this can only be used in the git_status source
-                        renamed = '', -- this can only be used in the git_status source
-                        -- Status type
-                        untracked = '',
-                        ignored = '',
-                        unstaged = '',
-                        staged = '',
-                        conflict = '',
-                     },
-                  },
-               },
-               window = {
-                  position = 'left',
-                  width = 40,
-                  mapping_options = {
-                     noremap = true,
-                     nowait = true,
-                  },
-                  mappings = {
-                     ['<space>'] = {
-                        'toggle_node',
-                        nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use.
-                     },
-                     ['<2-LeftMouse>'] = 'open',
-                     ['<cr>'] = 'open',
-                     ['S'] = 'open_split',
-                     ['s'] = 'open_vsplit',
-                     -- ["S"] = "split_with_window_picker",
-                     -- ["s"] = "vsplit_with_window_picker",
-                     ['t'] = 'open_tabnew',
-                     ['w'] = 'open_with_window_picker',
-                     ['C'] = 'close_node',
-                     ['a'] = {
-                        'add',
-                        -- some commands may take optional config options, see `:h neo-tree-mappings` for details
-                        config = {
-                           show_path = 'none', -- "none", "relative", "absolute"
-                        },
-                     },
-                     ['A'] = 'add_directory', -- also accepts the config.show_path option.
-                     ['d'] = 'delete',
-                     ['r'] = 'rename',
-                     ['y'] = 'copy_to_clipboard',
-                     ['x'] = 'cut_to_clipboard',
-                     ['p'] = 'paste_from_clipboard',
-                     ['c'] = 'copy', -- takes text input for destination
-                     ['m'] = 'move', -- takes text input for destination
-                     ['q'] = 'close_window',
-                     ['R'] = 'refresh',
-                     ['?'] = 'show_help',
-                  },
-               },
-               nesting_rules = {},
-               filesystem = {
-                  filtered_items = {
-                     visible = false, -- when true, they will just be displayed differently than normal items
-                     hide_dotfiles = true,
-                     hide_gitignored = true,
-                     hide_hidden = true, -- only works on Windows for hidden files/directories
-                     hide_by_name = {
-                        '.DS_Store',
-                        'thumbs.db',
-                        --"node_modules"
-                     },
-                     hide_by_pattern = { -- uses glob style patterns
-                        --"*.meta"
-                     },
-                     never_show = { -- remains hidden even if visible is toggled to true
-                        --".DS_Store",
-                        --"thumbs.db"
-                     },
-                  },
-                  follow_current_file = true, -- This will find and focus the file in the active buffer every
-                  -- time the current file is changed while the tree is open.
-                  hijack_netrw_behavior = 'open_default', -- netrw disabled, opening a directory opens neo-tree
-                  -- in whatever position is specified in window.position
-                  -- "open_current",   -- netrw disabled, opening a directory opens within the
-                  -- window like netrw would, regardless of window.position
-                  -- "disabled",      -- netrw left alone, neo-tree does not handle opening dirs
-                  use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
-                  -- instead of relying on nvim autocmd events.
-                  window = {
-                     mappings = {
-                        ['<bs>'] = 'navigate_up',
-                        ['.'] = 'set_root',
-                        ['H'] = 'toggle_hidden',
-                        ['/'] = 'fuzzy_finder',
-                        ['f'] = 'filter_on_submit',
-                        ['<c-x>'] = 'clear_filter',
-                     },
-                  },
-               },
-               buffers = {
-                  show_unloaded = true,
-                  window = {
-                     mappings = {
-                        ['bd'] = 'buffer_delete',
-                        ['<bs>'] = 'navigate_up',
-                        ['.'] = 'set_root',
-                     },
-                  },
-               },
-               git_status = {
-                  window = {
-                     position = 'float',
-                     mappings = {
-                        ['A'] = 'git_add_all',
-                        ['gu'] = 'git_unstage_file',
-                        ['ga'] = 'git_add_file',
-                        ['gr'] = 'git_revert_file',
-                        ['gc'] = 'git_commit',
-                        ['gp'] = 'git_push',
-                        ['gg'] = 'git_commit_and_push',
-                     },
-                  },
-               },
-            }
-
-            vim.cmd [[nnoremap \ :Neotree toggle<cr>]]
-            -- see `:help bar` if you're curious
-            vim.cmd [[nnoremap <bar> :Neotree git_status<cr>]]
-         end,
-      }
-
-      use {
-         'folke/noice.nvim',
-         requires = {
-            'MunifTanjim/nui.nvim',
-         },
-         event = 'VimEnter',
-         config = function()
-            require('noice').setup()
-            require('telescope').load_extension 'noice'
-         end,
-      }
-
-      use 'kovisoft/paredit'
-
-      use {
-         'preservim/tagbar',
-         config = function()
-            local nmap = require('keys').nmap
-            nmap('<Leader>ta', ':TagbarToggle<cr>')
-            vim.g.tagbar_width = 32
-         end,
-      }
-
-      use {
-         'nvim-telescope/telescope.nvim',
-         requires = 'nvim-lua/plenary.nvim',
-      }
-
-      use {
-         'folke/todo-comments.nvim',
-         requires = 'nvim-lua/plenary.nvim',
-         config = function()
-            require('todo-comments').setup {}
-
-            vim.keymap.set('n', ']t', function()
-               require('todo-comments').jump_next()
-            end, { desc = 'Next todo comment' })
-
-            vim.keymap.set('n', '[t', function()
-               require('todo-comments').jump_prev()
-            end, { desc = 'Previous todo comment' })
-         end,
-      }
-
-      use 'ntpeters/vim-better-whitespace'
-      use 'tpope/vim-commentary'
-      use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
-      use 'tpope/vim-fugitive'
-      use 'preservim/vim-markdown'
-      use 'sheerun/vim-polyglot'
-      use 'machakann/vim-sandwich'
-      use 'tpope/vim-vinegar'
-      use {
-         'liuchengxu/vista.vim',
-         config = function()
-            local nmap = require('keys').nmap
-            vim.g.vista_default_executive = 'coc'
-            nmap('<Leader>tv', ':Vista!!<cr>')
-         end,
-      }
-
-      use {
-         -- original fzf
-         -- 'junegunn/fzf.vim', requires = 'junegunn/fzf',
-         -- drop-in replacement (same config) for fzf using skim (sk)
-         'lotabout/skim.vim',
-         requires = 'lotabout/skim',
-         config = function()
-            -- vim.g.fzf_command_prefix = 'Sk'
-         end,
-      }
-
       use {
          'jakewvincent/mkdnflow.nvim',
          requires = 'ellisonleao/glow.nvim',
@@ -410,6 +118,77 @@ return require('packer').startup {
             }
          end,
       }
+
+      use 'kovisoft/paredit'
+
+      -- Better viz of git line diffs
+      use {
+         'lewis6991/gitsigns.nvim',
+         config = function()
+            require('gitsigns').setup()
+         end,
+      }
+
+      use {
+         'liuchengxu/vista.vim',
+         config = function()
+            local nmap = require('keys').nmap
+            vim.g.vista_default_executive = 'coc'
+            nmap('<Leader>tv', ':Vista!!<cr>')
+         end,
+      }
+
+      use {
+         -- drop-in replacement (same config) for fzf using skim (sk)
+         -- original fzf
+         -- 'junegunn/fzf.vim', requires = 'junegunn/fzf',
+         'lotabout/skim.vim',
+         requires = 'lotabout/skim',
+         config = function()
+            -- vim.g.fzf_command_prefix = 'Sk'
+         end,
+      }
+
+      use 'machakann/vim-sandwich'
+
+      use 'ntpeters/vim-better-whitespace'
+
+      use {
+         'nvim-telescope/telescope.nvim',
+         requires = 'nvim-lua/plenary.nvim',
+      }
+
+      use 'preservim/vim-markdown'
+
+      use {
+         -- Find a better option for this
+         'preservim/tagbar',
+         config = function()
+            local nmap = require('keys').nmap
+            nmap('<Leader>ta', ':TagbarToggle<cr>')
+            vim.g.tagbar_width = 32
+         end,
+      }
+
+      -- Automatically restores sessions if no arguments given
+      use {
+         'rmagatti/auto-session',
+         config = function()
+            require('auto-session').setup {
+               log_level = 'warn',
+               auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
+            }
+         end,
+      }
+
+      use 'sheerun/vim-polyglot'
+
+      use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+
+      use { 'tpope/vim-commentary' }
+      use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
+      use { 'tpope/vim-fugitive' }
+      use { 'tpope/vim-vinegar' }
 
       use {
          'neoclide/coc.nvim',
@@ -594,6 +373,235 @@ return require('packer').startup {
          after = 'coc.nvim',
          config = function()
             vim.g.rustfmt_autosave = 1
+         end,
+      }
+
+      use {
+         'nvim-neo-tree/neo-tree.nvim',
+         branch = 'v2.x',
+         requires = {
+            'nvim-lua/plenary.nvim',
+            'kyazdani42/nvim-web-devicons', -- not strictly required, but recommended
+            'MunifTanjim/nui.nvim',
+            {
+               -- only needed if you want to use the commands with "_with_window_picker" suffix
+               's1n7ax/nvim-window-picker',
+               tag = '1.*',
+               config = function()
+                  require('window-picker').setup {
+                     autoselect_one = true,
+                     include_current = false,
+                     filter_rules = {
+                        -- filter using buffer options
+                        bo = {
+                           -- if the file type is one of following, the window will be ignored
+                           filetype = {
+                              'neo-tree',
+                              'neo-tree-popup',
+                              'notify',
+                              'quickfix',
+                           },
+
+                           -- if the buffer type is one of following, the window will be ignored
+                           buftype = { 'terminal' },
+                        },
+                     },
+                     other_win_hl_color = '#e35e4f',
+                  }
+               end,
+            },
+         },
+         config = function()
+            -- Unless you are still migrating, remove the deprecated commands from v1.x
+            vim.cmd [[ let g:neo_tree_remove_legacy_commands = 1 ]]
+
+            -- If you want icons for diagnostic errors, you'll need to define them somewhere:
+            vim.fn.sign_define(
+               'DiagnosticSignError',
+               { text = ' ', texthl = 'DiagnosticSignError' }
+            )
+            vim.fn.sign_define(
+               'DiagnosticSignWarn',
+               { text = ' ', texthl = 'DiagnosticSignWarn' }
+            )
+            vim.fn.sign_define(
+               'DiagnosticSignInfo',
+               { text = ' ', texthl = 'DiagnosticSignInfo' }
+            )
+            vim.fn.sign_define(
+               'DiagnosticSignHint',
+               { text = '', texthl = 'DiagnosticSignHint' }
+            )
+            -- NOTE: this is changed from v1.x, which used the old style of highlight groups
+            -- in the form "LspDiagnosticsSignWarning"
+
+            require('neo-tree').setup {
+               close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+               popup_border_style = 'rounded',
+               enable_git_status = true,
+               enable_diagnostics = true,
+               default_component_configs = {
+                  container = {
+                     enable_character_fade = true,
+                  },
+                  indent = {
+                     indent_size = 2,
+                     padding = 1, -- extra padding on left hand side
+                     -- indent guides
+                     with_markers = true,
+                     indent_marker = '│',
+                     last_indent_marker = '└',
+                     highlight = 'NeoTreeIndentMarker',
+                     -- expander config, needed for nesting files
+                     with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
+                     expander_collapsed = '',
+                     expander_expanded = '',
+                     expander_highlight = 'NeoTreeExpander',
+                  },
+                  icon = {
+                     folder_closed = '',
+                     folder_open = '',
+                     folder_empty = 'ﰊ',
+                     -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
+                     -- then these will never be used.
+                     default = '*',
+                     highlight = 'NeoTreeFileIcon',
+                  },
+                  modified = {
+                     symbol = '[+]',
+                     highlight = 'NeoTreeModified',
+                  },
+                  name = {
+                     trailing_slash = false,
+                     use_git_status_colors = true,
+                     highlight = 'NeoTreeFileName',
+                  },
+                  git_status = {
+                     symbols = {
+                        -- Change type
+                        added = '✚', -- or "✚", but this is redundant info if you use git_status_colors on the name
+                        modified = '', -- or "", but this is redundant info if you use git_status_colors on the name
+                        deleted = '✖', -- this can only be used in the git_status source
+                        renamed = '', -- this can only be used in the git_status source
+                        -- Status type
+                        untracked = '',
+                        ignored = '���',
+                        unstaged = '',
+                        staged = '',
+                        conflict = '',
+                     },
+                  },
+               },
+               window = {
+                  position = 'left',
+                  width = 40,
+                  mapping_options = {
+                     noremap = true,
+                     nowait = true,
+                  },
+                  mappings = {
+                     ['<space>'] = {
+                        'toggle_node',
+                        nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use.
+                     },
+                     ['<2-LeftMouse>'] = 'open',
+                     ['<cr>'] = 'open',
+                     ['S'] = 'open_split',
+                     ['s'] = 'open_vsplit',
+                     -- ["S"] = "split_with_window_picker",
+                     -- ["s"] = "vsplit_with_window_picker",
+                     ['t'] = 'open_tabnew',
+                     ['w'] = 'open_with_window_picker',
+                     ['C'] = 'close_node',
+                     ['a'] = {
+                        'add',
+                        -- some commands may take optional config options, see `:h neo-tree-mappings` for details
+                        config = {
+                           show_path = 'none', -- "none", "relative", "absolute"
+                        },
+                     },
+                     ['A'] = 'add_directory', -- also accepts the config.show_path option.
+                     ['d'] = 'delete',
+                     ['r'] = 'rename',
+                     ['y'] = 'copy_to_clipboard',
+                     ['x'] = 'cut_to_clipboard',
+                     ['p'] = 'paste_from_clipboard',
+                     ['c'] = 'copy', -- takes text input for destination
+                     ['m'] = 'move', -- takes text input for destination
+                     ['q'] = 'close_window',
+                     ['R'] = 'refresh',
+                     ['?'] = 'show_help',
+                  },
+               },
+               nesting_rules = {},
+               filesystem = {
+                  filtered_items = {
+                     visible = false, -- when true, they will just be displayed differently than normal items
+                     hide_dotfiles = true,
+                     hide_gitignored = true,
+                     hide_hidden = true, -- only works on Windows for hidden files/directories
+                     hide_by_name = {
+                        '.DS_Store',
+                        'thumbs.db',
+                        --"node_modules"
+                     },
+                     hide_by_pattern = { -- uses glob style patterns
+                        --"*.meta"
+                     },
+                     never_show = { -- remains hidden even if visible is toggled to true
+                        --".DS_Store",
+                        --"thumbs.db"
+                     },
+                  },
+                  follow_current_file = true, -- This will find and focus the file in the active buffer every
+                  -- time the current file is changed while the tree is open.
+                  hijack_netrw_behavior = 'open_default', -- netrw disabled, opening a directory opens neo-tree
+                  -- in whatever position is specified in window.position
+                  -- "open_current",   -- netrw disabled, opening a directory opens within the
+                  -- window like netrw would, regardless of window.position
+                  -- "disabled",      -- netrw left alone, neo-tree does not handle opening dirs
+                  use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
+                  -- instead of relying on nvim autocmd events.
+                  window = {
+                     mappings = {
+                        ['<bs>'] = 'navigate_up',
+                        ['.'] = 'set_root',
+                        ['H'] = 'toggle_hidden',
+                        ['/'] = 'fuzzy_finder',
+                        ['f'] = 'filter_on_submit',
+                        ['<c-x>'] = 'clear_filter',
+                     },
+                  },
+               },
+               buffers = {
+                  show_unloaded = true,
+                  window = {
+                     mappings = {
+                        ['bd'] = 'buffer_delete',
+                        ['<bs>'] = 'navigate_up',
+                        ['.'] = 'set_root',
+                     },
+                  },
+               },
+               git_status = {
+                  window = {
+                     position = 'float',
+                     mappings = {
+                        ['A'] = 'git_add_all',
+                        ['gu'] = 'git_unstage_file',
+                        ['ga'] = 'git_add_file',
+                        ['gr'] = 'git_revert_file',
+                        ['gc'] = 'git_commit',
+                        ['gp'] = 'git_push',
+                        ['gg'] = 'git_commit_and_push',
+                     },
+                  },
+               },
+            }
+
+            vim.cmd [[nnoremap \ :Neotree toggle<cr>]]
+            -- see `:help bar` if you're curious
+            vim.cmd [[nnoremap <bar> :Neotree git_status<cr>]]
          end,
       }
 
