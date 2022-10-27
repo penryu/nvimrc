@@ -24,6 +24,27 @@ return require('packer').startup {
       use 'wbthomason/packer.nvim'
 
       use {
+         'goolord/alpha-nvim',
+         requires = { 'kyazdani42/nvim-web-devicons' },
+         config = function()
+            require('alpha').setup(require('alpha.themes.startify').config)
+         end,
+      }
+
+      -- Automatically restores sessions if no arguments given
+      use {
+         'rmagatti/auto-session',
+         config = function()
+            require('auto-session').setup {
+               log_level = 'warn',
+               auto_session_create_enabled = false,
+               auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
+            }
+         end,
+      }
+
+      -- Colorschemes
+      use {
          'adisen99/apprentice.nvim',
          requires = { 'rktjmp/lush.nvim' },
          config = function()
@@ -52,6 +73,7 @@ return require('packer').startup {
          'folke/noice.nvim',
          requires = {
             'MunifTanjim/nui.nvim',
+            'rcarriga/nvim-notify',
          },
          event = 'VimEnter',
          config = function()
@@ -170,17 +192,6 @@ return require('packer').startup {
          end,
       }
 
-      -- Automatically restores sessions if no arguments given
-      use {
-         'rmagatti/auto-session',
-         config = function()
-            require('auto-session').setup {
-               log_level = 'warn',
-               auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
-            }
-         end,
-      }
-
       use 'sheerun/vim-polyglot'
 
       use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
@@ -189,6 +200,18 @@ return require('packer').startup {
       use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
       use { 'tpope/vim-fugitive' }
       use { 'tpope/vim-vinegar' }
+
+      use {
+         'junegunn/gv.vim',
+         requires = { 'tpope/vim-fugitive' },
+      }
+
+      use {
+         'Yggdroot/indentLine',
+         config = function()
+            vim.g.indentLine_char = '│'
+         end,
+      }
 
       use {
          'neoclide/coc.nvim',

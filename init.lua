@@ -15,8 +15,6 @@ g.did_load_filetypes = 0
 require 'plugins'
 require 'keys'
 
-g.lazyredraw = true
-
 o.breakindent = true
 o.cmdheight = 2
 o.colorcolumn = '+1'
