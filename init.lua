@@ -67,3 +67,14 @@ create_autocmd('TermOpen', {
       vim.cmd 'startinsert'
    end,
 })
+
+vim.cmd [[
+   " Keep code lens and type hints from being distracting
+   autocmd ColorScheme * highlight link CocCodeLens Comment
+   autocmd ColorScheme * highlight link CocInlayHint CocFadeOut
+   " Leaving these obnoxious so I know when I hit them
+   "autocmd ColorScheme * highlight! link CocHintFloat CocListYellowMagenta
+   "autocmd ColorScheme * highlight! link CocHintSign CocListYellowGreen
+   "autocmd ColorScheme * highlight! link CocRustTypeHint CocListYellowCyan
+   "autocmd ColorScheme * highlight! link CocRustChainingHint CocListYellowBlue
+]]

@@ -61,7 +61,6 @@ return require('packer').startup {
          end,
          ft = { 'bash', 'sh', 'vim', 'zsh' },
       }
-
       use {
          'fidian/hexmode',
          config = function()
@@ -73,7 +72,7 @@ return require('packer').startup {
          'folke/noice.nvim',
          requires = {
             'MunifTanjim/nui.nvim',
-            'rcarriga/nvim-notify',
+            -- 'rcarriga/nvim-notify',
          },
          event = 'VimEnter',
          config = function()
@@ -154,18 +153,23 @@ return require('packer').startup {
       use {
          'liuchengxu/vista.vim',
          config = function()
-            local nmap = require('keys').nmap
             vim.g.vista_default_executive = 'coc'
-            nmap('<Leader>tv', ':Vista!!<cr>')
+            local nmap = require('keys').nmap
+            nmap('<Leader>vv', ':Vista!!<cr>')
          end,
       }
 
       use {
-         -- drop-in replacement (same config) for fzf using skim (sk)
+         'junegunn/gv.vim',
+         requires = { 'tpope/vim-fugitive' },
+      }
+
+      use {
          -- original fzf
-         -- 'junegunn/fzf.vim', requires = 'junegunn/fzf',
-         'lotabout/skim.vim',
-         requires = 'lotabout/skim',
+         'junegunn/fzf.vim',
+         requires = 'junegunn/fzf',
+         -- drop-in replacement (same config) for fzf using skim (sk)
+         -- 'lotabout/skim.vim', requires = 'lotabout/skim',
          config = function()
             -- vim.g.fzf_command_prefix = 'Sk'
          end,
@@ -176,21 +180,28 @@ return require('packer').startup {
       use 'ntpeters/vim-better-whitespace'
 
       use {
+         'Ostralyan/scribe.nvim',
+         requires = 'nvim-telescope/telescope.nvim',
+         config = function()
+            require('scribe').setup {
+               directory = '~/Dropbox/Notes/',
+               file_ext = '.md',
+               default_file = 'index',
+            }
+            vim.cmd [[
+               nnoremap <leader>ss :ScribeOpen<cr>
+               nnoremap <leader>so :ScribeOpen<space>
+               nnoremap <leader>sf :ScribeFind<cr>
+            ]]
+         end,
+      }
+
+      use {
          'nvim-telescope/telescope.nvim',
          requires = 'nvim-lua/plenary.nvim',
       }
 
       use 'preservim/vim-markdown'
-
-      use {
-         -- Find a better option for this
-         'preservim/tagbar',
-         config = function()
-            local nmap = require('keys').nmap
-            nmap('<Leader>ta', ':TagbarToggle<cr>')
-            vim.g.tagbar_width = 32
-         end,
-      }
 
       use 'sheerun/vim-polyglot'
 
@@ -200,11 +211,6 @@ return require('packer').startup {
       use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
       use { 'tpope/vim-fugitive' }
       use { 'tpope/vim-vinegar' }
-
-      use {
-         'junegunn/gv.vim',
-         requires = { 'tpope/vim-fugitive' },
-      }
 
       use {
          'Yggdroot/indentLine',
@@ -358,14 +364,17 @@ return require('packer').startup {
                \ 'coc-clangd',
                \ 'coc-clojure',
                \ 'coc-css',
+               \ 'coc-diagnostic',
                \ 'coc-docker',
                \ 'coc-eslint',
+               \ 'coc-git',
                \ 'coc-html',
                \ 'coc-json',
                \ 'coc-lua',
                \ 'coc-metals',
                \ 'coc-prettier',
                \ 'coc-pyright',
+               \ 'coc-rust-analyzer',
                \ 'coc-stylua',
                \ 'coc-tsserver',
                \ 'coc-yaml',
@@ -390,7 +399,7 @@ return require('packer').startup {
       use 'leafgarland/typescript-vim'
       use 'ianks/vim-tsx'
 
-      -- Rust
+      -- coc-based rust support, semi-official?
       use {
          'rust-lang/rust.vim',
          after = 'coc.nvim',
@@ -398,6 +407,14 @@ return require('packer').startup {
             vim.g.rustfmt_autosave = 1
          end,
       }
+      -- LSP-based rust support via strlen
+      -- use {
+      --    'simrat39/rust-tools.nvim',
+      --    requires = 'neovim/nvim-lspconfig',
+      --    config = function()
+      --       require('rust-tools').setup()
+      --    end,
+      -- }
 
       use {
          'nvim-neo-tree/neo-tree.nvim',
@@ -459,166 +476,33 @@ return require('packer').startup {
             -- in the form "LspDiagnosticsSignWarning"
 
             require('neo-tree').setup {
-               close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
-               popup_border_style = 'rounded',
+               close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
                enable_git_status = true,
                enable_diagnostics = true,
-               default_component_configs = {
-                  container = {
-                     enable_character_fade = true,
-                  },
-                  indent = {
-                     indent_size = 2,
-                     padding = 1, -- extra padding on left hand side
-                     -- indent guides
-                     with_markers = true,
-                     indent_marker = '│',
-                     last_indent_marker = '└',
-                     highlight = 'NeoTreeIndentMarker',
-                     -- expander config, needed for nesting files
-                     with_expanders = nil, -- if nil and file nesting is enabled, will enable expanders
-                     expander_collapsed = '',
-                     expander_expanded = '',
-                     expander_highlight = 'NeoTreeExpander',
-                  },
-                  icon = {
-                     folder_closed = '',
-                     folder_open = '',
-                     folder_empty = 'ﰊ',
-                     -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
-                     -- then these will never be used.
-                     default = '*',
-                     highlight = 'NeoTreeFileIcon',
-                  },
-                  modified = {
-                     symbol = '[+]',
-                     highlight = 'NeoTreeModified',
-                  },
-                  name = {
-                     trailing_slash = false,
-                     use_git_status_colors = true,
-                     highlight = 'NeoTreeFileName',
-                  },
-                  git_status = {
-                     symbols = {
-                        -- Change type
-                        added = '✚', -- or "✚", but this is redundant info if you use git_status_colors on the name
-                        modified = '', -- or "", but this is redundant info if you use git_status_colors on the name
-                        deleted = '✖', -- this can only be used in the git_status source
-                        renamed = '', -- this can only be used in the git_status source
-                        -- Status type
-                        untracked = '',
-                        ignored = '���',
-                        unstaged = '',
-                        staged = '',
-                        conflict = '',
-                     },
-                  },
-               },
                window = {
-                  position = 'left',
                   width = 40,
-                  mapping_options = {
-                     noremap = true,
-                     nowait = true,
-                  },
-                  mappings = {
-                     ['<space>'] = {
-                        'toggle_node',
-                        nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use.
-                     },
-                     ['<2-LeftMouse>'] = 'open',
-                     ['<cr>'] = 'open',
-                     ['S'] = 'open_split',
-                     ['s'] = 'open_vsplit',
-                     -- ["S"] = "split_with_window_picker",
-                     -- ["s"] = "vsplit_with_window_picker",
-                     ['t'] = 'open_tabnew',
-                     ['w'] = 'open_with_window_picker',
-                     ['C'] = 'close_node',
-                     ['a'] = {
-                        'add',
-                        -- some commands may take optional config options, see `:h neo-tree-mappings` for details
-                        config = {
-                           show_path = 'none', -- "none", "relative", "absolute"
-                        },
-                     },
-                     ['A'] = 'add_directory', -- also accepts the config.show_path option.
-                     ['d'] = 'delete',
-                     ['r'] = 'rename',
-                     ['y'] = 'copy_to_clipboard',
-                     ['x'] = 'cut_to_clipboard',
-                     ['p'] = 'paste_from_clipboard',
-                     ['c'] = 'copy', -- takes text input for destination
-                     ['m'] = 'move', -- takes text input for destination
-                     ['q'] = 'close_window',
-                     ['R'] = 'refresh',
-                     ['?'] = 'show_help',
-                  },
                },
-               nesting_rules = {},
                filesystem = {
                   filtered_items = {
-                     visible = false, -- when true, they will just be displayed differently than normal items
                      hide_dotfiles = true,
-                     hide_gitignored = true,
-                     hide_hidden = true, -- only works on Windows for hidden files/directories
+                     hide_gitignored = false,
                      hide_by_name = {
-                        '.DS_Store',
-                        'thumbs.db',
-                        --"node_modules"
+                        'node_modules',
                      },
                      hide_by_pattern = { -- uses glob style patterns
                         --"*.meta"
                      },
                      never_show = { -- remains hidden even if visible is toggled to true
-                        --".DS_Store",
-                        --"thumbs.db"
+                        '.DS_Store',
+                        'thumbs.db',
                      },
                   },
-                  follow_current_file = true, -- This will find and focus the file in the active buffer every
+                  -- This will find and focus the file in the active buffer every
                   -- time the current file is changed while the tree is open.
-                  hijack_netrw_behavior = 'open_default', -- netrw disabled, opening a directory opens neo-tree
-                  -- in whatever position is specified in window.position
-                  -- "open_current",   -- netrw disabled, opening a directory opens within the
-                  -- window like netrw would, regardless of window.position
-                  -- "disabled",      -- netrw left alone, neo-tree does not handle opening dirs
-                  use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
+                  follow_current_file = false,
+                  -- This will use the OS level file watchers to detect changes
                   -- instead of relying on nvim autocmd events.
-                  window = {
-                     mappings = {
-                        ['<bs>'] = 'navigate_up',
-                        ['.'] = 'set_root',
-                        ['H'] = 'toggle_hidden',
-                        ['/'] = 'fuzzy_finder',
-                        ['f'] = 'filter_on_submit',
-                        ['<c-x>'] = 'clear_filter',
-                     },
-                  },
-               },
-               buffers = {
-                  show_unloaded = true,
-                  window = {
-                     mappings = {
-                        ['bd'] = 'buffer_delete',
-                        ['<bs>'] = 'navigate_up',
-                        ['.'] = 'set_root',
-                     },
-                  },
-               },
-               git_status = {
-                  window = {
-                     position = 'float',
-                     mappings = {
-                        ['A'] = 'git_add_all',
-                        ['gu'] = 'git_unstage_file',
-                        ['ga'] = 'git_add_file',
-                        ['gr'] = 'git_revert_file',
-                        ['gc'] = 'git_commit',
-                        ['gp'] = 'git_push',
-                        ['gg'] = 'git_commit_and_push',
-                     },
-                  },
+                  use_libuv_file_watcher = true,
                },
             }
 
