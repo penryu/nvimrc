@@ -116,14 +116,14 @@ return require('packer').startup {
          'jeetsukumaran/vim-buffergator',
          config = function()
             vim.cmd [[
-            let g:buffergator_autodismiss_on_select = 0
-            let g:buffergator_autoupdate = 1
-            let g:buffergator_display_regime = 'parentdir'
-            let g:buffergator_hsplit_size = 7
-            let g:buffergator_show_full_directory_path = 0
-            let g:buffergator_viewport_split_policy = 'B'
-            let g:buffergator_vsplit_size = 42
-         ]]
+               let g:buffergator_autodismiss_on_select = 0
+               let g:buffergator_autoupdate = 1
+               let g:buffergator_display_regime = 'parentdir'
+               let g:buffergator_hsplit_size = 7
+               let g:buffergator_show_full_directory_path = 0
+               let g:buffergator_viewport_split_policy = 'B'
+               let g:buffergator_vsplit_size = 42
+            ]]
          end,
       }
 
@@ -171,7 +171,7 @@ return require('packer').startup {
          -- drop-in replacement (same config) for fzf using skim (sk)
          -- 'lotabout/skim.vim', requires = 'lotabout/skim',
          config = function()
-            -- vim.g.fzf_command_prefix = 'Sk'
+            vim.g.fzf_command_prefix = 'Sk'
          end,
       }
 
