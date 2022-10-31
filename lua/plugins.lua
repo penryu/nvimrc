@@ -198,10 +198,20 @@ return require('packer').startup {
 
       use {
          'nvim-telescope/telescope.nvim',
-         requires = 'nvim-lua/plenary.nvim',
+         requires = {
+            'iamcco/markdown-preview.nvim',
+            'mzlogin/vim-markdown-toc',
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope-symbols.nvim',
+         },
       }
 
-      use 'preservim/vim-markdown'
+      use {
+         'preservim/vim-markdown',
+         requires = {
+            'mzlogin/vim-markdown-toc',
+         },
+      }
 
       use 'sheerun/vim-polyglot'
 
