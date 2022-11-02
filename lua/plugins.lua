@@ -23,6 +23,7 @@ return require('packer').startup {
    function(use)
       use 'wbthomason/packer.nvim'
 
+      --  functional "splash page"
       use {
          'goolord/alpha-nvim',
          requires = { 'kyazdani42/nvim-web-devicons' },
@@ -82,18 +83,20 @@ return require('packer').startup {
          end,
       }
 
-      use {
-         'folke/noice.nvim',
-         requires = {
-            'MunifTanjim/nui.nvim',
-            -- 'rcarriga/nvim-notify',
-         },
-         event = 'VimEnter',
-         config = function()
-            require('noice').setup()
-            require('telescope').load_extension 'noice'
-         end,
-      }
+      -- This is fascinating, but notifications and autocompltion are flaky.
+      -- Leave this commented out and check on it occasionally.
+      -- use {
+      --    'folke/noice.nvim',
+      --    requires = {
+      --       'MunifTanjim/nui.nvim',
+      --       -- 'rcarriga/nvim-notify',
+      --    },
+      --    event = 'VimEnter',
+      --    config = function()
+      --       require('noice').setup()
+      --       require('telescope').load_extension 'noice'
+      --    end,
+      -- }
 
       use {
          'folke/todo-comments.nvim',
