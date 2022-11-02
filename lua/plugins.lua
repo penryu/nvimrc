@@ -536,7 +536,7 @@ return require('packer').startup {
                   },
                   -- This will find and focus the file in the active buffer every
                   -- time the current file is changed while the tree is open.
-                  follow_current_file = false,
+                  follow_current_file = true,
                   -- This will use the OS level file watchers to detect changes
                   -- instead of relying on nvim autocmd events.
                   use_libuv_file_watcher = true,
