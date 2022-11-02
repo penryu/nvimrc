@@ -31,15 +31,29 @@ return require('packer').startup {
          end,
       }
 
-      -- Automatically restores sessions if no arguments given
+      -- session management
       use {
-         'rmagatti/auto-session',
+         'jedrzejboczar/possession.nvim',
+         requires = { 'nvim-lua/plenary.nvim' },
          config = function()
-            require('auto-session').setup {
-               log_level = 'warn',
-               auto_session_create_enabled = false,
-               auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
+            require('possession').setup {
+               silent = false,
+               load_silent = true,
+               prompt_no_cr = false,
+               autosave = {
+                  current = true, -- or fun(name): boolean
+                  tmp = false, -- or fun(): boolean
+                  on_load = true,
+                  on_quit = true,
+               },
+               commands = {
+                  save = 'SSave',
+                  load = 'SLoad',
+                  delete = 'SDelete',
+                  list = 'SList',
+               },
             }
+            require('telescope').load_extension 'possession'
          end,
       }
 
