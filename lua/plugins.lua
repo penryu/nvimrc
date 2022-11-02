@@ -38,9 +38,9 @@ return require('packer').startup {
          requires = { 'nvim-lua/plenary.nvim' },
          config = function()
             require('possession').setup {
-               silent = false,
+               silent = true,
                load_silent = true,
-               prompt_no_cr = false,
+               prompt_no_cr = true,
                autosave = {
                   current = true, -- or fun(name): boolean
                   tmp = false, -- or fun(): boolean

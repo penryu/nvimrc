@@ -25,6 +25,7 @@ o.ignorecase = true
 o.linebreak = true
 o.number = true
 o.scrolloff = 7
+o.sessionoptions = 'buffers,curdir,globals,help,tabpages,terminal'
 o.shada = "'7,r/Volumes,r/media,r/mnt,r/tmp"
 o.shiftwidth = 2
 o.shortmess = 'acostI'
