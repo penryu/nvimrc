@@ -67,6 +67,15 @@ return require('packer').startup {
          end,
       }
 
+      use {
+         'akinsho/toggleterm.nvim',
+         config = function()
+            require('toggleterm').setup {
+               open_mapping = [[<c-\>]],
+            }
+         end,
+      }
+
       -- Alternative to coc. See if we can move stuff to coc or built-in LSP
       use {
          'dense-analysis/ale',
@@ -76,6 +85,7 @@ return require('packer').startup {
          end,
          ft = { 'bash', 'sh', 'vim', 'zsh' },
       }
+
       use {
          'fidian/hexmode',
          config = function()
@@ -557,6 +567,7 @@ return require('packer').startup {
                   'fzf',
                   'man',
                   'neo-tree',
+                  'toggleterm',
                },
                options = {
                   globalstatus = true,
