@@ -5,7 +5,7 @@ local install_path = vim.fn.stdpath 'data'
 local packer_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
    packer_bootstrap = vim.fn.execute(
-      '!git clone --depth 1 git@github.com:wbthomason/packer.nvim '
+      '!git clone --depth 1 https://github.com/wbthomason/packer.nvim.git '
          .. install_path
    )
 end
