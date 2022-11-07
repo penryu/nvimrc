@@ -23,47 +23,25 @@ return require('packer').startup {
    function(use)
       use 'wbthomason/packer.nvim'
 
-      --  functional "splash page"
-      use {
-         'goolord/alpha-nvim',
-         requires = { 'kyazdani42/nvim-web-devicons' },
-         config = function()
-            require('alpha').setup(require('alpha.themes.startify').config)
-         end,
-      }
-
-      -- session management
-      use {
-         'jedrzejboczar/possession.nvim',
-         requires = { 'nvim-lua/plenary.nvim' },
-         config = function()
-            require('possession').setup {
-               silent = true,
-               load_silent = true,
-               prompt_no_cr = true,
-               autosave = {
-                  current = true, -- or fun(name): boolean
-                  tmp = false, -- or fun(): boolean
-                  on_load = true,
-                  on_quit = true,
-               },
-               commands = {
-                  save = 'SSave',
-                  load = 'SLoad',
-                  delete = 'SDelete',
-                  list = 'SList',
-               },
-            }
-            require('telescope').load_extension 'possession'
-         end,
-      }
-
       -- Colorschemes
       use {
          'adisen99/apprentice.nvim',
          requires = { 'rktjmp/lush.nvim' },
+      }
+      use {
+         'rmdashrfv/nemo',
+      }
+      -- vim.cmd 'colorscheme apprentice'
+      vim.cmd 'colorscheme nemo-dark'
+
+      --  functional "splash page"
+      use {
+         'mhinz/vim-startify',
          config = function()
-            vim.cmd 'colorscheme apprentice'
+            vim.cmd [[
+               let g:startify_bookmarks = ['~/.config/nvim', '~/code/rcfiles']
+               let g:startify_session_autoload = 1
+            ]]
          end,
       }
 
@@ -198,13 +176,23 @@ return require('packer').startup {
          -- drop-in replacement (same config) for fzf using skim (sk)
          -- 'lotabout/skim.vim', requires = 'lotabout/skim',
          config = function()
-            vim.g.fzf_command_prefix = 'Sk'
+            -- vim.g.fzf_command_prefix = 'Sk'
          end,
       }
 
       use 'machakann/vim-sandwich'
 
       use 'ntpeters/vim-better-whitespace'
+
+      use {
+         'nvim-telescope/telescope.nvim',
+         requires = {
+            'iamcco/markdown-preview.nvim',
+            'mzlogin/vim-markdown-toc',
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope-symbols.nvim',
+         },
+      }
 
       use {
          'Ostralyan/scribe.nvim',
@@ -224,16 +212,6 @@ return require('packer').startup {
       }
 
       use {
-         'nvim-telescope/telescope.nvim',
-         requires = {
-            'iamcco/markdown-preview.nvim',
-            'mzlogin/vim-markdown-toc',
-            'nvim-lua/plenary.nvim',
-            'nvim-telescope/telescope-symbols.nvim',
-         },
-      }
-
-      use {
          'preservim/vim-markdown',
          requires = {
             'mzlogin/vim-markdown-toc',
@@ -247,7 +225,10 @@ return require('packer').startup {
       use { 'tpope/vim-commentary' }
       use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
       use { 'tpope/vim-fugitive' }
+      use { 'tpope/vim-obsession' }
       use { 'tpope/vim-vinegar' }
+
+      use 'whatyouhide/vim-lengthmatters'
 
       use {
          'Yggdroot/indentLine',
