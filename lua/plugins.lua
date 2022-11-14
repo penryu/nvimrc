@@ -31,8 +31,8 @@ return require('packer').startup {
       use {
          'rmdashrfv/nemo',
       }
-      -- vim.cmd 'colorscheme apprentice'
-      vim.cmd 'colorscheme nemo-dark'
+      -- vim.cmd 'colorscheme nemo-dark'
+      vim.cmd 'colorscheme apprentice'
 
       --  functional "splash page"
       use {
