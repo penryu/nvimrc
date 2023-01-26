@@ -228,7 +228,12 @@ return require('packer').startup {
       use { 'tpope/vim-obsession' }
       use { 'tpope/vim-vinegar' }
 
-      use 'whatyouhide/vim-lengthmatters'
+      use {
+         'whatyouhide/vim-lengthmatters',
+         config = function()
+            vim.cmd 'let g:lengthmatters_highlight_one_column = 1'
+         end,
+      }
 
       use {
          'Yggdroot/indentLine',
