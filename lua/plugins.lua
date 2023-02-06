@@ -38,10 +38,21 @@ return require('packer').startup {
       use {
          'mhinz/vim-startify',
          config = function()
-            vim.cmd [[
-               let g:startify_bookmarks = ['~/.config/nvim', '~/code/rcfiles']
-               let g:startify_session_autoload = 1
-            ]]
+            vim.g.startify_bookmarks = {
+               { v = '~/.config/nvim' },
+               { r = '~/code/rcfiles' },
+               { s = '~/.ssh' },
+               { n = '~/Dropbox/Notes/index.md' },
+            }
+            vim.g.startify_lists = {
+               { type = 'bookmarks', header = { '   Bookmarks' } },
+               { type = 'files', header = { '   MRU' } },
+               { type = 'dir', header = { '   MRU ' .. vim.fn['getcwd']() } },
+               { type = 'sessions', header = { '   Sessions' } },
+               { type = 'commands', header = { '   Commands' } },
+            }
+            vim.g.startify_session_autoload = true
+            vim.g.startify_skiplist = { 'Library/CloudStorage' }
          end,
       }
 
@@ -430,14 +441,6 @@ return require('packer').startup {
             vim.g.rustfmt_autosave = 1
          end,
       }
-      -- LSP-based rust support via strlen
-      -- use {
-      --    'simrat39/rust-tools.nvim',
-      --    requires = 'neovim/nvim-lspconfig',
-      --    config = function()
-      --       require('rust-tools').setup()
-      --    end,
-      -- }
 
       use {
          'nvim-neo-tree/neo-tree.nvim',
@@ -476,7 +479,7 @@ return require('packer').startup {
          },
          config = function()
             -- Unless you are still migrating, remove the deprecated commands from v1.x
-            vim.cmd [[ let g:neo_tree_remove_legacy_commands = 1 ]]
+            vim.g.neo_tree_remove_legacy_commands = true
 
             -- If you want icons for diagnostic errors, you'll need to define them somewhere:
             vim.fn.sign_define(
@@ -499,7 +502,7 @@ return require('packer').startup {
             -- in the form "LspDiagnosticsSignWarning"
 
             require('neo-tree').setup {
-               close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+               close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
                enable_git_status = true,
                enable_diagnostics = true,
                window = {
