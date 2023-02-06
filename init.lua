@@ -80,7 +80,7 @@ vim.cmd [[
    "autocmd ColorScheme * highlight! link CocRustChainingHint CocListYellowBlue
 ]]
 
-if vim.g.neovide == true then
+if vim.g.neovide then
    vim.opt.guifont = { 'SauceCodePro Nerd Font Mono:h14' }
    -- vim.g.neovide_transparency = 1.0
    -- vim.g.transparency = 1.0

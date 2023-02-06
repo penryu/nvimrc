@@ -23,6 +23,27 @@ return require('packer').startup {
    function(use)
       use 'wbthomason/packer.nvim'
 
+      use {
+         'ii14/neorepl.nvim',
+         config = function()
+            vim.keymap.set('n', 'g:', function()
+               -- get current buffer and window
+               local buf = vim.api.nvim_get_current_buf()
+               local win = vim.api.nvim_get_current_win()
+               -- create a new split for the repl
+               vim.cmd 'split'
+               -- spawn repl and set the context to our buffer
+               require('neorepl').new {
+                  lang = 'lua',
+                  buffer = buf,
+                  window = win,
+               }
+               -- resize repl window and make it fixed height
+               vim.cmd 'resize 11 | setl winfixheight'
+            end)
+         end,
+      }
+
       -- Colorschemes
       use {
          'adisen99/apprentice.nvim',
@@ -158,6 +179,18 @@ return require('packer').startup {
 
       use 'kovisoft/paredit'
 
+      use {
+         'kristijanhusak/vim-dadbod-ui',
+         requires = {
+            'tpope/vim-dadbod',
+            'kristijanhusak/vim-dadbod-completion',
+         },
+         after = 'coc.nvim',
+         config = function()
+            -- vim.g.db_ui_dotenv_variable_prefix = 'MYPREFIX_'
+         end,
+      }
+
       -- Better viz of git line diffs
       use {
          'lewis6991/gitsigns.nvim',
@@ -233,6 +266,7 @@ return require('packer').startup {
 
       use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
+      use { 'tpope/vim-dotenv' }
       use { 'tpope/vim-commentary' }
       use { 'tpope/vim-dispatch', requires = 'radenling/vim-dispatch-neovim' }
       use { 'tpope/vim-fugitive' }
@@ -398,6 +432,7 @@ return require('packer').startup {
                \ 'coc-clangd',
                \ 'coc-clojure',
                \ 'coc-css',
+               \ 'coc-db',
                \ 'coc-diagnostic',
                \ 'coc-docker',
                \ 'coc-eslint',
