@@ -69,6 +69,8 @@ create_autocmd('TermOpen', {
    end,
 })
 
+create_command('DeWinify', '%s/\r$//', { nargs = 0 })
+
 vim.cmd [[
    " Keep code lens and type hints from being distracting
    autocmd ColorScheme * highlight link CocCodeLens Comment
