@@ -103,7 +103,7 @@ return require('packer').startup {
          end,
       }
 
-      -- This is fascinating, but notifications and autocompltion are flaky.
+      -- This is fascinating, but notifications and autocompletion are flaky.
       -- Leave this commented out and check on it occasionally.
       -- use {
       --    'folke/noice.nvim',

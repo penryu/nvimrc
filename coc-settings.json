@@ -16,6 +16,7 @@
     "git.showCommitInFloating": true,
     "javascript.implementationsCodeLens.enable": false,
     "javascript.referencesCodeLens.enable": false,
+    "Lua.diagnostics.globals": ["vim"],
     "pyright.enable": true,
     "python.formatting.provider": "black",
     "python.linting.enabled": true,
