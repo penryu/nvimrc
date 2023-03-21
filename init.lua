@@ -18,8 +18,10 @@ require 'keys'
 o.breakindent = true
 o.cmdheight = 2
 o.colorcolumn = '+1'
+o.conceallevel = 0
 o.cursorline = true
 o.expandtab = true
+o.foldenable = false
 o.hlsearch = false
 o.ignorecase = true
 o.linebreak = true
