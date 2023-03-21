@@ -82,6 +82,13 @@ return require('packer').startup {
          config = function()
             require('toggleterm').setup {
                open_mapping = [[<c-\>]],
+               size = function(term)
+                  if term.direction == 'horizontal' then
+                     return vim.o.lines * 0.42
+                  elseif term.direction == 'vertical' then
+                     return vim.o.columns * 0.42
+                  end
+               end,
             }
          end,
       }
