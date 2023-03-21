@@ -23,8 +23,8 @@
     "python.linting.pylintEnabled": true,
     "python.linting.pytypeEnabled": true,
     // https://github.com/fannheyward/coc-rust-analyzer/blob/master/package.json#L69
-    "rust-analyzer.checkOnSave.command": "clippy",
-    "rust-analyzer.checkOnSave.extraArgs": ["--", "-Wclippy::pedantic", "-Wclippy::all"],
+    "rust-analyzer.check.command": "clippy",
+    "rust-analyzer.checkOnSave.extraArgs": ["--", "-Wclippy::pedantic"],
     "rust-analyzer.imports.merge.glob": false,
     "rust-analyzer.imports.prefix": "crate",
     "rust-analyzer.inlayHints.bindingModeHints.enable": true,
