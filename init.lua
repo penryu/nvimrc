@@ -7,13 +7,61 @@ local buf_set_option = vim.api.nvim_buf_set_option
 
 local g, o = vim.g, vim.o
 
-g.do_filetype_lua = 1
-g.did_load_filetypes = 0
+-- prevent builtin plugins from loading
+if false then
+   -- g.loaded_gzip = 1
+   -- g.loaded_zip = 1
+   -- g.loaded_zipPlugin = 1
+   -- g.loaded_tar = 1
+   -- g.loaded_tarPlugin = 1
 
---require 'impatient'
+   -- g.loaded_getscript = 1
+   -- g.loaded_getscriptPlugin = 1
+   -- g.loaded_vimball = 1
+   -- g.loaded_vimballPlugin = 1
+   -- g.loaded_2html_plugin = 1
 
-require 'plugins'
+   -- g.loaded_matchit = 1
+   -- g.loaded_matchparen = 1
+   -- g.loaded_logiPat = 1
+   -- g.loaded_rrhelper = 1
+
+   -- netrw init
+   g.loaded_netrw = 1
+   g.loaded_netrwPlugin = 1
+   g.loaded_netrwSettings = 1
+   g.loaded_netrwFileHandlers = 1
+
+   -- runtime providers
+   -- g.loaded_node_provider = 1
+   g.loaded_python_provider = 1
+   -- g.loaded_python3_provider = 1
+   g.loaded_ruby_provider = 1
+   g.loaded_perl_provider = 1
+end
+
 require 'keys'
+
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+   vim.fn.system {
+      'git',
+      'clone',
+      '--filter=blob:none',
+      'https://github.com/folke/lazy.nvim.git',
+      '--branch=stable', -- latest stable release
+      lazypath,
+   }
+end
+vim.opt.rtp:prepend(lazypath)
+
+require('lazy').setup('plugins', {
+   ui = {
+      border = 'rounded',
+      size = { height = 0.8, width = 0.9 },
+      wrap = false,
+   },
+})
 
 o.breakindent = true
 o.cmdheight = 2
@@ -56,49 +104,3 @@ create_autocmd('FileType', {
    end,
    group = create_augroup('LuaIndent', {}),
 })
-
-create_command('Notes', 'Files ~/Dropbox/Notes', {})
-
--- Customize the terminal
-
--- :sh opens term in new window
-create_command('Sh', 'new +terminal', { nargs = '*' })
--- Go straight to insert mode
-create_autocmd('TermOpen', {
-   pattern = '*',
-   callback = function()
-      vim.cmd 'startinsert'
-   end,
-})
-
-create_command('DeWinify', '%s/\r$//', { nargs = 0 })
-
-vim.cmd [[
-   " Keep code lens and type hints from being distracting
-   autocmd ColorScheme * highlight link CocCodeLens Comment
-   autocmd ColorScheme * highlight link CocInlayHint CocFadeOut
-   " Leaving these obnoxious so I know when I hit them
-   "autocmd ColorScheme * highlight! link CocHintFloat CocListYellowMagenta
-   "autocmd ColorScheme * highlight! link CocHintSign CocListYellowGreen
-   "autocmd ColorScheme * highlight! link CocRustTypeHint CocListYellowCyan
-   "autocmd ColorScheme * highlight! link CocRustChainingHint CocListYellowBlue
-]]
-
-if vim.g.neovide then
-   vim.opt.guifont = { 'SauceCodePro Nerd Font Mono:h14' }
-   -- vim.g.neovide_transparency = 1.0
-   -- vim.g.transparency = 1.0
-   -- vim.g.neovide_floating_blur_amount_x = 2.0
-   -- vim.g.neovide_floating_blur_amount_y = 2.0
-   vim.g.neovide_scroll_animation_length = 0.9
-   -- vim.g.neovide_hide_mouse_when_typing = false
-   -- vim.g.neovide_refresh_rate = 60
-   vim.g.neovide_refresh_rate_idle = 5
-   -- vim.g.neovide_confirm_quit = true
-   -- vim.g.neovide_profiler = true
-   -- vim.g.neovide_fullscreen = false
-   vim.g.neovide_cursor_animation_length = 0.05
-   -- vim.g.neovide_cursor_antialiasing = true
-   -- vim.g.neovide_cursor_trail_size = 0.8
-   vim.g.neovide_cursor_vfx_mode = ''
-end
