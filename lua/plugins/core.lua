@@ -2,7 +2,7 @@
 -- core editor functionality
 --
 
-local k = require 'keys'
+local u = require 'util'
 
 return {
    {
@@ -20,19 +20,13 @@ return {
                end
             end,
          }
-         k.tmap('<esc>', [[<c-\><c-n>:let b:insertMode = 'no'<cr>]])
-         k.tmap('<c-h>', '<c-\\><c-n>:wincmd h<cr>')
-         k.tmap('<c-j>', '<c-\\><c-n>:wincmd j<cr>')
-         k.tmap('<c-k>', '<c-\\><c-n>:wincmd k<cr>')
-         k.tmap('<c-l>', '<c-\\><c-n>:wincmd l<cr>')
+         u.tmap('<esc>', [[<c-\><c-n>:let b:insertMode = 'no'<cr>]])
+         u.tmap('<c-h>', '<c-\\><c-n>:wincmd h<cr>')
+         u.tmap('<c-j>', '<c-\\><c-n>:wincmd j<cr>')
+         u.tmap('<c-k>', '<c-\\><c-n>:wincmd k<cr>')
+         u.tmap('<c-l>', '<c-\\><c-n>:wincmd l<cr>')
       end,
       keys = '<c-\\>',
-   },
-   {
-      'dense-analysis/ale',
-      config = function() vim.cmd [[ALEEnable]] end,
-      cmd = 'ALEEnable',
-      ft = { 'bash', 'sh', 'vim', 'zsh' },
    },
    {
       'fidian/hexmode',
@@ -45,7 +39,6 @@ return {
       },
    },
    {
-      -- TODO fix me
       'folke/todo-comments.nvim',
       dependencies = 'nvim-lua/plenary.nvim',
       config = function() require('todo-comments').setup {} end,
@@ -101,7 +94,9 @@ return {
                root_tell = 'index.md',
             },
          }
+         u.create_command('Notes', 'Files ~/Dropbox/Notes', {})
       end,
+      cmd = 'Notes',
       ft = 'markdown',
    },
    {
@@ -156,7 +151,7 @@ return {
       cmd = 'Vista',
       init = function()
          vim.g.vista_default_executive = 'coc'
-         k.nmap('<Leader>vv', ':Vista!!<cr>')
+         u.nmap('<Leader>vv', ':Vista!!<cr>')
       end,
    },
    {
@@ -183,17 +178,24 @@ return {
          vim.g.startify_session_autoload = true
          vim.g.startify_skiplist = { 'Library/CloudStorage' }
       end,
-      lazy = false,
    },
    {
       'ntpeters/vim-better-whitespace',
+      config = function()
+         -- can probably be removed when this is merged:
+         -- https://github.com/ntpeters/vim-better-whitespace/pull/161
+         u.create_autocmd('TermOpen', {
+            pattern = '*',
+            callback = function() vim.cmd 'DisableWhitespace' end,
+         })
+      end,
       cmd = {
          'DisableWhitespace',
          'EnableWhitespace',
          'StripWhitespace',
          'ToggleWhitespace',
       },
-      event = 'VeryLazy',
+      lazy = false,
    },
    {
       'nvim-lualine/lualine.nvim',
@@ -308,21 +310,17 @@ return {
       end,
       config = function()
          require('neo-tree').setup {
-            close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+            close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
             enable_git_status = true,
             enable_diagnostics = true,
-            window = {
-               width = 36,
-            },
+            window = { width = 36 },
             filesystem = {
                filtered_items = {
                   hide_dotfiles = true,
                   hide_gitignored = false,
-                  hide_by_name = {
-                     'node_modules',
-                  },
+                  hide_by_name = { 'node_modules' },
                   hide_by_pattern = { -- uses glob style patterns
-                     --"*.meta"
+                     -- "*.meta"
                   },
                   never_show = { -- remains hidden even if visible is toggled to true
                      '.DS_Store',
@@ -338,6 +336,7 @@ return {
             },
          }
       end,
+      lazy = false,
       cmd = 'Neotree',
       keys = {
          { '\\', ':Neotree toggle<cr>', 'noremap' },
@@ -397,7 +396,6 @@ return {
          -- Additional textobjects for treesitter.
          'nvim-treesitter/nvim-treesitter-textobjects',
       },
-      lazy = false,
    },
    {
       'preservim/vim-markdown',
@@ -475,6 +473,5 @@ return {
    {
       'Yggdroot/indentLine',
       init = function() vim.g.indentLine_char_list = { '┆', '┊', '¦' } end,
-      event = 'VeryLazy',
    },
 }

@@ -7,9 +7,10 @@
     "diagnostic.virtualTextCurrentLineOnly": true,
     "diagnostic-languageserver.filetypes": {
         "bash": "shellcheck",
+        "markdown": "markdownlint",
         "sh": "shellcheck",
-        "zsh": "shellcheck",
-        "vim": "vint"
+        "vim": "vint",
+        "zsh": "shellcheck"
     },
     "git.addGBlameToBufferVar": true,
     "git.addGBlameToVirtualText": true,

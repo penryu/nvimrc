@@ -8,8 +8,7 @@ return {
       init = function() vim.g.javascript_plugin_jsdoc = true end,
    },
    { 'leafgarland/typescript-vim', ft = 'typescript' },
-   -- coc-based rust support, semi-official?
-   {
+   { -- coc-based rust support, semi-official?
       'rust-lang/rust.vim',
       dependencies = 'neoclide/coc.nvim',
       init = function() vim.g.rustfmt_autosave = 1 end,
@@ -189,6 +188,7 @@ return {
          'CocUpdate',
       },
       ft = {
+         'bash',
          'c',
          'cpp',
          'css',
@@ -197,9 +197,13 @@ return {
          'javascript',
          'json',
          'lua',
+         'markdown',
          'python',
+         'sh',
          'typescript',
+         'vim',
          'yaml',
+         'zsh',
       },
    },
 }
