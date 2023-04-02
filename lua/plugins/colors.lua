@@ -12,7 +12,7 @@ return {
       end,
       config = function() vim.cmd 'colorscheme apprentice' end,
       priority = 1000,
-      lazy = true,
+      lazy = false,
    },
    { -- Apprentice
       'romainl/Apprentice',
