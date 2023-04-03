@@ -1,8 +1,42 @@
+--
 -- GENERAL SETTINGS
-
-local u = require 'util'
+--
 
 local g, o = vim.g, vim.o
+local u = require 'util'
+
+-- Keybindings
+
+-- Buffer selection
+u.nmap('<c-n>', ':bnext<cr>')
+u.nmap('<c-p>', ':bprevious<cr>')
+
+u.nmap('<c-h>', ':wincmd h<cr>')
+u.nmap('<c-j>', ':wincmd j<cr>')
+u.nmap('<c-k>', ':wincmd k<cr>')
+u.nmap('<c-l>', ':wincmd l<cr>')
+
+-- Remap for dealing with wo rd wrap.
+u.nmap('k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
+u.nmap('j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
+
+--
+-- Auto commands
+--
+
+u.create_autocmd('FileType', {
+   pattern = 'lua',
+   command = 'setlocal shiftwidth=3 softtabstop=3',
+})
+
+-- Customize the terminal
+
+-- Go straight to insert mode; toggleterm handles this separately
+u.create_autocmd('TermOpen', { pattern = '*', command = 'startinsert' })
+-- :Sh opens term in new window
+u.create_command('Sh', 'new +terminal', { nargs = '*' })
+-- Remove trailing carriage returns from misdetected DOS files
+u.create_command('DeWinify', '%s/\r$//', { nargs = 0 })
 
 -- Remap space as leader key. map('<space>', '<nop>')
 g.mapleader = ' '
@@ -27,7 +61,6 @@ if not vim.loop.fs_stat(lazypath) then
    }
 end
 vim.opt.rtp:prepend(lazypath)
-
 require('lazy').setup('plugins', {
    ui = {
       border = 'rounded',
@@ -39,7 +72,7 @@ require('lazy').setup('plugins', {
 o.breakindent = true
 o.cmdheight = 2
 o.colorcolumn = '+1'
-o.conceallevel = 0
+o.conceallevel = 1
 o.cursorline = true
 o.expandtab = true
 o.foldenable = false
@@ -70,55 +103,14 @@ o.backup, o.writebackup = false, false
 vim.opt.clipboard:append 'unnamed'
 
 --
--- Keybindings
---
-
--- Buffer selection
-u.nmap('<c-n>', ':bnext<cr>')
-u.nmap('<c-p>', ':bprevious<cr>')
-
-u.nmap('<c-h>', ':wincmd h<cr>')
-u.nmap('<c-j>', ':wincmd j<cr>')
-u.nmap('<c-k>', ':wincmd k<cr>')
-u.nmap('<c-l>', ':wincmd l<cr>')
-
--- Remap for dealing with wo rd wrap.
-u.nmap('k', "v:count == 0 ? 'gk' : 'k'", {
-   noremap = true,
-   expr = true,
-   silent = true,
-})
-u.nmap('j', "v:count == 0 ? 'gj' : 'j'", {
-   noremap = true,
-   expr = true,
-   silent = true,
-})
-
---
--- Auto commands
---
-
-u.create_autocmd('FileType', {
-   pattern = 'lua',
-   command = 'setlocal shiftwidth=3 softtabstop=3',
-   group = u.create_augroup('LuaIndent', {}),
-})
-
--- Customize the terminal
-
--- Go straight to insert mode; toggleterm handles this separately
-u.create_autocmd('TermOpen', { pattern = '*', command = 'startinsert' })
--- :Sh opens term in new window
-u.create_command('Sh', 'new +terminal', { nargs = '*' })
--- Remove trailing carriage returns from misdetected DOS files
-u.create_command('DeWinify', '%s/\r$//', { nargs = 0 })
-
---
 -- Neovide settings
 --
 
 if g.neovide then
-   vim.o.guifont = 'Source Code Pro:h13'
+   vim.o.guifont = 'Source Code Pro:h12.5'
+   -- vim.o.guifont = 'Iosevka'
+   -- vim.o.guifontwide = 'Symbols Nerd Font Mono'
+   -- vim.o.ambiwidth = 'single'
    -- vim.g.neovide_transparency = 1.0
    -- vim.g.transparency = 1.0
    -- vim.g.neovide_floating_blur_amount_x = 2.0

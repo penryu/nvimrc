@@ -41,24 +41,14 @@ return {
    {
       'folke/todo-comments.nvim',
       dependencies = 'nvim-lua/plenary.nvim',
-      config = function() require('todo-comments').setup {} end,
-      keys = {
-         {
-            ']t',
-            function() require('todo-comments').jump_next() end,
-            desc = 'Next todo comment',
-         },
-         {
-            '[t',
-            function() require('todo-comments').jump_prev() end,
-            desc = 'Previous todo comment',
-         },
-      },
+      config = function()
+         local todo = require 'todo-comments'
+         todo.setup {}
+         u.nmap(']t', function() todo.jump_next() end, { desc = 'Next TODO' })
+         u.nmap('[t', function() todo.jump_prev() end, { desc = 'Prev TODO' })
+      end,
    },
-   {
-      'folke/twilight.nvim',
-      cmd = { 'Twilight', 'TwilightEnable' },
-   },
+   { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
    {
       'ii14/neorepl.nvim',
       cmd = 'Repl',
@@ -400,6 +390,10 @@ return {
    {
       'preservim/vim-markdown',
       dependencies = 'mzlogin/vim-markdown-toc',
+      init = function()
+         vim.g.vim_markdown_conceal = false
+         vim.g.vim_markdown_folding_disabled = 1
+      end,
       ft = 'markdown',
    },
    {
@@ -419,16 +413,14 @@ return {
          { '<leader>sf', ':ScribeFind<cr>', 'noremap' },
       },
    },
-   {
-      'sheerun/vim-polyglot',
-      enabled = false,
-   },
+   { 'sheerun/vim-polyglot', enabled = false },
    {
       'sindrets/diffview.nvim',
       dependencies = 'nvim-lua/plenary.nvim',
       cmd = 'DiffviewOpen',
       keys = {
          { '<leader>dv', ':DiffviewOpen<cr>' },
+         { '<leader>dV', ':DiffviewClose<cr>' },
       },
    },
    {
@@ -439,30 +431,25 @@ return {
          'gcu',
       },
    },
-   -- asynchronizes synchronous vim tasks
-   {
+   { -- asynchronizes synchronous vim tasks
       'tpope/vim-dispatch',
       dependencies = 'radenling/vim-dispatch-neovim',
       cmd = { 'Dispatch', 'Focus', 'Make', 'Start' },
    },
-   -- source env vars from .env files
-   {
+   { -- source env vars from .env files
       'tpope/vim-dotenv',
       dependencies = 'tpope/vim-dispatch',
       cmd = 'Dotenv',
    },
-   -- automated session management
-   {
+   { -- automated session management
       'tpope/vim-obsession',
-      cmd = { 'Obsession' },
+      cmd = 'Obsession',
    },
-   -- enhances netrw
-   {
+   { -- enhances netrw
       'tpope/vim-vinegar',
-      event = { 'BufNew netrw' },
+      event = 'BufNew netrw',
    },
-   -- highlights all text past margin
-   {
+   { -- highlights all text past margin
       'whatyouhide/vim-lengthmatters',
       cmd = {
          'LengthmattersToggle',
@@ -472,6 +459,16 @@ return {
    },
    {
       'Yggdroot/indentLine',
-      init = function() vim.g.indentLine_char_list = { '┆', '┊', '¦' } end,
+      init = function()
+         vim.g.indentLine_char_list = { '┆', '┊', '¦' }
+         -- vim.g.indentLine_conceallevel = 1
+         -- vim.g.indentLine_setConceal = 0
+      end,
+      -- config = function()
+      --    u.create_autocmd(
+      --       'FileType help',
+      --       { command = ':let b:indentLine_enabled=0' }
+      --    )
+      -- end,
    },
 }

@@ -5,7 +5,21 @@ return {
    {
       'pangloss/vim-javascript',
       ft = 'javascript',
-      init = function() vim.g.javascript_plugin_jsdoc = true end,
+      init = function()
+         vim.g.javascript_plugin_jsdoc = true
+         vim.g.javascript_conceal_function = 'ƒ'
+         vim.g.javascript_conceal_null = 'ø'
+         vim.g.javascript_conceal_this = '@'
+         vim.g.javascript_conceal_return = '⇚'
+         vim.g.javascript_conceal_undefined = '¿'
+         vim.g.javascript_conceal_NaN = 'ℕ'
+         vim.g.javascript_conceal_prototype = '¶'
+         vim.g.javascript_conceal_static = '•'
+         vim.g.javascript_conceal_super = 'Ω'
+         vim.g.javascript_conceal_arrow_function = '⇒'
+         vim.g.javascript_conceal_noarg_arrow_function = '🞅'
+         vim.g.javascript_conceal_underscore_arrow_function = '🞅'
+      end,
    },
    { 'leafgarland/typescript-vim', ft = 'typescript' },
    { -- coc-based rust support, semi-official?
@@ -172,7 +186,7 @@ return {
                \ 'coc-tsserver',
                \ 'coc-yaml',
                \ ]
-       ]]
+         ]]
       end,
       cmd = {
          'CocCommand',
