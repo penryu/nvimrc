@@ -50,6 +50,14 @@ return {
    },
    { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
    {
+      'iamcco/markdown-preview.nvim',
+      init = function()
+         vim.g.mkdp_echo_preview_url = true
+         vim.g.mkdp_refresh_slow = true
+         vim.g.mkdp_theme = 'light'
+      end,
+   },
+   {
       'ii14/neorepl.nvim',
       cmd = 'Repl',
       keys = {
