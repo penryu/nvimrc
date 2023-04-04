@@ -152,6 +152,8 @@ return {
       'mhinz/vim-startify', -- a functional "splash page"
       init = function()
          vim.g.startify_bookmarks = {
+            -- { ['.'] = '.' },
+            { ['.'] = '.' },
             { v = '~/.config/nvim' },
             { r = '~/code/rcfiles' },
             { s = '~/.ssh' },
@@ -169,7 +171,7 @@ return {
          vim.g.startify_skiplist = { 'Library/CloudStorage' }
       end,
    },
-   {
+   { -- shows trailing whitespace
       'ntpeters/vim-better-whitespace',
       config = function()
          -- can probably be removed when this is merged:
@@ -461,14 +463,9 @@ return {
       'Yggdroot/indentLine',
       init = function()
          vim.g.indentLine_char_list = { '┆', '┊', '¦' }
+         vim.g.indentLine_fileTypeExclude = { 'help', 'toggleterm' }
          -- vim.g.indentLine_conceallevel = 1
          -- vim.g.indentLine_setConceal = 0
       end,
-      -- config = function()
-      --    u.create_autocmd(
-      --       'FileType help',
-      --       { command = ':let b:indentLine_enabled=0' }
-      --    )
-      -- end,
    },
 }

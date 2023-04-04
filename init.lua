@@ -25,6 +25,10 @@ u.nmap('j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
 --
 
 u.create_autocmd('FileType', {
+   pattern = 'gitconfig',
+   command = 'setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4',
+})
+u.create_autocmd('FileType', {
    pattern = 'lua',
    command = 'setlocal shiftwidth=3 softtabstop=3',
 })
