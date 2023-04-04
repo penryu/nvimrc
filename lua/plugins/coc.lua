@@ -22,7 +22,8 @@ return {
       end,
    },
    { 'leafgarland/typescript-vim', ft = 'typescript' },
-   { -- coc-based rust support, semi-official?
+   {
+      -- coc-based rust support, semi-official?
       'rust-lang/rust.vim',
       dependencies = 'neoclide/coc.nvim',
       init = function() vim.g.rustfmt_autosave = 1 end,
@@ -176,6 +177,7 @@ return {
                \ 'coc-diagnostic',
                \ 'coc-docker',
                \ 'coc-eslint',
+               \ 'coc-go',
                \ 'coc-html',
                \ 'coc-json',
                \ 'coc-lua',
@@ -207,6 +209,7 @@ return {
          'cpp',
          'css',
          'dockerfile',
+         'go',
          'html',
          'javascript',
          'json',
