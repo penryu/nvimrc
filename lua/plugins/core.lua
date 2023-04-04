@@ -134,7 +134,7 @@ return {
          'Windows',
       },
    },
-   { 'kovisoft/paredit', ft = { 'clojure', 'lisp' } },
+   { 'kovisoft/paredit',    ft = { 'clojure', 'lisp' } },
    {
       'kristijanhusak/vim-dadbod-ui',
       dependencies = {
@@ -169,17 +169,18 @@ return {
          }
          vim.g.startify_lists = {
             { type = 'bookmarks', header = { '   Bookmarks' } },
-            { type = 'files', header = { '   MRU' } },
-            { type = 'dir', header = { '   MRU ' .. vim.fn['getcwd']() } },
-            { type = 'sessions', header = { '   Sessions' } },
-            { type = 'commands', header = { '   Commands' } },
+            { type = 'files',     header = { '   MRU' } },
+            { type = 'dir',       header = { '   MRU ' .. vim.fn['getcwd']() } },
+            { type = 'sessions',  header = { '   Sessions' } },
+            { type = 'commands',  header = { '   Commands' } },
          }
          vim.g.startify_custom_header = false
          vim.g.startify_session_autoload = true
          vim.g.startify_skiplist = { 'Library/CloudStorage' }
       end,
    },
-   { -- shows trailing whitespace
+   {
+      -- shows trailing whitespace
       'ntpeters/vim-better-whitespace',
       config = function()
          -- can probably be removed when this is merged:
@@ -339,7 +340,7 @@ return {
       lazy = false,
       cmd = 'Neotree',
       keys = {
-         { '\\', ':Neotree toggle<cr>', 'noremap' },
+         { '\\',    ':Neotree toggle<cr>',     'noremap' },
          { '<bar>', ':Neotree git_status<cr>', 'noremap' },
       },
    },
@@ -359,11 +360,9 @@ return {
             layout_strategy = 'center',
             layout_config = {
                preview_cutoff = 1, -- Preview should always show (unless previewer = false)
-
                width = function(_, max_columns, _)
                   return math.min(max_columns, 80)
                end,
-
                height = function(_, _, max_lines)
                   return math.min(max_lines, 15)
                end,
@@ -418,9 +417,9 @@ return {
       end,
       ft = 'markdown',
       keys = {
-         { '<leader>ss', ':ScribeOpen<cr>', 'noremap' },
+         { '<leader>ss', ':ScribeOpen<cr>',    'noremap' },
          { '<leader>so', ':ScribeOpen<space>', 'noremap' },
-         { '<leader>sf', ':ScribeFind<cr>', 'noremap' },
+         { '<leader>sf', ':ScribeFind<cr>',    'noremap' },
       },
    },
    { 'sheerun/vim-polyglot', enabled = false },
@@ -441,25 +440,30 @@ return {
          'gcu',
       },
    },
-   { -- asynchronizes synchronous vim tasks
+   {
+      -- asynchronizes synchronous vim tasks
       'tpope/vim-dispatch',
       dependencies = 'radenling/vim-dispatch-neovim',
       cmd = { 'Dispatch', 'Focus', 'Make', 'Start' },
    },
-   { -- source env vars from .env files
+   {
+      -- source env vars from .env files
       'tpope/vim-dotenv',
       dependencies = 'tpope/vim-dispatch',
       cmd = 'Dotenv',
    },
-   { -- automated session management
+   {
+      -- automated session management
       'tpope/vim-obsession',
       cmd = 'Obsession',
    },
-   { -- enhances netrw
+   {
+      -- enhances netrw
       'tpope/vim-vinegar',
       event = 'BufNew netrw',
    },
-   { -- highlights all text past margin
+   {
+      -- highlights all text past margin
       'whatyouhide/vim-lengthmatters',
       cmd = {
          'LengthmattersToggle',
@@ -471,7 +475,7 @@ return {
       'Yggdroot/indentLine',
       init = function()
          vim.g.indentLine_char_list = { '┆', '┊', '¦' }
-         vim.g.indentLine_fileTypeExclude = { 'help', 'toggleterm' }
+         vim.g.indentLine_fileTypeExclude = { 'help', 'man', 'toggleterm' }
          -- vim.g.indentLine_conceallevel = 1
          -- vim.g.indentLine_setConceal = 0
       end,
