@@ -105,7 +105,8 @@ return {
             nmap <leader>a  <Plug>(coc-codeaction-selected)
 
             " Remap for applying codeAction to the current buffer.
-            nmap <leader>ac <Plug>(coc-codeaction)
+            nmap <leader>ab <Plug>(coc-codeaction)
+            nmap <leader>ac <Plug>(coc-codeaction-cursor)
 
             " Perform code lens action on current line
             nmap <leader>cl <Plug>(coc-codelens-action)

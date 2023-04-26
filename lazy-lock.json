@@ -1,4 +1,5 @@
 {
+  "ale": { "branch": "master", "commit": "fdadaed2ba93432add241bb25f9935dc2ebb4152" },
   "apprentice.nvim": { "branch": "main", "commit": "ef980c7feccd0d3ea650f93494b4d13a16c1471a" },
   "coc.nvim": { "branch": "release", "commit": "bbaa1d5d1ff3cbd9d26bb37cfda1a990494c4043" },
   "diffview.nvim": { "branch": "main", "commit": "46bc1e102935054c2714377e3c48dd4314a98b78" },

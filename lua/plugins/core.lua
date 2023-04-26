@@ -29,6 +29,14 @@ return {
       keys = '<c-\\>',
    },
    {
+      'dense-analysis/ale',
+      config = function()
+         vim.cmd 'ALEEnable'
+      end,
+      cmd = 'ALEEnable',
+      ft = { 'perl' },
+   },
+   {
       'fidian/hexmode',
       init = function() vim.g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm' end,
       event = {
