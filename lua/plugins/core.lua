@@ -10,7 +10,8 @@ return {
       version = '*',
       config = function()
          require('toggleterm').setup {
-            direction = 'float',
+            -- directions: float / horizontal / vertical
+            direction = 'horizontal',
             open_mapping = [[<c-\>]],
             size = function(term)
                if term.direction == 'horizontal' then
@@ -25,14 +26,15 @@ return {
          u.tmap('<c-j>', '<c-\\><c-n>:wincmd j<cr>')
          u.tmap('<c-k>', '<c-\\><c-n>:wincmd k<cr>')
          u.tmap('<c-l>', '<c-\\><c-n>:wincmd l<cr>')
+
+         u.create_command('TabTerm', 'ToggleTerm direction=tab', {})
       end,
       keys = '<c-\\>',
+      cmd = 'TabTerm',
    },
    {
       'dense-analysis/ale',
-      config = function()
-         vim.cmd 'ALEEnable'
-      end,
+      config = function() vim.cmd 'ALEEnable' end,
       cmd = 'ALEEnable',
       ft = { 'perl' },
    },
@@ -132,6 +134,7 @@ return {
          'Commits',
          'Files',
          'Filetypes',
+         'FZF',
          'GFiles',
          'GFiles',
          'History',
@@ -142,7 +145,7 @@ return {
          'Windows',
       },
    },
-   { 'kovisoft/paredit',    ft = { 'clojure', 'lisp' } },
+   { 'kovisoft/paredit', ft = { 'clojure', 'lisp' } },
    {
       'kristijanhusak/vim-dadbod-ui',
       dependencies = {
@@ -177,10 +180,13 @@ return {
          }
          vim.g.startify_lists = {
             { type = 'bookmarks', header = { '   Bookmarks' } },
-            { type = 'files',     header = { '   MRU' } },
-            { type = 'dir',       header = { '   MRU ' .. vim.fn['getcwd']() } },
-            { type = 'sessions',  header = { '   Sessions' } },
-            { type = 'commands',  header = { '   Commands' } },
+            { type = 'files', header = { '   MRU' } },
+            {
+               type = 'dir',
+               header = { '   MRU ' .. vim.fn['getcwd']() },
+            },
+            { type = 'sessions', header = { '   Sessions' } },
+            { type = 'commands', header = { '   Commands' } },
          }
          vim.g.startify_custom_header = false
          vim.g.startify_session_autoload = true
@@ -213,12 +219,16 @@ return {
             extensions = {
                'fugitive',
                'fzf',
+               'lazy',
                'man',
+               'mundo',
                'neo-tree',
+               'quickfix',
                'toggleterm',
+               'trouble',
             },
             options = {
-               globalstatus = true,
+               globalstatus = false,
                icons_enabled = false,
                -- theme = 'everforest',
                -- theme = 'gruvbox',
@@ -348,7 +358,7 @@ return {
       lazy = false,
       cmd = 'Neotree',
       keys = {
-         { '\\',    ':Neotree toggle<cr>',     'noremap' },
+         { '\\', ':Neotree toggle<cr>', 'noremap' },
          { '<bar>', ':Neotree git_status<cr>', 'noremap' },
       },
    },
@@ -425,9 +435,9 @@ return {
       end,
       ft = 'markdown',
       keys = {
-         { '<leader>ss', ':ScribeOpen<cr>',    'noremap' },
+         { '<leader>ss', ':ScribeOpen<cr>', 'noremap' },
          { '<leader>so', ':ScribeOpen<space>', 'noremap' },
-         { '<leader>sf', ':ScribeFind<cr>',    'noremap' },
+         { '<leader>sf', ':ScribeFind<cr>', 'noremap' },
       },
    },
    { 'sheerun/vim-polyglot', enabled = false },
