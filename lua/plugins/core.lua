@@ -10,9 +10,14 @@ return {
       version = '*',
       config = function()
          require('toggleterm').setup {
-            -- directions: float / horizontal / vertical
+            -- directions: float / horizontal / tab / vertical
             direction = 'horizontal',
+            float_opts = {
+               -- borders: single / double / shadow / curved
+               border = 'single',
+            },
             open_mapping = [[<c-\>]],
+            shade_terminals = true,
             size = function(term)
                if term.direction == 'horizontal' then
                   return vim.o.lines * 0.42
