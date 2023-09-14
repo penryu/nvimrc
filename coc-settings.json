@@ -1,4 +1,7 @@
 {
+    "[lua][python][rust]": {
+        "coc.preferences.formatOnSave": true
+    },
     "coc.preferences.formatOnSaveFiletypes": ["lua", "python", "rust"],
     "coc.source.around.priority": 1,
     "coc.source.buffer.priority": 0,
@@ -25,6 +28,7 @@
     "python.linting.pytypeEnabled": true,
     // https://github.com/fannheyward/coc-rust-analyzer/blob/master/package.json#L69
     "rust-analyzer.check.command": "clippy",
+    "rust-analyzer.check.extraArgs": ["--no-deps"],
     "rust-analyzer.checkOnSave.extraArgs": ["--", "-Wclippy::pedantic"],
     "rust-analyzer.imports.merge.glob": false,
     "rust-analyzer.imports.prefix": "crate",
