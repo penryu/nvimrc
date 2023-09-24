@@ -11,7 +11,7 @@ return {
       config = function()
          require('toggleterm').setup {
             -- directions: float / horizontal / tab / vertical
-            direction = 'horizontal',
+            direction = 'float',
             float_opts = {
                -- borders: single / double / shadow / curved
                border = 'single',

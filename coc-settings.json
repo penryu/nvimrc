@@ -23,9 +23,8 @@
     "Lua.diagnostics.globals": ["vim"],
     "pyright.enable": true,
     "python.formatting.provider": "black",
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "python.linting.pytypeEnabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.pythonPath": "python3",
     // https://github.com/fannheyward/coc-rust-analyzer/blob/master/package.json#L69
     "rust-analyzer.check.command": "clippy",
     "rust-analyzer.check.extraArgs": ["--no-deps"],
