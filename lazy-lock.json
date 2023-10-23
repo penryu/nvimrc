@@ -1,5 +1,5 @@
 {
-  "ale": { "branch": "master", "commit": "29e5ffe35a2fa1ca5ba19eebfe7cdd0191c16e39" },
+  "ale": { "branch": "master", "commit": "fe38101db7253e450f67893583d1a5dfeefd9ee5" },
   "apprentice.nvim": { "branch": "main", "commit": "ef980c7feccd0d3ea650f93494b4d13a16c1471a" },
   "coc.nvim": { "branch": "release", "commit": "bbaa1d5d1ff3cbd9d26bb37cfda1a990494c4043" },
   "diffview.nvim": { "branch": "main", "commit": "b0cc22f5708f6b2b4f873b44fbc5eb93020f4e0c" },
