@@ -23,13 +23,6 @@ return {
    },
    { 'leafgarland/typescript-vim', ft = 'typescript' },
    {
-      -- coc-based rust support, semi-official?
-      'rust-lang/rust.vim',
-      dependencies = 'neoclide/coc.nvim',
-      init = function() vim.g.rustfmt_autosave = 1 end,
-      ft = 'rust',
-   },
-   {
       'neoclide/coc.nvim',
       branch = 'release',
       config = function()
@@ -184,7 +177,6 @@ return {
                \ 'coc-lua',
                \ 'coc-prettier',
                \ 'coc-pyright',
-               \ 'coc-rust-analyzer',
                \ 'coc-stylua',
                \ 'coc-tsserver',
                \ 'coc-yaml',

@@ -71,6 +71,7 @@ return {
          vim.g.mkdp_refresh_slow = true
          vim.g.mkdp_theme = 'light'
       end,
+      ft = 'markdown',
    },
    {
       'ii14/neorepl.nvim',
@@ -150,7 +151,7 @@ return {
          'Windows',
       },
    },
-   { 'kovisoft/paredit', ft = { 'clojure', 'lisp' } },
+   { 'kovisoft/paredit',    ft = { 'clojure', 'lisp' } },
    {
       'kristijanhusak/vim-dadbod-ui',
       dependencies = {
@@ -189,7 +190,7 @@ return {
          }
          vim.g.startify_lists = {
             { type = 'bookmarks', header = { '   Bookmarks' } },
-            { type = 'files', header = { '   MRU' } },
+            { type = 'files',     header = { '   MRU' } },
             {
                type = 'dir',
                header = { '   MRU ' .. vim.fn['getcwd']() },
@@ -201,25 +202,6 @@ return {
          vim.g.startify_session_autoload = true
          vim.g.startify_skiplist = { 'Library/CloudStorage' }
       end,
-   },
-   {
-      -- shows trailing whitespace
-      'ntpeters/vim-better-whitespace',
-      config = function()
-         -- can probably be removed when this is merged:
-         -- https://github.com/ntpeters/vim-better-whitespace/pull/161
-         u.create_autocmd('TermOpen', {
-            pattern = '*',
-            callback = function() vim.cmd 'DisableWhitespace' end,
-         })
-      end,
-      cmd = {
-         'DisableWhitespace',
-         'EnableWhitespace',
-         'StripWhitespace',
-         'ToggleWhitespace',
-      },
-      lazy = false,
    },
    {
       'nvim-lualine/lualine.nvim',
@@ -367,7 +349,7 @@ return {
       lazy = false,
       cmd = 'Neotree',
       keys = {
-         { '\\', ':Neotree toggle<cr>', 'noremap' },
+         { '\\',    ':Neotree toggle<cr>',     'noremap' },
          { '<bar>', ':Neotree git_status<cr>', 'noremap' },
       },
    },
@@ -444,9 +426,9 @@ return {
       end,
       ft = 'markdown',
       keys = {
-         { '<leader>ss', ':ScribeOpen<cr>', 'noremap' },
+         { '<leader>ss', ':ScribeOpen<cr>',    'noremap' },
          { '<leader>so', ':ScribeOpen<space>', 'noremap' },
-         { '<leader>sf', ':ScribeFind<cr>', 'noremap' },
+         { '<leader>sf', ':ScribeFind<cr>',    'noremap' },
       },
    },
    { 'sheerun/vim-polyglot', enabled = false },
@@ -489,15 +471,8 @@ return {
       'tpope/vim-vinegar',
       event = 'BufNew netrw',
    },
-   {
-      -- highlights all text past margin
-      'whatyouhide/vim-lengthmatters',
-      cmd = {
-         'LengthmattersToggle',
-         'LengthmattersEnable',
-         'LengthmattersEnableAll',
-      },
-   },
+   -- highlight trailing whitespace, inconsistent indents, and long lines
+   { 'tssm/nvim-snitch', },
    {
       'Yggdroot/indentLine',
       init = function()

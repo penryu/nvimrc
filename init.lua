@@ -75,6 +75,7 @@ require('lazy').setup('plugins', {
 
 o.breakindent = true
 o.cmdheight = 2
+o.completeopt = 'menuone,noinsert,noselect'
 o.colorcolumn = '+1'
 o.conceallevel = 1
 o.cursorline = true
@@ -100,7 +101,6 @@ o.textwidth = 80
 o.timeoutlen = 300
 o.ttimeout = false
 
--- coc settings
 o.updatetime = 300
 o.backup, o.writebackup = false, false
 
