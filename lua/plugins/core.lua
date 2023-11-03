@@ -156,7 +156,6 @@ return {
       'kristijanhusak/vim-dadbod-ui',
       dependencies = {
          'kristijanhusak/vim-dadbod-completion',
-         'neoclide/coc.nvim',
          'tpope/vim-dadbod',
       },
       cmd = 'DBUI',
@@ -164,14 +163,6 @@ return {
    {
       'lambdalisue/suda.vim',
       init = function() vim.g.suda_smart_edit = true end,
-   },
-   {
-      'liuchengxu/vista.vim',
-      cmd = 'Vista',
-      init = function()
-         vim.g.vista_default_executive = 'coc'
-         u.nmap('<Leader>vv', ':Vista!!<cr>')
-      end,
    },
    {
       'machakann/vim-sandwich',
@@ -478,8 +469,6 @@ return {
       init = function()
          vim.g.indentLine_char_list = { '┆', '┊', '¦' }
          vim.g.indentLine_fileTypeExclude = { 'help', 'man', 'toggleterm' }
-         -- vim.g.indentLine_conceallevel = 1
-         -- vim.g.indentLine_setConceal = 0
       end,
    },
 }

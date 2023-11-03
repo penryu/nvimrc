@@ -17,8 +17,7 @@ local function lsp_on_attach(client, buffer)
    -- we could set keymaps related to LSP, etc here.
    local keymap_opts = { buffer = buffer }
    -- Code navigation and shortcuts
-   vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition, keymap_opts)
-   vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, keymap_opts)
+   vim.keymap.set("n", "1gD", vim.lsp.buf.type_definition, keymap_opts) vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, keymap_opts)
    vim.keymap.set("i", "<c-k>", vim.lsp.buf.signature_help, keymap_opts)
    vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
    vim.keymap.set("n", "g0", vim.lsp.buf.document_symbol, keymap_opts)
@@ -265,5 +264,12 @@ return {
    {
       'leafgarland/typescript-vim',
       ft = 'typescript',
+   },
+   {
+      'simrat39/symbols-outline.nvim',
+      config = function()
+         require('symbols-outline').setup{}
+      end,
+      event = 'LspAttach',
    },
 }
