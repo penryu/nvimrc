@@ -100,7 +100,10 @@ return {
    },
    {
       'jakewvincent/mkdnflow.nvim',
-      dependencies = 'ellisonleao/glow.nvim',
+      dependencies = {
+         'ellisonleao/glow.nvim',
+         'nvim-lua/plenary.nvim',
+      },
       config = function()
          require('mkdnflow').setup {
             perspective = {
