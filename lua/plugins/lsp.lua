@@ -115,6 +115,10 @@ return {
             }
          }
 
+         -- markdown
+         -- https://github.com/artempyanykh/marksman/releases/
+         lspconfig.marksman.setup{}
+
          -- python
          lspconfig.pyright.setup{}
 
@@ -130,6 +134,7 @@ return {
          'javascript', 'javascriptreact', 'javascript.jsx',
          'typescript', 'typescriptreact', 'typescript.tsx',
          'lua',
+         'markdown',
          'python',
          'rust',
          'yaml',
