@@ -32,6 +32,10 @@ u.create_autocmd('FileType', {
    pattern = 'lua',
    command = 'setlocal shiftwidth=3 softtabstop=3',
 })
+u.create_autocmd('FileType', {
+   pattern = 'tex',
+   command = 'setlocal spell spellfile=words.utf-8.add'
+})
 
 -- Customize the terminal
 

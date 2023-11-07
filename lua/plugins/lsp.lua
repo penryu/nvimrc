@@ -122,6 +122,11 @@ return {
          -- python
          lspconfig.pyright.setup{}
 
+         -- LaTeX
+         -- cargo install --git https://github.com/latex-lsp/texlab \
+         --    --locked --tag <insert version here>
+         lspconfig.texlab.setup{}
+
          -- yarn
          -- yarn global add yaml-language-server
          lspconfig.yamlls.setup{}
@@ -137,6 +142,7 @@ return {
          'markdown',
          'python',
          'rust',
+         'tex', 'bib', 'plaintex',
          'yaml',
       }
    },
