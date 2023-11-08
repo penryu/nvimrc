@@ -105,6 +105,7 @@ return {
          lspconfig.tsserver.setup{ on_attach = lsp_on_attach }
 
          -- lua
+         -- brew install lua-language-server
          lspconfig.lua_ls.setup{
             settings = {
                Lua = {
