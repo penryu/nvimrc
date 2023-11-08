@@ -83,18 +83,18 @@ return {
 
          -- shell
          -- yarn global add bash-language-server
-         lspconfig.bashls.setup{}
+         lspconfig.bashls.setup{ on_attach = lsp_on_attach }
 
          -- c/c++ et al.
          lspconfig.clangd.setup{ on_attach = lsp_on_attach }
 
          -- clojure
          -- brew install clojure-lsp/brew/clojure-lsp-native
-         lspconfig.clojure_lsp.setup{}
+         lspconfig.clojure_lsp.setup{ on_attach = lsp_on_attach }
 
          -- docker
          -- yarn global add dockerfile-language-server-nodejs
-         lspconfig.dockerls.setup{}
+         lspconfig.dockerls.setup{ on_attach = lsp_on_attach }
          -- yarn global add @microsoft/compose-language-service
          lspconfig.docker_compose_language_service.setup{}
 
@@ -107,6 +107,7 @@ return {
          -- lua
          -- brew install lua-language-server
          lspconfig.lua_ls.setup{
+            on_attach = lsp_on_attach,
             settings = {
                Lua = {
                   diagnostics = {
@@ -118,10 +119,10 @@ return {
 
          -- markdown
          -- https://github.com/artempyanykh/marksman/releases/
-         lspconfig.marksman.setup{}
+         lspconfig.marksman.setup{ on_attach = lsp_on_attach }
 
          -- python
-         lspconfig.pyright.setup{}
+         lspconfig.pyright.setup{ on_attach = lsp_on_attach }
 
          -- LaTeX
          -- cargo install --git https://github.com/latex-lsp/texlab \
@@ -130,7 +131,7 @@ return {
 
          -- yarn
          -- yarn global add yaml-language-server
-         lspconfig.yamlls.setup{}
+         lspconfig.yamlls.setup{ on_attach = lsp_on_attach }
       end,
       ft = {
          'sh', 'bash', 'zsh',
