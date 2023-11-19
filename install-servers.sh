@@ -5,15 +5,6 @@ OS_SYS=$(uname -s)
 OS_VER=$(uname -r | sed 's/\..*//')
 export OS_SYS OS_VER
 
-YARN_PKGS="
-  bash-language-server
-  dockerfile-language-server-nodejs
-  @microsoft/compose-language-service
-  vscode-langservers-extracted
-  typescript typescript-language-server
-  yaml-language-server
-"
-
 install_yarn_pkgs(){
   yarn global add bash-language-server
   yarn global add dockerfile-language-server-nodejs
