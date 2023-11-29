@@ -178,6 +178,11 @@ return {
       lazy = true,
    },
    {
+      'psf/black',
+      branch = 'stable',
+      ft = 'python',
+   },
+   {
       -- Official Rust/cargo support
       'rust-lang/rust.vim',
       dependencies = {
