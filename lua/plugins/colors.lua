@@ -28,6 +28,18 @@ return {
       priority = 1000,
       lazy = true,
    },
+   {
+      'ntk148v/habamax.nvim',
+      dependencies = { 'rktjmp/lush.nvim' },
+      priority = 1000,
+      lazy = true,
+   },
+   {
+      'ramojus/mellifluous.nvim',
+      config = function() vim.cmd 'colorscheme mellifluous' end,
+      priority = 1000,
+      lazy = true,
+   },
    { -- Nord
       'shaunsingh/nord.nvim',
       config = function() vim.cmd 'colorscheme nord' end,

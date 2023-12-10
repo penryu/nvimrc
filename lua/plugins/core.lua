@@ -154,7 +154,7 @@ return {
          'Windows',
       },
    },
-   { 'kovisoft/paredit',    ft = { 'clojure', 'lisp' } },
+   { 'kovisoft/paredit', ft = { 'clojure', 'lisp' } },
    {
       'kristijanhusak/vim-dadbod-ui',
       dependencies = {
@@ -184,7 +184,7 @@ return {
          }
          vim.g.startify_lists = {
             { type = 'bookmarks', header = { '   Bookmarks' } },
-            { type = 'files',     header = { '   MRU' } },
+            { type = 'files', header = { '   MRU' } },
             {
                type = 'dir',
                header = { '   MRU ' .. vim.fn['getcwd']() },
@@ -343,7 +343,7 @@ return {
       lazy = false,
       cmd = 'Neotree',
       keys = {
-         { '\\',    ':Neotree toggle<cr>',     'noremap' },
+         { '\\', ':Neotree toggle<cr>', 'noremap' },
          { '<bar>', ':Neotree git_status<cr>', 'noremap' },
       },
    },
@@ -420,9 +420,9 @@ return {
       end,
       ft = 'markdown',
       keys = {
-         { '<leader>ss', ':ScribeOpen<cr>',    'noremap' },
+         { '<leader>ss', ':ScribeOpen<cr>', 'noremap' },
          { '<leader>so', ':ScribeOpen<space>', 'noremap' },
-         { '<leader>sf', ':ScribeFind<cr>',    'noremap' },
+         { '<leader>sf', ':ScribeFind<cr>', 'noremap' },
       },
    },
    { 'sheerun/vim-polyglot', enabled = false },
@@ -466,7 +466,7 @@ return {
       event = 'BufNew netrw',
    },
    -- highlight trailing whitespace, inconsistent indents, and long lines
-   { 'tssm/nvim-snitch', },
+   { 'tssm/nvim-snitch' },
    {
       'Yggdroot/indentLine',
       init = function()

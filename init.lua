@@ -38,7 +38,7 @@ u.create_autocmd('FileType', {
 })
 u.create_autocmd('FileType', {
    pattern = 'tex',
-   command = 'setlocal spell spellfile=words.utf-8.add'
+   command = 'setlocal spell spellfile=words.utf-8.add',
 })
 
 -- Customize the terminal
