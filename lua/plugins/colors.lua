@@ -2,71 +2,88 @@
 -- Colorschemes
 --
 return {
-   { -- Apprentice -
+   {
       'adisen99/apprentice.nvim',
       dependencies = { 'rktjmp/lush.nvim' },
       init = function()
-         -- vim.g.apprentice_contrast_dark = 'hard'
-         vim.g.apprentice_contrast_dark = 'medium'
          -- vim.g.apprentice_contrast_dark = 'soft'
+         vim.g.apprentice_contrast_dark = 'medium'
+         -- vim.g.apprentice_contrast_dark = 'hard'
       end,
-      config = function() vim.cmd 'colorscheme apprentice' end,
-      priority = 1000,
+      config = function()
+         -- vim.cmd 'colorscheme apprentice'
+         require 'lush'(require('apprentice').setup {
+            plugins = {
+               -- 'buftabline',
+               -- 'coc',
+               'cmp', -- nvim-cmp
+               'fzf',
+               'gitgutter',
+               'gitsigns',
+               'lsp',
+               'lspsaga',
+               -- 'nerdtree',
+               'netrw',
+               -- 'nvimtree',
+               'neogit',
+               -- 'packer',
+               -- 'signify',
+               'startify',
+               -- 'syntastic',
+               'telescope',
+               'treesitter',
+            },
+         })
+      end,
+      priority = 2000,
       lazy = false,
    },
-   { -- Apprentice
+   {
       'romainl/Apprentice',
       branch = 'fancylines-and-neovim',
       config = function() vim.cmd 'colorscheme apprentice' end,
-      enabled = false,
-      priority = 1000,
-      lazy = true,
-   },
-   {
-      'sainnhe/gruvbox-material',
-      config = function() vim.cmd 'colorscheme gruvbox-material' end,
       priority = 1000,
       lazy = true,
    },
    {
       'ntk148v/habamax.nvim',
       dependencies = { 'rktjmp/lush.nvim' },
+      config = function() vim.cmd 'colorscheme habamax' end,
       priority = 1000,
       lazy = true,
    },
    {
-      'ramojus/mellifluous.nvim',
-      config = function() vim.cmd 'colorscheme mellifluous' end,
+      'Shatur/neovim-ayu',
+      config = function()
+         local ayu = require 'ayu'
+         ayu.setup {
+            mirage = false,
+         }
+         ayu.colorscheme()
+      end,
       priority = 1000,
       lazy = true,
    },
-   { -- Nord
+   {
       'shaunsingh/nord.nvim',
       config = function() vim.cmd 'colorscheme nord' end,
       priority = 1000,
       lazy = true,
    },
-   { -- Nordic
+   {
       'AlexvZyl/nordic.nvim',
       config = function() require('nordic').load() end,
       priority = 1000,
       lazy = true,
    },
-   { -- TokyoNight
-      'folke/tokyonight.nvim',
-      priority = 1000,
+   {
+      'rakr/vim-one',
+      init = function() vim.g.one_allow_italics = 1 end,
       config = function()
-         -- vim.cmd 'colorscheme tokyonight'
-         vim.cmd 'colorscheme tokyonight-moon'
-         -- vim.cmd 'colorscheme tokyonight-night'
-         -- vim.cmd 'colorscheme tokyonight-storm'
+         vim.g.one_allow_italics = true
+         vim.cmd 'colorscheme one'
       end,
-      lazy = true,
-   },
-   { -- Tender
-      'jacoborus/tender.vim',
-      config = function() vim.cmd 'colorscheme tender' end,
-      priority = 1001,
+      priority = 1000,
       lazy = true,
    },
 }

@@ -196,8 +196,15 @@ return {
          'nvim-treesitter/nvim-treesitter',
          'nvim-tree/nvim-web-devicons',
       },
-      config = function() require('lspsaga').setup {} end,
-      lazy = true,
+      config = function()
+         require('lspsaga').setup {
+            symbol_in_winbar = {
+               color_mode = true,
+               enable = true,
+            },
+         }
+      end,
+      event = 'LspAttach',
    },
    {
       'ckipp01/stylua-nvim',
