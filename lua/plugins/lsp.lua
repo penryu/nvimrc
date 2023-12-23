@@ -317,7 +317,7 @@ return {
          vim.g.javascript_conceal_noarg_arrow_function = '🞅'
          vim.g.javascript_conceal_underscore_arrow_function = '🞅'
       end,
-      ft = 'javascript',
+      ft = { 'javascript', 'typescript' },
    },
    {
       'leafgarland/typescript-vim',
