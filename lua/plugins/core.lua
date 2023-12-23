@@ -470,6 +470,10 @@ return {
    {
       'Yggdroot/indentLine',
       init = function()
+         -- workaround https://github.com/Yggdroot/indentLine/issues/109
+         vim.g.indentLine_faster = true
+         vim.g.indentLine_setConceal = false
+
          vim.g.indentLine_char_list = { '┆', '┊', '¦' }
          vim.g.indentLine_fileTypeExclude = { 'help', 'man', 'toggleterm' }
       end,

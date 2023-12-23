@@ -25,16 +25,20 @@ u.nmap('j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
 --
 
 u.create_autocmd('FileType', {
+   pattern = 'diff',
+   command = 'setlocal colorcolumn= nocursorline nonumber',
+})
+u.create_autocmd('FileType', {
    pattern = 'gitconfig',
    command = 'setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4',
 })
 u.create_autocmd('FileType', {
-   pattern = 'markdown',
-   command = 'setlocal spell',
-})
-u.create_autocmd('FileType', {
    pattern = 'lua',
    command = 'setlocal shiftwidth=3 softtabstop=3',
+})
+u.create_autocmd('FileType', {
+   pattern = 'markdown',
+   command = 'setlocal spell',
 })
 u.create_autocmd('FileType', {
    pattern = 'tex',
@@ -49,6 +53,16 @@ u.create_autocmd('TermOpen', { pattern = '*', command = 'startinsert' })
 u.create_command('Sh', 'new +terminal', { nargs = '*' })
 -- Remove trailing carriage returns from misdetected DOS files
 u.create_command('DeWinify', '%s/\r$//', { nargs = 0 })
+
+-- Customize the less.sh plugin
+vim.api.nvim_exec(
+   [[
+   function LessInitFunc()
+      set colorcolumn= nocursorline nonumber
+   endfunc
+]],
+   false
+)
 
 -- Remap space as leader key. map('<space>', '<nop>')
 g.mapleader = ' '
@@ -85,7 +99,8 @@ o.breakindent = true
 o.cmdheight = 2
 o.completeopt = 'menuone,noinsert,noselect'
 o.colorcolumn = '+1'
-o.conceallevel = 1
+o.concealcursor = ''
+o.conceallevel = 2
 o.cursorline = true
 o.expandtab = true
 o.foldenable = false
