@@ -207,6 +207,21 @@ return {
       event = 'LspAttach',
    },
    {
+      'prettier/vim-prettier',
+      init = function()
+         vim.g['prettier#autoformat_config_present'] = true
+         vim.g['prettier#autoformat_require_pragma'] = false
+      end,
+      ft = {
+         'javascript',
+         'javascriptreact',
+         'javascript.jsx',
+         'typescript',
+         'typescriptreact',
+         'typescript.tsx',
+      },
+   },
+   {
       'ckipp01/stylua-nvim',
       config = function()
          u.create_autocmd(
