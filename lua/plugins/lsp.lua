@@ -3,6 +3,7 @@
 --
 -- Most settings from https://sharksforarms.dev/posts/neovim-rust/
 
+local g = vim.g
 local u = require 'util'
 
 -- local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
@@ -18,20 +19,22 @@ local function lsp_on_attach(client, buffer)
    -- This callback is called when the LSP is atttached/enabled for this buffer
    -- we could set keymaps related to LSP, etc here.
    local keymap_opts = { buffer = buffer }
+   local keyset = vim.keymap.set
+
    -- Code navigation and shortcuts
-   vim.keymap.set('n', 'K', vim.lsp.buf.hover, keymap_opts)
-   vim.keymap.set('n', '<c-]>', vim.lsp.buf.definition, keymap_opts)
-   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, keymap_opts)
-   vim.keymap.set('n', 'gD', vim.lsp.buf.implementation, keymap_opts)
-   vim.keymap.set('n', '1gD', vim.lsp.buf.type_definition, keymap_opts)
-   vim.keymap.set('i', '<c-k>', vim.lsp.buf.signature_help, keymap_opts)
-   vim.keymap.set('n', 'g0', vim.lsp.buf.document_symbol, keymap_opts)
-   vim.keymap.set('n', 'gW', vim.lsp.buf.workspace_symbol, keymap_opts)
-   vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, keymap_opts)
-   vim.keymap.set('n', 'gr', vim.lsp.buf.references, keymap_opts)
+   keyset('n', 'K', vim.lsp.buf.hover, keymap_opts)
+   keyset('n', '<c-]>', vim.lsp.buf.definition, keymap_opts)
+   keyset('n', 'gd', vim.lsp.buf.definition, keymap_opts)
+   keyset('n', 'gD', vim.lsp.buf.implementation, keymap_opts)
+   keyset('n', '1gD', vim.lsp.buf.type_definition, keymap_opts)
+   keyset('i', '<c-k>', vim.lsp.buf.signature_help, keymap_opts)
+   keyset('n', 'g0', vim.lsp.buf.document_symbol, keymap_opts)
+   keyset('n', 'gW', vim.lsp.buf.workspace_symbol, keymap_opts)
+   keyset('n', 'ga', vim.lsp.buf.code_action, keymap_opts)
+   keyset('n', 'gr', vim.lsp.buf.references, keymap_opts)
    -- prev/next diagnostic
-   vim.keymap.set('n', '[g', vim.diagnostic.goto_prev, keymap_opts)
-   vim.keymap.set('n', ']g', vim.diagnostic.goto_next, keymap_opts)
+   keyset('n', '[g', vim.diagnostic.goto_prev, keymap_opts)
+   keyset('n', ']g', vim.diagnostic.goto_next, keymap_opts)
 end
 
 return {
@@ -196,6 +199,7 @@ return {
          'nvim-treesitter/nvim-treesitter',
          'nvim-tree/nvim-web-devicons',
       },
+      init = function() end,
       config = function()
          require('lspsaga').setup {
             symbol_in_winbar = {
@@ -203,8 +207,10 @@ return {
                enable = true,
             },
          }
+         u.create_command('Outline', 'Lspsaga outline', { nargs = 0 })
       end,
       event = 'LspAttach',
+      command = { 'Outline' },
    },
    {
       'prettier/vim-prettier',
@@ -229,7 +235,6 @@ return {
             { pattern = '*.lua', command = 'Format' }
          )
       end,
-      lazy = true,
       ft = 'lua',
    },
    {
@@ -245,7 +250,7 @@ return {
          -- Adds extra functionality over rust analyzer
          'simrat39/rust-tools.nvim',
       },
-      init = function() vim.g.rustfmt_autosave = 1 end,
+      init = function() g.rustfmt_autosave = 1 end,
       ft = 'rust',
    },
    {
@@ -318,29 +323,24 @@ return {
    {
       'pangloss/vim-javascript',
       init = function()
-         vim.g.javascript_plugin_jsdoc = true
-         vim.g.javascript_conceal_function = 'ƒ'
-         vim.g.javascript_conceal_null = 'ø'
-         vim.g.javascript_conceal_this = '@'
-         vim.g.javascript_conceal_return = '⇚'
-         vim.g.javascript_conceal_undefined = '¿'
-         vim.g.javascript_conceal_NaN = 'ℕ'
-         vim.g.javascript_conceal_prototype = '¶'
-         vim.g.javascript_conceal_static = '•'
-         vim.g.javascript_conceal_super = 'Ω'
-         vim.g.javascript_conceal_arrow_function = '⇒'
-         vim.g.javascript_conceal_noarg_arrow_function = '🞅'
-         vim.g.javascript_conceal_underscore_arrow_function = '🞅'
+         g.javascript_plugin_jsdoc = true
+         g.javascript_conceal_function = 'ƒ'
+         g.javascript_conceal_null = 'ø'
+         g.javascript_conceal_this = '@'
+         g.javascript_conceal_return = '⇚'
+         g.javascript_conceal_undefined = '¿'
+         g.javascript_conceal_NaN = 'ℕ'
+         g.javascript_conceal_prototype = '¶'
+         g.javascript_conceal_static = '•'
+         g.javascript_conceal_super = 'Ω'
+         g.javascript_conceal_arrow_function = '⇒'
+         g.javascript_conceal_noarg_arrow_function = '🞅'
+         g.javascript_conceal_underscore_arrow_function = '🞅'
       end,
       ft = { 'javascript', 'typescript' },
    },
    {
       'leafgarland/typescript-vim',
       ft = 'typescript',
-   },
-   {
-      'simrat39/symbols-outline.nvim',
-      config = function() require('symbols-outline').setup {} end,
-      event = 'LspAttach',
    },
 }

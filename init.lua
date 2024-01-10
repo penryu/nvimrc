@@ -1,81 +1,28 @@
 --
--- GENERAL SETTINGS
+-- init.lua
 --
 
-local g, o = vim.g, vim.o
-local u = require 'util'
+local g = vim.g
 
--- Keybindings
+-- set to 0 to prevent runtime providers from loading; must be 0, not false
+g.loaded_node_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_python_provider = 0
+g.loaded_ruby_provider = 0
+g.loaded_python3_provider = 1
 
--- Buffer selection
-u.nmap('<c-n>', ':bnext<cr>')
-u.nmap('<c-p>', ':bprevious<cr>')
+if os.execute 'pyenv --version' then
+   local venv = vim.fn.system { 'pyenv', 'virtualenv-prefix', 'py3nvim' }
+   g.python3_host_prog = string.gsub(venv .. '/bin/python', '\n', '')
+end
 
-u.nmap('<c-h>', ':wincmd h<cr>')
-u.nmap('<c-j>', ':wincmd j<cr>')
-u.nmap('<c-k>', ':wincmd k<cr>')
-u.nmap('<c-l>', ':wincmd l<cr>')
-
--- Remap for dealing with wo rd wrap.
-u.nmap('k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
-u.nmap('j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
-
---
--- Auto commands
---
-
-u.create_autocmd('FileType', {
-   pattern = 'diff',
-   command = 'setlocal colorcolumn= nocursorline nonumber',
-})
-u.create_autocmd('FileType', {
-   pattern = 'gitconfig',
-   command = 'setlocal noexpandtab shiftwidth=4 softtabstop=4 tabstop=4',
-})
-u.create_autocmd('FileType', {
-   pattern = 'lua',
-   command = 'setlocal shiftwidth=3 softtabstop=3',
-})
-u.create_autocmd('FileType', {
-   pattern = 'markdown',
-   command = 'setlocal spell',
-})
-u.create_autocmd('FileType', {
-   pattern = 'tex',
-   command = 'setlocal spell spellfile=words.utf-8.add',
-})
-
--- Customize the terminal
-
--- Go straight to insert mode; toggleterm handles this separately
-u.create_autocmd('TermOpen', { pattern = '*', command = 'startinsert' })
--- :Sh opens term in new window
-u.create_command('Sh', 'new +terminal', { nargs = '*' })
--- Remove trailing carriage returns from misdetected DOS files
-u.create_command('DeWinify', '%s/\r$//', { nargs = 0 })
-
--- Customize the less.sh plugin
-vim.api.nvim_exec(
-   [[
-   function LessInitFunc()
-      set colorcolumn= nocursorline nonumber
-   endfunc
-]],
-   false
-)
-
--- Remap space as leader key. map('<space>', '<nop>')
+-- must be done before loading lazy.nvim
 g.mapleader = ' '
 g.maplocalleader = ','
 
--- prevent runtime providers from loading
-g.loaded_perl_provider = 0
-g.loaded_python_provider = 0
--- g.loaded_python3_provider = 0
-g.loaded_ruby_provider = 0
--- g.loaded_node_provider = 0
-
+-- bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+
 if not vim.loop.fs_stat(lazypath) then
    vim.fn.system {
       'git',
@@ -86,8 +33,11 @@ if not vim.loop.fs_stat(lazypath) then
       lazypath,
    }
 end
-vim.opt.rtp:prepend(lazypath)
+
+vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
+
 require('lazy').setup('plugins', {
+   install = { colorscheme = { 'apprentice' } },
    ui = {
       border = 'rounded',
       size = { height = 0.8, width = 0.9 },
@@ -95,53 +45,17 @@ require('lazy').setup('plugins', {
    },
 })
 
-o.breakindent = true
-o.cmdheight = 2
-o.completeopt = 'menuone,noinsert,noselect'
-o.colorcolumn = '+1'
-o.concealcursor = ''
-o.conceallevel = 2
-o.cursorline = true
-o.expandtab = true
-o.foldenable = false
-o.hlsearch = false
-o.ignorecase = true
-o.linebreak = true
-o.number = true
-o.scrolloff = 7
-o.sessionoptions = 'buffers,curdir,globals,help,tabpages,terminal'
-o.shada = "'7,r/Volumes,r/media,r/mnt,r/tmp"
-o.shiftwidth = 2
-o.shortmess = 'acostI'
-o.sidescrolloff = 21
-o.signcolumn = 'yes'
-o.smartcase = true
-o.softtabstop = 2
-o.splitbelow = true
-o.splitright = true
-o.termguicolors = true
-o.textwidth = 80
-o.timeoutlen = 300
-o.ttimeout = false
+-- Customize the less.sh plugin
+vim.api.nvim_exec(
+   [[
+      function LessInitFunc()
+         set colorcolumn= nocursorline nonumber
+      endfunc
+   ]],
+   false
+)
 
-o.updatetime = 300
-o.backup, o.writebackup = false, false
-
-vim.opt.clipboard:append 'unnamed'
-
---
--- Neovide settings
---
-
-if g.neovide then
-   vim.o.guifont = 'MonaspaceArgonVar:h12.5'
-   vim.o.guifontwide = 'Symbols Nerd Font Mono'
-   vim.g.transparency = 0.5
-   vim.g.neovide_transparency = 0.0
-   vim.g.neovide_scroll_animation_length = 0.8
-   vim.g.neovide_refresh_rate_idle = 5
-   vim.g.neovide_remember_window_size = true
-   vim.g.neovide_fullscreen = false
-   vim.g.neovide_cursor_animation_length = 0.05
-   vim.g.neovide_cursor_vfx_mode = 'railgun'
-end
+require 'config.options'
+require 'config.keymaps'
+require 'config.commands'
+require 'config.autocmds'

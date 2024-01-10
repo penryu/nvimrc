@@ -2,7 +2,11 @@
 -- core editor functionality
 --
 
+local g = vim.g
+local o = vim.o
 local u = require 'util'
+
+local keyset = vim.keymap.set
 
 return {
    {
@@ -11,7 +15,7 @@ return {
       config = function()
          require('toggleterm').setup {
             -- directions: float / horizontal / tab / vertical
-            direction = 'float',
+            direction = 'tab',
             float_opts = {
                -- borders: single / double / shadow / curved
                border = 'single',
@@ -20,9 +24,9 @@ return {
             shade_terminals = true,
             size = function(term)
                if term.direction == 'horizontal' then
-                  return vim.o.lines * 0.42
+                  return o.lines * 0.42
                elseif term.direction == 'vertical' then
-                  return vim.o.columns * 0.42
+                  return o.columns * 0.42
                end
             end,
          }
@@ -32,6 +36,12 @@ return {
          u.tmap('<c-k>', '<c-\\><c-n>:wincmd k<cr>')
          u.tmap('<c-l>', '<c-\\><c-n>:wincmd l<cr>')
 
+         -- Go straight to insert mode; toggleterm handles this separately
+         u.create_autocmd(
+            'TermOpen',
+            { pattern = '*', command = 'startinsert' }
+         )
+         -- Creates a toggleterm in a dedicated tab
          u.create_command('TabTerm', 'ToggleTerm direction=tab', {})
       end,
       keys = '<c-\\>',
@@ -45,7 +55,7 @@ return {
    },
    {
       'fidian/hexmode',
-      init = function() vim.g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm' end,
+      init = function() g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm' end,
       event = {
          'BufNew *.bin',
          'BufNew *.exe',
@@ -65,11 +75,20 @@ return {
    },
    { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
    {
+      'folke/which-key.nvim',
+      init = function()
+         o.timeout = true
+         o.timeoutlen = 300
+      end,
+      opts = {},
+      event = 'VeryLazy',
+   },
+   {
       'iamcco/markdown-preview.nvim',
       init = function()
-         vim.g.mkdp_echo_preview_url = true
-         vim.g.mkdp_refresh_slow = true
-         vim.g.mkdp_theme = 'light'
+         g.mkdp_echo_preview_url = true
+         g.mkdp_refresh_slow = true
+         g.mkdp_theme = 'light'
       end,
       ft = 'markdown',
    },
@@ -165,7 +184,7 @@ return {
    },
    {
       'lambdalisue/suda.vim',
-      init = function() vim.g.suda_smart_edit = true end,
+      init = function() g.suda_smart_edit = true end,
    },
    {
       'machakann/vim-sandwich',
@@ -174,7 +193,7 @@ return {
    {
       'mhinz/vim-startify', -- a functional "splash page"
       init = function()
-         vim.g.startify_bookmarks = {
+         g.startify_bookmarks = {
             -- { ['.'] = '.' },
             { ['.'] = '.' },
             { v = '~/.config/nvim' },
@@ -182,7 +201,7 @@ return {
             { s = '~/.ssh' },
             { n = '~/Dropbox/Notes/index.md' },
          }
-         vim.g.startify_lists = {
+         g.startify_lists = {
             { type = 'bookmarks', header = { '   Bookmarks' } },
             { type = 'files', header = { '   MRU' } },
             {
@@ -192,14 +211,40 @@ return {
             { type = 'sessions', header = { '   Sessions' } },
             { type = 'commands', header = { '   Commands' } },
          }
-         vim.g.startify_custom_header = false
-         vim.g.startify_session_autoload = true
-         vim.g.startify_skiplist = { 'Library/CloudStorage' }
+         g.startify_custom_header = false
+         g.startify_session_autoload = true
+         g.startify_skiplist = { 'Library/CloudStorage' }
       end,
    },
    {
       'nvim-lualine/lualine.nvim',
       config = function()
+         local sections = {
+            lualine_a = { 'mode' },
+            lualine_b = {
+               'diff',
+               {
+                  'diagnostics',
+                  symbols = {
+                     error = 'E:',
+                     warn = 'W:',
+                     info = 'I:',
+                     hint = 'H:',
+                  },
+               },
+            },
+            lualine_c = { { 'filename', path = 1 } },
+            lualine_x = {
+               'encoding',
+               {
+                  'fileformat',
+                  symbols = { dos = 'dos', mac = 'mac', unix = '' },
+               },
+               'filetype',
+            },
+            lualine_y = { 'progress' },
+            lualine_z = { 'location' },
+         }
          require('lualine').setup {
             extensions = {
                'fugitive',
@@ -209,42 +254,23 @@ return {
                'mundo',
                'neo-tree',
                'quickfix',
+               'symbols-outline',
                'toggleterm',
                'trouble',
             },
             options = {
                globalstatus = false,
-               icons_enabled = false,
-               -- theme = 'everforest',
+               icons_enabled = true,
+               -- theme = 'codedark',
+               theme = 'everforest',
                -- theme = 'gruvbox',
+               -- theme = 'gruvbox-material',
                -- theme = 'iceberg',
                -- theme = 'nord',
-               theme = 'wombat',
+               -- theme = 'wombat',
             },
-            sections = {
-               lualine_b = {
-                  'branch',
-                  'diff',
-                  {
-                     'diagnostics',
-                     symbols = {
-                        error = 'E:',
-                        warn = 'W:',
-                        info = 'I:',
-                        hint = 'H:',
-                     },
-                  },
-               },
-               lualine_c = { { 'filename', path = 1 } },
-               lualine_x = {
-                  'encoding',
-                  {
-                     'fileformat',
-                     symbols = { dos = 'dos', mac = 'mac', unix = '' },
-                  },
-                  'filetype',
-               },
-            },
+            sections = sections,
+            inactive_sections = sections,
             tabline = {
                lualine_a = { 'buffers' },
                lualine_b = {},
@@ -293,7 +319,7 @@ return {
       },
       init = function()
          -- Unless you are still migrating, remove the deprecated commands from v1.x
-         vim.g.neo_tree_remove_legacy_commands = true
+         g.neo_tree_remove_legacy_commands = true
          -- If you want icons for diagnostic errors, you'll need to define them somewhere:
          vim.fn.sign_define(
             'DiagnosticSignError',
@@ -403,8 +429,8 @@ return {
       'preservim/vim-markdown',
       dependencies = 'mzlogin/vim-markdown-toc',
       init = function()
-         vim.g.vim_markdown_conceal = false
-         vim.g.vim_markdown_folding_disabled = 1
+         g.vim_markdown_conceal = false
+         g.vim_markdown_folding_disabled = 1
       end,
       ft = 'markdown',
    },
@@ -433,6 +459,45 @@ return {
       keys = {
          { '<leader>dv', ':DiffviewOpen<cr>' },
          { '<leader>dV', ':DiffviewClose<cr>' },
+      },
+   },
+   {
+      'ThePrimeagen/harpoon',
+      branch = 'harpoon2',
+      dependencies = {
+         'nvim-lua/plenary.nvim',
+         'nvim-telescope/telescope.nvim',
+      },
+      config = function()
+         local harpoon = require 'harpoon'
+         harpoon:setup()
+
+         keyset('n', '<leader>ha', function() harpoon:list():append() end)
+         keyset(
+            'n',
+            '<leader>he',
+            function() harpoon.ui:toggle_quick_menu(harpoon:list()) end
+         )
+
+         -- recall harpooned buffers
+         keyset('n', '<leader>j', function() harpoon:list():select(1) end)
+         keyset('n', '<leader>k', function() harpoon:list():select(2) end)
+         keyset('n', '<leader>l', function() harpoon:list():select(3) end)
+         keyset('n', '<leader>;', function() harpoon:list():select(4) end)
+
+         -- toggle next/prev within harpoon
+         keyset('n', '<leader>hp', function() harpoon:list():prev() end)
+         keyset('n', '<leader>hn', function() harpoon:list():next() end)
+      end,
+      keys = {
+         '<leader>ha',
+         '<leader>he',
+         '<leader>hp',
+         '<leader>hn',
+         '<leader>j',
+         '<leader>k',
+         '<leader>l',
+         '<leader>;',
       },
    },
    {
@@ -471,11 +536,11 @@ return {
       'Yggdroot/indentLine',
       init = function()
          -- workaround https://github.com/Yggdroot/indentLine/issues/109
-         vim.g.indentLine_faster = true
-         vim.g.indentLine_setConceal = false
+         g.indentLine_faster = true
+         g.indentLine_setConceal = false
 
-         vim.g.indentLine_char_list = { '┆', '┊', '¦' }
-         vim.g.indentLine_fileTypeExclude = { 'help', 'man', 'toggleterm' }
+         g.indentLine_char_list = { '┆', '┊', '¦' }
+         g.indentLine_fileTypeExclude = { 'help', 'man', 'toggleterm' }
       end,
    },
 }
