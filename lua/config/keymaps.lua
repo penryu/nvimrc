@@ -2,7 +2,7 @@
 -- keymaps.lua
 --
 
-local u = require 'util'
+local u = require('util')
 
 -- Buffer selection
 u.nmap('<c-n>', ':bnext<cr>')

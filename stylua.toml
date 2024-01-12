@@ -1,6 +1,6 @@
-call_parentheses = "None"
+call_parentheses = "NoSingleTable"
 collapse_simple_statement = "Always"
 column_width = 80
 indent_type = "Spaces"
-indent_width = 3
+indent_width = 2
 quote_style = "AutoPreferSingle"

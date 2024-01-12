@@ -36,4 +36,4 @@ o.ttimeout = false
 o.updatetime = 300
 o.backup, o.writebackup = false, false
 
-vim.opt.clipboard:append 'unnamed'
+vim.opt.clipboard:append('unnamed')

@@ -2,7 +2,7 @@
 -- commands.lua
 --
 
-local u = require 'util'
+local u = require('util')
 
 -- :Sh opens term in new window
 u.create_command('Sh', 'new +terminal', { nargs = '*' })
