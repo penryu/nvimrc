@@ -5,8 +5,8 @@
 return {
    {
       'junegunn/gv.vim',
-      cmd = 'GV',
       dependencies = 'tpope/vim-fugitive',
+      cmd = 'GV',
    },
    {
       'lewis6991/gitsigns.nvim',
@@ -39,5 +39,9 @@ return {
          'ibhagwan/fzf-lua', -- optional
       },
       config = true,
+      command = { 'Neogit' },
+      keys = {
+         { '<leader>ng', ':Neogit<cr>', 'noremap', desc = 'Open Neogit' },
+      },
    },
 }

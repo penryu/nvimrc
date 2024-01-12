@@ -10,15 +10,19 @@ local keyset = vim.keymap.set
 
 return {
    {
-      'akinsho/toggleterm.nvim',
+      'penryu/toggleterm.nvim',
+      -- 'akinsho/toggleterm.nvim',
       version = '*',
+      init = function() vim.g.toggle_quake_float = true end,
       config = function()
          require('toggleterm').setup {
             -- directions: float / horizontal / tab / vertical
-            direction = 'tab',
+            direction = 'float',
             float_opts = {
                -- borders: single / double / shadow / curved
                border = 'single',
+               height = math.floor(o.lines / 2),
+               width = o.columns,
             },
             open_mapping = [[<c-\>]],
             shade_terminals = true,
@@ -26,7 +30,7 @@ return {
                if term.direction == 'horizontal' then
                   return o.lines * 0.42
                elseif term.direction == 'vertical' then
-                  return o.columns * 0.42
+                  return o.columns
                end
             end,
          }
@@ -45,7 +49,7 @@ return {
          u.create_command('TabTerm', 'ToggleTerm direction=tab', {})
       end,
       keys = '<c-\\>',
-      cmd = 'TabTerm',
+      cmd = { 'TabTerm', 'ToggleTerm' },
    },
    {
       'dense-analysis/ale',
