@@ -2,6 +2,8 @@
 -- git-related plugins
 --
 
+vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
+
 return {
   {
     'junegunn/gv.vim',
