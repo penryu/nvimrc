@@ -18,7 +18,7 @@ u.create_autocmd('FileType', {
 })
 u.create_autocmd('FileType', {
   pattern = 'lua',
-  command = 'setlocal shiftwidth=3 softtabstop=3',
+  command = 'setlocal shiftwidth=2 softtabstop=2',
 })
 u.create_autocmd('FileType', {
   pattern = 'markdown',

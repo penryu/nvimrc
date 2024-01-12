@@ -21,6 +21,8 @@ local function lsp_on_attach(client, buffer)
   local keymap_opts = { buffer = buffer }
   local keyset = vim.keymap.set
 
+  require('lsp-inlayhints').on_attach(client, buffer)
+
   -- Code navigation and shortcuts
   keyset('n', 'K', vim.lsp.buf.hover, keymap_opts)
   keyset('n', '<c-]>', vim.lsp.buf.definition, keymap_opts)
@@ -235,43 +237,26 @@ return {
     ft = 'lua',
   },
   {
-    'psf/black',
-    branch = 'stable',
-    ft = 'python',
-  },
-  {
-    -- Official Rust/cargo support
-    'rust-lang/rust.vim',
+    -- A heavily modified fork of rust-tools.nvim
+    -- https://github.com/mrcjkb/rustaceanvim
+    'mrcjkb/rustaceanvim',
+    version = '^3', -- Recommended
     dependencies = {
-      'preservim/tagbar',
-      -- Adds extra functionality over rust analyzer
-      'simrat39/rust-tools.nvim',
+      'nvim-lua/plenary.nvim',
+      'mfussenegger/nvim-dap',
+      {
+        'lvimuser/lsp-inlayhints.nvim',
+        opts = {},
+      },
     },
-    init = function() g.rustfmt_autosave = 1 end,
-    ft = 'rust',
-  },
-  {
-    'simrat39/rust-tools.nvim',
     config = function()
-      -- Configure LSP through rust-tools.nvim plugin.
-      -- rust-tools will configure and enable certain LSP features for us.
-      -- See https://github.com/simrat39/rust-tools.nvim#configuration
-      local opts = {
-        tools = {
-          runnables = {
-            use_telescope = true,
-          },
-          inlay_hints = {
-            auto = true,
-            show_parameter_hints = true,
-            parameter_hints_prefix = '',
-            other_hints_prefix = '',
-          },
+      g.rustaceanvim = {
+        inlay_hints = {
+          auto = true,
+          highlight = 'NonText',
+          parameter_hints_prefix = '',
+          show_parameter_hints = true,
         },
-
-        -- all the opts to send to nvim-lspconfig
-        -- these override the defaults set by rust-tools.nvim
-        -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
         server = {
           -- on_attach is a callback called when the language server attachs to the buffer
           on_attach = lsp_on_attach,
@@ -311,10 +296,18 @@ return {
             },
           },
         },
+        tools = {
+          hover_actions = {
+            auto_focus = true,
+          },
+        },
       }
-
-      require('rust-tools').setup(opts)
     end,
+    ft = 'rust',
+  },
+  {
+    'rust-lang/rust.vim',
+    init = function() g.rustfmt_autosave = 1 end,
     ft = 'rust',
   },
   {

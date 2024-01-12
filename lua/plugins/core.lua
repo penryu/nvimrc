@@ -48,12 +48,11 @@ return {
     keys = '<c-\\>',
     cmd = { 'TabTerm', 'ToggleTerm' },
   },
-  {
-    'dense-analysis/ale',
-    config = function() vim.cmd('ALEEnable') end,
-    cmd = 'ALEEnable',
-    ft = { 'perl' },
-  },
+   {
+      'psf/black',
+      branch = 'stable',
+      ft = 'python',
+   },
   {
     'fidian/hexmode',
     init = function() g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm' end,
@@ -115,7 +114,7 @@ return {
           vim.cmd('resize 11 | setl winfixheight')
         end,
         desc = 'Open a Lua or VimScript REPL',
-      },
+            },
     },
   },
   {
