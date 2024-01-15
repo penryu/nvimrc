@@ -17,6 +17,7 @@ o.hlsearch = false
 o.ignorecase = true
 o.linebreak = true
 o.number = true
+o.relativenumber = false
 o.scrolloff = 7
 o.sessionoptions = 'buffers,curdir,globals,help,tabpages,terminal'
 o.shada = "'7,r/Volumes,r/media,r/mnt,r/tmp"

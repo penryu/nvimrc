@@ -2,18 +2,19 @@
 -- init.lua
 --
 
-local g = vim.g
-
 -- set to 0 to prevent runtime providers from loading; must be 0, not false
-g.loaded_node_provider = 0
-g.loaded_perl_provider = 0
-g.loaded_python_provider = 0
-g.loaded_ruby_provider = 0
-g.loaded_python3_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_python3_provider = 0
 
 -- must be done before loading lazy.nvim
-g.mapleader = ' '
-g.maplocalleader = ','
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ','
+
+-- set global variables for my own config
+vim.g.fancy_number = false
 
 -- bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
