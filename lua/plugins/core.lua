@@ -2,8 +2,6 @@
 -- core editor functionality
 --
 
-local g = vim.g
-local o = vim.o
 local u = require('util')
 
 local keyset = vim.keymap.set
@@ -21,16 +19,16 @@ return {
         float_opts = {
           -- borders: single / double / shadow / curved
           border = 'single',
-          height = math.floor(o.lines / 2),
-          width = o.columns,
+          height = math.floor(vim.o.lines * 2 / 3),
+          width = vim.o.columns,
         },
         open_mapping = [[<c-\>]],
         shade_terminals = true,
         size = function(term)
           if term.direction == 'horizontal' then
-            return o.lines * 0.42
+            return vim.o.lines * 0.42
           elseif term.direction == 'vertical' then
-            return o.columns
+            return vim.o.columns
           end
         end,
       }
@@ -48,14 +46,14 @@ return {
     keys = '<c-\\>',
     cmd = { 'TabTerm', 'ToggleTerm' },
   },
-   {
-      'psf/black',
-      branch = 'stable',
-      ft = 'python',
-   },
+  {
+    'psf/black',
+    branch = 'stable',
+    ft = 'python',
+  },
   {
     'fidian/hexmode',
-    init = function() g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm' end,
+    init = function() vim.g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm' end,
     event = {
       'BufNew *.bin',
       'BufNew *.exe',
@@ -77,8 +75,8 @@ return {
   {
     'folke/which-key.nvim',
     init = function()
-      o.timeout = true
-      o.timeoutlen = 300
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
     end,
     opts = {},
     event = 'VeryLazy',
@@ -86,9 +84,9 @@ return {
   {
     'iamcco/markdown-preview.nvim',
     init = function()
-      g.mkdp_echo_preview_url = true
-      g.mkdp_refresh_slow = true
-      g.mkdp_theme = 'light'
+      vim.g.mkdp_echo_preview_url = true
+      vim.g.mkdp_refresh_slow = true
+      vim.g.mkdp_theme = 'light'
     end,
     ft = 'markdown',
   },
@@ -114,7 +112,7 @@ return {
           vim.cmd('resize 11 | setl winfixheight')
         end,
         desc = 'Open a Lua or VimScript REPL',
-            },
+      },
     },
   },
   {
@@ -184,7 +182,7 @@ return {
   },
   {
     'lambdalisue/suda.vim',
-    init = function() g.suda_smart_edit = true end,
+    init = function() vim.g.suda_smart_edit = true end,
   },
   {
     'machakann/vim-sandwich',
@@ -193,7 +191,7 @@ return {
   {
     'mhinz/vim-startify', -- a functional "splash page"
     init = function()
-      g.startify_bookmarks = {
+      vim.g.startify_bookmarks = {
         -- { ['.'] = '.' },
         { ['.'] = '.' },
         { v = '~/.config/nvim' },
@@ -201,7 +199,7 @@ return {
         { s = '~/.ssh' },
         { n = '~/Dropbox/Notes/index.md' },
       }
-      g.startify_lists = {
+      vim.g.startify_lists = {
         { type = 'bookmarks', header = { '   Bookmarks' } },
         { type = 'files', header = { '   MRU' } },
         {
@@ -211,9 +209,9 @@ return {
         { type = 'sessions', header = { '   Sessions' } },
         { type = 'commands', header = { '   Commands' } },
       }
-      g.startify_custom_header = false
-      g.startify_session_autoload = true
-      g.startify_skiplist = { 'Library/CloudStorage' }
+      vim.g.startify_custom_header = false
+      vim.g.startify_session_autoload = true
+      vim.g.startify_skiplist = { 'Library/CloudStorage' }
     end,
   },
   {
@@ -319,7 +317,7 @@ return {
     },
     init = function()
       -- Unless you are still migrating, remove the deprecated commands from v1.x
-      g.neo_tree_remove_legacy_commands = true
+      vim.g.neo_tree_remove_legacy_commands = true
       -- If you want icons for diagnostic errors, you'll need to define them somewhere:
       vim.fn.sign_define(
         'DiagnosticSignError',
@@ -425,8 +423,8 @@ return {
     'preservim/vim-markdown',
     dependencies = 'mzlogin/vim-markdown-toc',
     init = function()
-      g.vim_markdown_conceal = false
-      g.vim_markdown_folding_disabled = 1
+      vim.g.vim_markdown_conceal = false
+      vim.g.vim_markdown_folding_disabled = 1
     end,
     ft = 'markdown',
   },
@@ -532,11 +530,11 @@ return {
     'Yggdroot/indentLine',
     init = function()
       -- workaround https://github.com/Yggdroot/indentLine/issues/109
-      g.indentLine_faster = true
-      g.indentLine_setConceal = false
+      vim.g.indentLine_faster = true
+      vim.g.indentLine_setConceal = false
 
-      g.indentLine_char_list = { '┆', '┊', '¦' }
-      g.indentLine_fileTypeExclude = { 'help', 'man', 'toggleterm' }
+      vim.g.indentLine_char_list = { '┆', '┊', '¦' }
+      vim.g.indentLine_fileTypeExclude = { 'help', 'man', 'toggleterm' }
     end,
   },
 }

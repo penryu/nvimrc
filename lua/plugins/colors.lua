@@ -2,15 +2,13 @@
 -- Colorschemes
 --
 
-local g = vim.g
-
 return {
   {
     'adisen99/apprentice.nvim',
     dependencies = { 'rktjmp/lush.nvim' },
     init = function()
       -- g.apprentice_contrast_dark = 'soft'
-      g.apprentice_contrast_dark = 'medium'
+      vim.g.apprentice_contrast_dark = 'medium'
       -- g.apprentice_contrast_dark = 'hard'
     end,
     config = function()
@@ -81,9 +79,9 @@ return {
   },
   {
     'rakr/vim-one',
-    init = function() g.one_allow_italics = 1 end,
+    init = function() vim.g.one_allow_italics = 1 end,
     config = function()
-      g.one_allow_italics = true
+      vim.g.one_allow_italics = true
       vim.cmd('colorscheme one')
     end,
     priority = 1000,

@@ -3,7 +3,6 @@
 --
 -- Most settings from https://sharksforarms.dev/posts/neovim-rust/
 
-local g = vim.g
 local u = require('util')
 
 -- local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
@@ -250,7 +249,7 @@ return {
       },
     },
     config = function()
-      g.rustaceanvim = {
+      vim.g.rustaceanvim = {
         inlay_hints = {
           auto = true,
           highlight = 'NonText',
@@ -307,25 +306,25 @@ return {
   },
   {
     'rust-lang/rust.vim',
-    init = function() g.rustfmt_autosave = 1 end,
+    init = function() vim.g.rustfmt_autosave = 1 end,
     ft = 'rust',
   },
   {
     'pangloss/vim-javascript',
     init = function()
-      g.javascript_plugin_jsdoc = true
-      g.javascript_conceal_function = 'ƒ'
-      g.javascript_conceal_null = 'ø'
-      g.javascript_conceal_this = '@'
-      g.javascript_conceal_return = '⇚'
-      g.javascript_conceal_undefined = '¿'
-      g.javascript_conceal_NaN = 'ℕ'
-      g.javascript_conceal_prototype = '¶'
-      g.javascript_conceal_static = '•'
-      g.javascript_conceal_super = 'Ω'
-      g.javascript_conceal_arrow_function = '⇒'
-      g.javascript_conceal_noarg_arrow_function = '🞅'
-      g.javascript_conceal_underscore_arrow_function = '🞅'
+      vim.g.javascript_plugin_jsdoc = true
+      vim.g.javascript_conceal_function = 'ƒ'
+      vim.g.javascript_conceal_null = 'ø'
+      vim.g.javascript_conceal_this = '@'
+      vim.g.javascript_conceal_return = '⇚'
+      vim.g.javascript_conceal_undefined = '¿'
+      vim.g.javascript_conceal_NaN = 'ℕ'
+      vim.g.javascript_conceal_prototype = '¶'
+      vim.g.javascript_conceal_static = '•'
+      vim.g.javascript_conceal_super = 'Ω'
+      vim.g.javascript_conceal_arrow_function = '⇒'
+      vim.g.javascript_conceal_noarg_arrow_function = '🞅'
+      vim.g.javascript_conceal_underscore_arrow_function = '🞅'
     end,
     ft = { 'javascript', 'typescript' },
   },
