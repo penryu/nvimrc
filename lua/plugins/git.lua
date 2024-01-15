@@ -2,7 +2,7 @@
 -- git-related plugins
 --
 
-vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
+vim.env.GIT_EDITOR = 'nvr --remote-tab-wait'
 
 return {
   {
