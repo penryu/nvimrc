@@ -52,6 +52,10 @@ return {
     ft = 'python',
   },
   {
+    'chentoast/marks.nvim',
+    opts = {},
+  },
+  {
     'fidian/hexmode',
     init = function() vim.g.hexmode_patterns = '*.bin,*.exe,*.dat,*.wasm' end,
     event = {
@@ -71,7 +75,10 @@ return {
       u.nmap('[t', function() todo.jump_prev() end, { desc = 'Prev TODO' })
     end,
   },
-  { 'folke/twilight.nvim', cmd = { 'Twilight', 'TwilightEnable' } },
+  {
+    'folke/twilight.nvim',
+    cmd = { 'Twilight', 'TwilightEnable', 'TwilightEnable' },
+  },
   {
     'folke/which-key.nvim',
     init = function()
@@ -200,17 +207,18 @@ return {
         { n = '~/Dropbox/Notes/index.md' },
       }
       vim.g.startify_lists = {
-        { type = 'bookmarks', header = { '   Bookmarks' } },
+        { type = 'sessions', header = { '   Sessions' } },
         { type = 'files', header = { '   MRU' } },
         {
           type = 'dir',
           header = { '   MRU ' .. vim.fn['getcwd']() },
         },
-        { type = 'sessions', header = { '   Sessions' } },
         { type = 'commands', header = { '   Commands' } },
+        { type = 'bookmarks', header = { '   Bookmarks' } },
       }
       vim.g.startify_custom_header = false
       vim.g.startify_session_autoload = true
+      vim.g.startify_session_persistence = true
       vim.g.startify_skiplist = { 'Library/CloudStorage' }
     end,
   },
@@ -382,18 +390,34 @@ return {
     opts = {
       defaults = {
         theme = 'dropdown',
-        -- results_title = false,
+        results_title = false,
         sorting_strategy = 'ascending',
         layout_strategy = 'center',
         layout_config = {
           preview_cutoff = 1, -- Preview should always show (unless previewer = false)
-          width = function(_, max_columns, _) return math.min(max_columns, 80) end,
-          height = function(_, _, max_lines) return math.min(max_lines, 15) end,
+          width = function(_, max_columns, _) return math.min(max_columns, 132) end,
+          height = function(_, _, max_lines) return math.min(max_lines, 60) end,
         },
       },
     },
     cmd = 'Telescope',
     keys = {
+      {
+        '<leader>fa',
+        function() require('telescope.builtin').autocommands() end,
+      },
+      {
+        '<leader>fb',
+        function() require('telescope.builtin').buffers() end,
+      },
+      {
+        '<leader>fc',
+        function() require('telescope.builtin').commands() end,
+      },
+      {
+        '<leader>fd',
+        function() require('telescope.builtin').fd() end,
+      },
       {
         '<leader>ff',
         function() require('telescope.builtin').find_files() end,
@@ -403,12 +427,38 @@ return {
         function() require('telescope.builtin').live_grep() end,
       },
       {
-        '<leader>fb',
-        function() require('telescope.builtin').buffers() end,
-      },
-      {
         '<leader>fh',
         function() require('telescope.builtin').help_tags() end,
+      },
+      {
+        '<leader>fm',
+        function() require('telescope.builtin').marks() end,
+      },
+      {
+        '<leader>fo',
+        function() require('telescope.builtin').vim_options() end,
+      },
+      {
+        '<leader>fs',
+        function()
+          local actions = require('telescope.actions')
+          local action_state = require('telescope.actions.state')
+          local sessions_dir = vim.fn.stdpath('data') .. '/session/'
+
+          local function run_selection(prompt_bufnr, _map)
+            actions.select_default:replace(function()
+              actions.close(prompt_bufnr)
+              local selection = action_state.get_selected_entry()
+              vim.cmd(':source ' .. sessions_dir .. selection[1])
+            end)
+            return true
+          end
+
+          require('telescope.builtin').find_files {
+            attach_mappings = run_selection,
+            cwd = sessions_dir,
+          }
+        end,
       },
     },
   },
@@ -513,11 +563,6 @@ return {
     'tpope/vim-dotenv',
     dependencies = 'tpope/vim-dispatch',
     cmd = 'Dotenv',
-  },
-  {
-    -- automated session management
-    'tpope/vim-obsession',
-    cmd = 'Obsession',
   },
   {
     -- enhances netrw
