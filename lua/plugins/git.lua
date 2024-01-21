@@ -41,7 +41,7 @@ return {
       'ibhagwan/fzf-lua', -- optional
     },
     config = true,
-    command = { 'Neogit' },
+    cmd = { 'Neogit' },
     keys = {
       { '<leader>ng', ':Neogit<cr>', 'noremap', desc = 'Open Neogit' },
     },

@@ -135,6 +135,8 @@ return {
           },
         },
       }
+      lspconfig.fennel_ls.setup {}
+      -- lspconfig.fennel_language_server.setup {}
 
       -- markdown
       -- https://github.com/artempyanykh/marksman/releases/
@@ -161,6 +163,7 @@ return {
       'clojure',
       'edn',
       'dockerfile',
+      'fennel',
       'yaml.docker-compose',
       'javascript',
       'javascriptreact',
@@ -211,7 +214,7 @@ return {
       u.create_command('Outline', 'Lspsaga outline', { nargs = 0 })
     end,
     event = 'LspAttach',
-    command = { 'Outline' },
+    cmd = { 'Outline' },
   },
   {
     'prettier/vim-prettier',

@@ -47,6 +47,10 @@ return {
     cmd = { 'TabTerm', 'ToggleTerm' },
   },
   {
+    'atweiden/vim-fennel',
+    ft = { 'fennel' },
+  },
+  {
     'psf/black',
     branch = 'stable',
     ft = 'python',
@@ -217,7 +221,7 @@ return {
         { type = 'bookmarks', header = { '   Bookmarks' } },
       }
       vim.g.startify_custom_header = false
-      vim.g.startify_session_autoload = true
+      vim.g.startify_session_autoload = false
       vim.g.startify_session_persistence = true
       vim.g.startify_skiplist = { 'Library/CloudStorage' }
     end,
