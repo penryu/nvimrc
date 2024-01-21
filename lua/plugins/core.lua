@@ -19,8 +19,8 @@ return {
         float_opts = {
           -- borders: single / double / shadow / curved
           border = 'single',
-          height = math.floor(vim.o.lines * 2 / 3),
-          width = vim.o.columns,
+          height = function() return math.floor(vim.o.lines * 2 / 3) end,
+          width = function() return vim.o.columns end,
         },
         open_mapping = [[<c-\>]],
         shade_terminals = true,
