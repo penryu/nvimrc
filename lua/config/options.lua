@@ -19,7 +19,6 @@ o.linebreak = true
 o.number = true
 o.relativenumber = false
 o.scrolloff = 7
-o.sessionoptions = 'buffers,curdir,globals,help,tabpages,terminal'
 o.shada = "'7,r/Volumes,r/media,r/mnt,r/tmp"
 o.shiftwidth = 2
 o.shortmess = 'acostI'
@@ -32,7 +31,6 @@ o.splitright = true
 o.termguicolors = true
 o.textwidth = 80
 o.timeoutlen = 300
-o.ttimeout = false
 
 o.updatetime = 300
 o.backup, o.writebackup = false, false
