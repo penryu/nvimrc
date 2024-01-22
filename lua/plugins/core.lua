@@ -8,10 +8,8 @@ local keyset = vim.keymap.set
 
 return {
   {
-    'penryu/toggleterm.nvim',
-    -- 'akinsho/toggleterm.nvim',
+    'akinsho/toggleterm.nvim',
     version = '*',
-    init = function() vim.g.toggle_quake_float = true end,
     config = function()
       require('toggleterm').setup {
         -- directions: float / horizontal / tab / vertical
@@ -21,6 +19,7 @@ return {
           border = 'single',
           height = function() return math.floor(vim.o.lines * 2 / 3) end,
           width = function() return vim.o.columns end,
+          row = 1,
         },
         open_mapping = [[<c-\>]],
         shade_terminals = true,
