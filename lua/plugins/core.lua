@@ -11,15 +11,23 @@ return {
     'akinsho/toggleterm.nvim',
     version = '*',
     config = function()
+      local f_width = function() return vim.o.columns end
+      local f_height = function() return math.floor(vim.o.lines * 3 / 5) end
+      local f_row = function()
+        -- bottom of term above main status
+        -- top term border + bottom term border + status line => 3
+        return vim.o.lines - f_height() - vim.o.cmdheight - 3
+      end
+
       require('toggleterm').setup {
         -- directions: float / horizontal / tab / vertical
         direction = 'float',
         float_opts = {
           -- borders: single / double / shadow / curved
           border = 'single',
-          height = function() return math.floor(vim.o.lines * 2 / 3) end,
-          width = function() return vim.o.columns end,
-          row = 1,
+          height = f_height,
+          width = f_width,
+          row = f_row,
         },
         open_mapping = [[<c-\>]],
         shade_terminals = true,
