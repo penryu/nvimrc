@@ -21,7 +21,7 @@ if vim.g.fancy_number then
 end
 
 u.create_autocmd('FileType', {
-  pattern = 'diff',
+  pattern = { 'diff', 'help' },
   command = 'setlocal colorcolumn= nocursorline nonumber',
 })
 
