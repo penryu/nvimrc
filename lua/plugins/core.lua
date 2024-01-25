@@ -584,6 +584,10 @@ return {
     cmd = 'Dotenv',
   },
   {
+    'fladson/vim-kitty',
+    ft = 'kitty',
+  },
+  {
     -- enhances netrw
     'tpope/vim-vinegar',
     event = 'BufNew netrw',
