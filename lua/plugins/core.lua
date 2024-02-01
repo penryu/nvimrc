@@ -164,7 +164,7 @@ return {
             let g:buffergator_vsplit_size = 42
          ]])
     end,
-    keys = { '<leader>b' },
+    keys = { '<leader>b', desc = 'Buffergator' },
   },
   {
     'junegunn/fzf.vim',
@@ -204,7 +204,13 @@ return {
   },
   {
     'machakann/vim-sandwich',
-    keys = { 'sa', 'sd', 'sdb', 'sr', 'srb' },
+    keys = {
+      { 'sa', desc = 'Add surroundings (sandwich)' },
+      { 'sd', desc = 'Delete surroundings provided (sandwich)' },
+      { 'sdb', desc = 'Add surroundings detected (sandwich)' },
+      { 'sr', desc = 'Add surroundings provided (sandwich)' },
+      { 'srb', desc = 'Add surroundings detected (sandwich)' },
+    },
   },
   {
     'mhinz/vim-startify', -- a functional "splash page"
@@ -386,8 +392,8 @@ return {
     lazy = false,
     cmd = 'Neotree',
     keys = {
-      { '\\', ':Neotree toggle<cr>', 'noremap' },
-      { '<bar>', ':Neotree git_status<cr>', 'noremap' },
+      { '\\', ':Neotree toggle<cr>', 'noremap', desc = 'Toggle Neotree' },
+      { '<bar>', ':Neotree git_status<cr>', 'noremap', desc = 'Toggle git' },
     },
   },
   {
@@ -416,38 +422,47 @@ return {
       {
         '<leader>fa',
         function() require('telescope.builtin').autocommands() end,
+        desc = 'Telescope autocommands',
       },
       {
         '<leader>fb',
         function() require('telescope.builtin').buffers() end,
+        desc = 'Telescope buffers',
       },
       {
         '<leader>fc',
         function() require('telescope.builtin').commands() end,
+        desc = 'Telescope commands',
       },
       {
         '<leader>fd',
         function() require('telescope.builtin').fd() end,
+        desc = 'Telescope fd',
       },
       {
         '<leader>ff',
         function() require('telescope.builtin').find_files() end,
+        desc = 'Telescope find_files',
       },
       {
         '<leader>fg',
         function() require('telescope.builtin').live_grep() end,
+        desc = 'Telescope grep',
       },
       {
         '<leader>fh',
         function() require('telescope.builtin').help_tags() end,
+        desc = 'Telescope tags',
       },
       {
         '<leader>fm',
         function() require('telescope.builtin').marks() end,
+        desc = 'Telescope marks',
       },
       {
         '<leader>fo',
         function() require('telescope.builtin').vim_options() end,
+        desc = 'Telescope vim options',
       },
       {
         '<leader>fs',
@@ -470,6 +485,7 @@ return {
             cwd = sessions_dir,
           }
         end,
+        desc = 'Telescope sessions',
       },
     },
   },
@@ -545,14 +561,14 @@ return {
       keyset('n', '<leader>hn', function() harpoon:list():next() end)
     end,
     keys = {
-      '<leader>ha',
-      '<leader>he',
-      '<leader>hp',
-      '<leader>hn',
-      '<leader>j',
-      '<leader>k',
-      '<leader>l',
-      '<leader>;',
+      { '<leader>ha', desc = 'Harpoon append' },
+      { '<leader>he', desc = 'Harpoon edit' },
+      { '<leader>hp', desc = 'Harpoon prev' },
+      { '<leader>hn', desc = 'Harpoon next' },
+      { '<leader>j', desc = 'Harpoon 1' },
+      { '<leader>k', desc = 'Harpoon 2' },
+      { '<leader>l', desc = 'Harpoon 3' },
+      { '<leader>;', desc = 'Harpoon 4' },
     },
   },
   {
@@ -560,7 +576,11 @@ return {
     dependencies = 'nvim-lua/plenary.nvim',
     config = true,
     keys = { -- load the plugin only when using it's keybinding:
-      { '<leader>u', "<cmd>lua require('undotree').toggle()<cr>" },
+      {
+        '<leader>u',
+        "<cmd>lua require('undotree').toggle()<cr>",
+        desc = 'Undotree',
+      },
     },
   },
   {
