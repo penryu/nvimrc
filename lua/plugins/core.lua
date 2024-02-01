@@ -8,6 +8,28 @@ local keyset = vim.keymap.set
 
 return {
   {
+    'nvim-neorg/neorg',
+    dependencies = 'nvim-lua/plenary.nvim',
+    build = ':Neorg sync-parsers',
+    config = function()
+      require('neorg').setup {
+        load = {
+          ['core.defaults'] = {},
+          ['core.concealer'] = {},
+          ['core.dirman'] = {
+            config = {
+              workspaces = {
+                notes = '~/Dropbox/Notes',
+              },
+            },
+          },
+        },
+      }
+    end,
+    cmd = 'Neorg',
+    ft = 'norg',
+  },
+  {
     'akinsho/toggleterm.nvim',
     version = '*',
     config = function()
