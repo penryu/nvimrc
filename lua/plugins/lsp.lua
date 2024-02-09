@@ -14,28 +14,67 @@ local u = require('util')
 --    group = diag_float_grp,
 -- })
 
-local function lsp_on_attach(client, buffer)
+local function lsp_on_attach(client, bufnr)
   -- This callback is called when the LSP is atttached/enabled for this buffer
   -- we could set keymaps related to LSP, etc here.
-  local keymap_opts = { buffer = buffer }
+  local key_opts = {
+    buffer = bufnr,
+    noremap = true,
+    silent = true,
+  }
   local keyset = vim.keymap.set
 
-  require('lsp-inlayhints').on_attach(client, buffer)
+  require('lsp-inlayhints').on_attach(client, bufnr)
 
   -- Code navigation and shortcuts
-  keyset('n', 'K', vim.lsp.buf.hover, keymap_opts)
-  keyset('n', '<c-]>', vim.lsp.buf.definition, keymap_opts)
-  keyset('n', 'gd', vim.lsp.buf.definition, keymap_opts)
-  keyset('n', 'gD', vim.lsp.buf.implementation, keymap_opts)
-  keyset('n', '1gD', vim.lsp.buf.type_definition, keymap_opts)
-  keyset('i', '<c-k>', vim.lsp.buf.signature_help, keymap_opts)
-  keyset('n', 'g0', vim.lsp.buf.document_symbol, keymap_opts)
-  keyset('n', 'gW', vim.lsp.buf.workspace_symbol, keymap_opts)
-  keyset('n', 'ga', vim.lsp.buf.code_action, keymap_opts)
-  keyset('n', 'gr', vim.lsp.buf.references, keymap_opts)
-  -- prev/next diagnostic
-  keyset('n', '[g', vim.diagnostic.goto_prev, keymap_opts)
-  keyset('n', ']g', vim.diagnostic.goto_next, keymap_opts)
+  keyset('n', 'K', vim.lsp.buf.hover, key_opts)
+  keyset('n', '<c-]>', vim.lsp.buf.definition, key_opts)
+  keyset('n', 'gd', vim.lsp.buf.definition, key_opts)
+  keyset('n', 'gD', vim.lsp.buf.declaration, key_opts)
+  keyset('n', 'gi', vim.lsp.buf.implementation, key_opts)
+  keyset('i', '<c-k>', vim.lsp.buf.signature_help, key_opts)
+  keyset('n', 'g0', vim.lsp.buf.document_symbol, key_opts)
+  keyset('n', 'gW', vim.lsp.buf.workspace_symbol, key_opts)
+  keyset('n', 'gr', vim.lsp.buf.references, key_opts)
+  keyset('n', '<leader>d', vim.lsp.buf.type_definition, key_opts)
+  keyset('n', '<leader>rn', vim.lsp.buf.rename, key_opts)
+  keyset('n', '<leader>ga', vim.lsp.buf.code_action, key_opts)
+  keyset(
+    'n',
+    '<leader>qf',
+    function()
+      vim.lsp.buf.code_action {
+        context = { only = { 'quickfix' } },
+        apply = true,
+      }
+    end,
+    key_opts
+  )
+  keyset(
+    'n',
+    '<leader>f',
+    function() vim.lsp.buf.format { async = true } end,
+    key_opts
+  )
+  -- workspace folders
+  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, key_opts)
+  vim.keymap.set(
+    'n',
+    '<space>wr',
+    vim.lsp.buf.remove_workspace_folder,
+    key_opts
+  )
+  vim.keymap.set(
+    'n',
+    '<space>wl',
+    function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+    key_opts
+  )
+  -- diagnostic
+  keyset('n', '<leader>e', vim.diagnostic.open_float, key_opts)
+  keyset('n', '<leader>q', vim.diagnostic.setloclist, key_opts)
+  keyset('n', '[d', vim.diagnostic.goto_prev, key_opts)
+  keyset('n', ']d', vim.diagnostic.goto_next, key_opts)
 end
 
 return {
@@ -143,7 +182,19 @@ return {
       lspconfig.marksman.setup { on_attach = lsp_on_attach }
 
       -- python
+      -- pip install ruff-lsp
       lspconfig.pyright.setup { on_attach = lsp_on_attach }
+      lspconfig.ruff_lsp.setup {
+        init_options = {
+          settings = {
+            args = {},
+          },
+        },
+        on_attach = function(client, bufnr)
+          client.server_capabilities.hoverProvider = false
+          lsp_on_attach(client, bufnr)
+        end,
+      }
 
       -- LaTeX
       -- cargo install --git https://github.com/latex-lsp/texlab \
