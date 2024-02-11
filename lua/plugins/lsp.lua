@@ -1,30 +1,20 @@
 --
 -- rust plugins and settings
 --
--- Most settings from https://sharksforarms.dev/posts/neovim-rust/
 
 local u = require('util')
 
--- local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
-
--- vim.api.nvim_create_autocmd("CursorHold", {
---    callback = function()
---       vim.diagnostic.open_float(nil, { focusable = false })
---    end,
---    group = diag_float_grp,
--- })
-
 local lsp_callbacks
 
-local has_ts, ts_builtin = pcall(function() require('telescope.builtin') end)
-if has_ts and ts_builtin then
+if pcall(require, 'telescope.builtin') then
+  local ts_builtin = require('telescope.builtin')
   lsp_callbacks = {
     definitions = ts_builtin.lsp_definitions,
     document_symbols = ts_builtin.lsp_document_symbols,
     implementations = ts_builtin.lsp_implementations,
     references = ts_builtin.lsp_references,
+    resume = ts_builtin.resume,
     type_definitions = ts_builtin.lsp_type_definitions,
-    workspace_symbols = ts_builtin.lsp_workspace_symbols,
   }
 else
   lsp_callbacks = {
@@ -33,7 +23,6 @@ else
     implementations = vim.lsp.buf.implementation,
     references = vim.lsp.buf.references,
     type_definitions = vim.lsp.buf.type_definition,
-    workspace_symbols = vim.lsp.buf.workspace_symbol,
   }
 end
 
@@ -57,7 +46,6 @@ local function lsp_on_attach(client, bufnr)
   keyset('n', 'gi', lsp_callbacks.implementations, key_opts)
   keyset('i', '<c-k>', vim.lsp.buf.signature_help, key_opts)
   keyset('n', 'g0', lsp_callbacks.document_symbols, key_opts)
-  keyset('n', 'gW', lsp_callbacks.workspace_symbols, key_opts)
   keyset('n', 'gr', lsp_callbacks.references, key_opts)
   keyset('n', '<leader>d', lsp_callbacks.type_definitions, key_opts)
   keyset('n', '<leader>rn', vim.lsp.buf.rename, key_opts)
@@ -79,22 +67,13 @@ local function lsp_on_attach(client, bufnr)
     function() vim.lsp.buf.format { async = true } end,
     key_opts
   )
-  -- workspace folders
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, key_opts)
-  vim.keymap.set(
-    'n',
-    '<space>wr',
-    vim.lsp.buf.remove_workspace_folder,
-    key_opts
-  )
-  vim.keymap.set(
-    'n',
-    '<space>wl',
-    function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-    key_opts
-  )
   -- diagnostic
-  keyset('n', '<leader>e', vim.diagnostic.open_float, key_opts)
+  keyset(
+    'n',
+    '<leader>e',
+    function() vim.diagnostic.open_float(nil, { focusable = false }) end,
+    key_opts
+  )
   keyset('n', '<leader>q', vim.diagnostic.setloclist, key_opts)
   keyset('n', '[d', vim.diagnostic.goto_prev, key_opts)
   keyset('n', ']d', vim.diagnostic.goto_next, key_opts)
