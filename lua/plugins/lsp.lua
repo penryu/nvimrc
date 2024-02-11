@@ -14,6 +14,29 @@ local u = require('util')
 --    group = diag_float_grp,
 -- })
 
+local lsp_callbacks
+
+local has_ts, ts_builtin = pcall(function() require('telescope.builtin') end)
+if has_ts and ts_builtin then
+  lsp_callbacks = {
+    definitions = ts_builtin.lsp_definitions,
+    document_symbols = ts_builtin.lsp_document_symbols,
+    implementations = ts_builtin.lsp_implementations,
+    references = ts_builtin.lsp_references,
+    type_definitions = ts_builtin.lsp_type_definitions,
+    workspace_symbols = ts_builtin.lsp_workspace_symbols,
+  }
+else
+  lsp_callbacks = {
+    definitions = vim.lsp.buf.definition,
+    document_symbols = vim.lsp.buf.document_symbol,
+    implementations = vim.lsp.buf.implementation,
+    references = vim.lsp.buf.references,
+    type_definitions = vim.lsp.buf.type_definition,
+    workspace_symbols = vim.lsp.buf.workspace_symbol,
+  }
+end
+
 local function lsp_on_attach(client, bufnr)
   -- This callback is called when the LSP is atttached/enabled for this buffer
   -- we could set keymaps related to LSP, etc here.
@@ -29,14 +52,14 @@ local function lsp_on_attach(client, bufnr)
   -- Code navigation and shortcuts
   keyset('n', 'K', vim.lsp.buf.hover, key_opts)
   keyset('n', '<c-]>', vim.lsp.buf.definition, key_opts)
-  keyset('n', 'gd', vim.lsp.buf.definition, key_opts)
+  keyset('n', 'gd', lsp_callbacks.definitions, key_opts)
   keyset('n', 'gD', vim.lsp.buf.declaration, key_opts)
-  keyset('n', 'gi', vim.lsp.buf.implementation, key_opts)
+  keyset('n', 'gi', lsp_callbacks.implementations, key_opts)
   keyset('i', '<c-k>', vim.lsp.buf.signature_help, key_opts)
-  keyset('n', 'g0', vim.lsp.buf.document_symbol, key_opts)
-  keyset('n', 'gW', vim.lsp.buf.workspace_symbol, key_opts)
-  keyset('n', 'gr', vim.lsp.buf.references, key_opts)
-  keyset('n', '<leader>d', vim.lsp.buf.type_definition, key_opts)
+  keyset('n', 'g0', lsp_callbacks.document_symbols, key_opts)
+  keyset('n', 'gW', lsp_callbacks.workspace_symbols, key_opts)
+  keyset('n', 'gr', lsp_callbacks.references, key_opts)
+  keyset('n', '<leader>d', lsp_callbacks.type_definitions, key_opts)
   keyset('n', '<leader>rn', vim.lsp.buf.rename, key_opts)
   keyset('n', '<leader>ga', vim.lsp.buf.code_action, key_opts)
   keyset(
@@ -168,7 +191,7 @@ return {
             format = {
               defaultConfig = {
                 indent_style = 'space',
-                indent_size = 3,
+                indent_size = 2,
               },
             },
           },
