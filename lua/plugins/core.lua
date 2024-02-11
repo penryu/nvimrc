@@ -99,6 +99,39 @@ return {
     },
   },
   {
+    'folke/noice.nvim',
+    dependencies = {
+      -- make sure to add proper `module="..."` entries
+      -- if you lazy-load any plugin below
+      'MunifTanjim/nui.nvim',
+      -- `nvim-notify` is only needed, if you want to use the notification view.
+      -- If not available, we use `mini` as the fallback
+      'rcarriga/nvim-notify',
+    },
+    opts = {
+      lsp = {
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
+        },
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = false,
+      },
+      views = {
+        split = {
+          enter = true,
+        },
+      },
+    },
+    event = 'VeryLazy',
+  },
+  {
     'folke/todo-comments.nvim',
     dependencies = 'nvim-lua/plenary.nvim',
     config = function()
@@ -414,7 +447,12 @@ return {
     lazy = false,
     cmd = 'Neotree',
     keys = {
-      { '\\', ':Neotree toggle<cr>', 'noremap', desc = 'Toggle Neotree' },
+      {
+        '\\',
+        ':Neotree toggle<cr>',
+        'noremap',
+        desc = 'Toggle Neotree',
+      },
       { '<bar>', ':Neotree git_status<cr>', 'noremap', desc = 'Toggle git' },
     },
   },
