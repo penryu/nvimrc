@@ -13,7 +13,6 @@ if pcall(require, 'telescope.builtin') then
     document_symbols = ts_builtin.lsp_document_symbols,
     implementations = ts_builtin.lsp_implementations,
     references = ts_builtin.lsp_references,
-    resume = ts_builtin.resume,
     type_definitions = ts_builtin.lsp_type_definitions,
   }
 else

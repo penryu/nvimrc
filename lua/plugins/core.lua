@@ -421,7 +421,7 @@ return {
         close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
         enable_git_status = true,
         enable_diagnostics = true,
-        window = { width = 36 },
+        window = { width = 32 },
         filesystem = {
           filtered_items = {
             hide_dotfiles = true,
