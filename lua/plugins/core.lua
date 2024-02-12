@@ -108,27 +108,38 @@ return {
       -- If not available, we use `mini` as the fallback
       'rcarriga/nvim-notify',
     },
-    opts = {
-      lsp = {
-        override = {
-          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-          ['vim.lsp.util.stylize_markdown'] = true,
-          ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
+    config = function()
+      require('noice').setup {
+        health = {
+          checker = false,
         },
-      },
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-        inc_rename = false,
-        lsp_doc_border = false,
-      },
-      views = {
-        split = {
-          enter = true,
+        lsp = {
+          override = {
+            ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+            ['vim.lsp.util.stylize_markdown'] = true,
+            ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
+          },
         },
-      },
-    },
+        messages = {
+          view = 'mini',
+          -- view_error = 'mini',
+          -- view_warn = 'mini',
+        },
+        presets = {
+          bottom_search = true,
+          command_palette = false,
+          long_message_to_split = true,
+          inc_rename = false,
+          lsp_doc_border = true,
+        },
+        views = {
+          split = {
+            enter = true,
+          },
+        },
+      }
+      require('telescope').load_extension('noice')
+    end,
     event = 'VeryLazy',
   },
   {
@@ -297,9 +308,17 @@ return {
   {
     'nvim-lualine/lualine.nvim',
     config = function()
+      local noice = require('noice')
+
+      local encoding = function()
+        local ret, _ = (vim.bo.fenc or vim.go.enc):gsub('^utf%-8$', '')
+        return ret
+      end
+
       local sections = {
         lualine_a = { 'mode' },
         lualine_b = {
+          'branch',
           'diff',
           {
             'diagnostics',
@@ -313,7 +332,22 @@ return {
         },
         lualine_c = { { 'filename', path = 1 } },
         lualine_x = {
-          'encoding',
+          {
+            noice.api.status.command.get,
+            cond = noice.api.status.command.has,
+            color = { fg = '#ff9e64' },
+          },
+          {
+            noice.api.status.mode.get,
+            cond = noice.api.status.mode.has,
+            color = { fg = '#ff9e64' },
+          },
+          {
+            noice.api.status.search.get,
+            cond = noice.api.status.search.has,
+            color = { fg = '#ff9e64' },
+          },
+          encoding, -- function only displays encoding if not utf-8
           {
             'fileformat',
             symbols = { dos = 'dos', mac = 'mac', unix = '' },
@@ -329,12 +363,8 @@ return {
           'fzf',
           'lazy',
           'man',
-          'mundo',
           'neo-tree',
-          'quickfix',
-          'symbols-outline',
           'toggleterm',
-          'trouble',
         },
         options = {
           globalstatus = false,
@@ -342,6 +372,7 @@ return {
           -- theme = 'codedark',
           theme = 'everforest',
           -- theme = 'gruvbox',
+          -- theme = 'gruvbox_light',
           -- theme = 'gruvbox-material',
           -- theme = 'iceberg',
           -- theme = 'nord',
@@ -353,9 +384,15 @@ return {
           lualine_a = { 'buffers' },
           lualine_b = {},
           lualine_c = {},
-          lualine_x = {},
-          lualine_y = { 'tabs' },
-          lualine_z = { 'branch' },
+          lualine_x = {
+            {
+              noice.api.status.message.get,
+              cond = noice.api.status.message.has,
+              color = { fg = '#eeeeee' },
+            },
+          },
+          lualine_y = {},
+          lualine_z = { 'tabs' },
         },
       }
     end,
