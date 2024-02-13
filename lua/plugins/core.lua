@@ -71,6 +71,8 @@ return {
       u.create_autocmd('TermOpen', { pattern = '*', command = 'startinsert' })
       -- Creates a toggleterm in a dedicated tab
       u.create_command('TabTerm', 'ToggleTerm direction=tab', {})
+      -- Send toggleterm back to float
+      u.create_command('QuakeTerm', 'ToggleTerm direction=float', {})
     end,
     keys = '<c-\\>',
     cmd = { 'TabTerm', 'ToggleTerm' },
