@@ -41,6 +41,11 @@ u.create_autocmd('FileType', {
 })
 
 u.create_autocmd('FileType', {
+  pattern = 'python',
+  command = 'setlocal textwidth=88',
+})
+
+u.create_autocmd('FileType', {
   pattern = 'markdown',
   command = 'setlocal spell',
 })
