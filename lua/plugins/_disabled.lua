@@ -1,4 +1,4 @@
-local disabled_plugins = {
+local _disabled_plugins = {
   {
     'simrat39/symbols-outline.nvim',
     config = function() require('symbols-outline').setup {} end,
