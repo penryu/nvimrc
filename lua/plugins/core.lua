@@ -99,50 +99,6 @@ return {
     },
   },
   {
-    'folke/noice.nvim',
-    dependencies = {
-      -- make sure to add proper `module="..."` entries
-      -- if you lazy-load any plugin below
-      'MunifTanjim/nui.nvim',
-      -- `nvim-notify` is only needed, if you want to use the notification view.
-      -- If not available, we use `mini` as the fallback
-      'rcarriga/nvim-notify',
-    },
-    config = function()
-      require('noice').setup {
-        health = {
-          checker = false,
-        },
-        lsp = {
-          override = {
-            ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-            ['vim.lsp.util.stylize_markdown'] = true,
-            ['cmp.entry.get_documentation'] = true, -- requires hrsh7th/nvim-cmp
-          },
-        },
-        messages = {
-          view = 'mini',
-          -- view_error = 'mini',
-          -- view_warn = 'mini',
-        },
-        presets = {
-          bottom_search = true,
-          command_palette = false,
-          long_message_to_split = true,
-          inc_rename = false,
-          lsp_doc_border = true,
-        },
-        views = {
-          split = {
-            enter = true,
-          },
-        },
-      }
-      require('telescope').load_extension('noice')
-    end,
-    event = 'VeryLazy',
-  },
-  {
     'folke/todo-comments.nvim',
     dependencies = 'nvim-lua/plenary.nvim',
     config = function()
@@ -307,8 +263,25 @@ return {
   },
   {
     'nvim-lualine/lualine.nvim',
+    dependencies = {
+      'folke/noice.nvim',
+    },
     config = function()
       local noice = require('noice')
+      noice.setup {
+        messages = {
+          view = 'mini',
+          view_error = 'popup',
+          view_warn = 'split',
+        },
+        presets = {
+          bottom_search = true,
+          command_palette = false,
+          long_message_to_split = true,
+          inc_rename = false,
+          lsp_doc_border = true,
+        },
+      }
 
       local encoding = function()
         local ret, _ = (vim.bo.fenc or vim.go.enc):gsub('^utf%-8$', '')
@@ -333,8 +306,8 @@ return {
         lualine_c = { { 'filename', path = 1 } },
         lualine_x = {
           {
-            noice.api.status.command.get,
-            cond = noice.api.status.command.has,
+            noice.api.status.search.get,
+            cond = noice.api.status.search.has,
             color = { fg = '#ff9e64' },
           },
           {
@@ -343,8 +316,8 @@ return {
             color = { fg = '#ff9e64' },
           },
           {
-            noice.api.status.search.get,
-            cond = noice.api.status.search.has,
+            noice.api.status.command.get,
+            cond = noice.api.status.command.has,
             color = { fg = '#ff9e64' },
           },
           encoding, -- function only displays encoding if not utf-8
@@ -669,6 +642,14 @@ return {
     },
   },
   {
+    'rcarriga/nvim-notify',
+    lazy = false,
+  },
+  {
+    -- highlight trailing whitespace, inconsistent indents, and long lines
+    'tssm/nvim-snitch',
+  },
+  {
     'jiaoshijie/undotree',
     dependencies = 'nvim-lua/plenary.nvim',
     config = true,
@@ -708,18 +689,5 @@ return {
     -- enhances netrw
     'tpope/vim-vinegar',
     event = 'BufNew netrw',
-  },
-  -- highlight trailing whitespace, inconsistent indents, and long lines
-  { 'tssm/nvim-snitch' },
-  {
-    'Yggdroot/indentLine',
-    init = function()
-      -- workaround https://github.com/Yggdroot/indentLine/issues/109
-      vim.g.indentLine_faster = true
-      vim.g.indentLine_setConceal = false
-
-      vim.g.indentLine_char_list = { '┆', '┊', '¦' }
-      vim.g.indentLine_fileTypeExclude = { 'help', 'man', 'toggleterm' }
-    end,
   },
 }
