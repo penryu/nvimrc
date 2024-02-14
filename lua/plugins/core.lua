@@ -68,20 +68,6 @@ return {
     },
     config = function()
       local noice = require('noice')
-      noice.setup {
-        messages = {
-          view = 'mini',
-          view_error = 'notify',
-          view_warn = 'notify',
-        },
-        presets = {
-          bottom_search = true,
-          command_palette = false,
-          long_message_to_split = true,
-          inc_rename = false,
-          lsp_doc_border = true,
-        },
-      }
 
       local encoding = function()
         local ret, _ = (vim.bo.fenc or vim.go.enc):gsub('^utf%-8$', '')
@@ -341,6 +327,31 @@ return {
         end,
         desc = 'Open a Lua or VimScript REPL',
       },
+    },
+  },
+  {
+    'folke/noice.nvim',
+    opts = {
+      messages = {
+        view = 'mini',
+        view_error = 'notify',
+        view_warn = 'notify',
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = false,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = true,
+      },
+    },
+  },
+  {
+    'rcarriga/nvim-notify',
+    opts = {
+      render = 'wrapped-compact',
+      stages = 'fade',
+      top_down = true,
     },
   },
   'tssm/nvim-snitch', -- highlight trailing whitespace, inconsistent indents, and long lines
