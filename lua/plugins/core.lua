@@ -273,8 +273,8 @@ return {
       noice.setup {
         messages = {
           view = 'mini',
-          view_error = 'popup',
-          view_warn = 'split',
+          view_error = 'notify',
+          view_warn = 'notify',
         },
         presets = {
           bottom_search = true,
