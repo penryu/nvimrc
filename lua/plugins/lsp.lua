@@ -60,12 +60,6 @@ local function lsp_on_attach(client, bufnr)
     end,
     key_opts
   )
-  keyset(
-    'n',
-    '<leader>f',
-    function() vim.lsp.buf.format { async = true } end,
-    key_opts
-  )
   -- diagnostic
   keyset(
     'n',
@@ -76,6 +70,12 @@ local function lsp_on_attach(client, bufnr)
   keyset('n', '<leader>q', vim.diagnostic.setloclist, key_opts)
   keyset('n', '[d', vim.diagnostic.goto_prev, key_opts)
   keyset('n', ']d', vim.diagnostic.goto_next, key_opts)
+
+  u.create_command(
+    'LspFormat',
+    function() vim.lsp.buf.format { async = true } end,
+    { nargs = 0 }
+  )
 end
 
 return {
@@ -85,17 +85,21 @@ return {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'hrsh7th/nvim-cmp',
-      'hrsh7th/vim-vsnip',
-      'nvimdev/lspsaga.nvim',
+      {
+        'hrsh7th/nvim-cmp',
+        dependencies = {
+          'hrsh7th/cmp-buffer',
+          'hrsh7th/cmp-path',
+          'hrsh7th/cmp-vsnip',
+          'hrsh7th/cmp-nvim-lsp',
+        },
+      },
       'nvim-lua/plenary.nvim',
-      'nvim-lua/popup.nvim',
       'nvim-telescope/telescope.nvim',
     },
     config = function()
       local cmp = require('cmp')
       local lspconfig = require('lspconfig')
-
       cmp.setup {
         preselect = cmp.PreselectMode.None,
         snippet = {
@@ -157,7 +161,7 @@ return {
       lspconfig.lua_ls.setup {
         on_attach = lsp_on_attach,
         commands = {
-          Format = {
+          FormatLua = {
             function() require('stylua-nvim').format_file() end,
           },
         },
@@ -176,7 +180,6 @@ return {
         },
       }
       lspconfig.fennel_ls.setup {}
-      -- lspconfig.fennel_language_server.setup {}
 
       -- markdown
       -- https://github.com/artempyanykh/marksman/releases/
@@ -234,19 +237,56 @@ return {
     },
   },
   {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-vsnip',
-      'hrsh7th/cmp-nvim-lsp',
+    'stevearc/conform.nvim',
+    config = function()
+      require('conform').setup {
+        format_on_save = {
+          timeout_ms = 500,
+          lsp_fallback = true,
+        },
+        formatters = {
+          comrak = {
+            command = 'comrak',
+            args = { '--width=72', '--to=commonmark' },
+          },
+        },
+        formatters_by_ft = {
+          markdown = { 'comrak' },
+          javascript = { 'prettierd', 'prettier' },
+          lua = { 'stylua' },
+          python = { 'ruff' },
+        },
+      }
+      u.create_command(
+        'Format',
+        function()
+          require('conform').format { async = true, lsp_fallback = true }
+        end,
+        { nargs = 0 }
+      )
+    end,
+    event = 'BufWritePre',
+    cmd = { 'ConformInfo', 'Format' },
+    keys = {
+      {
+        '<leader>f',
+        function()
+          require('conform').format { async = true, lsp_fallback = true }
+        end,
+        desc = 'Format buffer (conform)',
+      },
     },
-    config = function() end,
   },
   {
     -- Visualize lsp progress
     'j-hui/fidget.nvim',
-    tag = 'legacy',
+    opts = {
+      progress = {
+        display = {
+          skip_history = false,
+        },
+      },
+    },
     event = 'LspAttach',
   },
   {
@@ -255,40 +295,23 @@ return {
       'nvim-treesitter/nvim-treesitter',
       'nvim-tree/nvim-web-devicons',
     },
-    init = function() end,
     config = function()
       require('lspsaga').setup {
         symbol_in_winbar = {
           color_mode = true,
           enable = true,
+          show_file = true,
         },
       }
       u.create_command('Outline', 'Lspsaga outline', { nargs = 0 })
     end,
     event = 'LspAttach',
-    cmd = { 'Outline' },
+    cmd = 'Outline',
   },
   {
-    'prettier/vim-prettier',
-    init = function()
-      vim.g['prettier#autoformat_config_present'] = true
-      vim.g['prettier#autoformat_require_pragma'] = false
-    end,
-    ft = {
-      'javascript',
-      'javascriptreact',
-      'javascript.jsx',
-      'typescript',
-      'typescriptreact',
-      'typescript.tsx',
-    },
-  },
-  {
-    'ckipp01/stylua-nvim',
-    config = function()
-      u.create_autocmd('BufWritePre', { pattern = '*.lua', command = 'Format' })
-    end,
-    ft = 'lua',
+    'rust-lang/rust.vim',
+    init = function() vim.g.rustfmt_autosave = 1 end,
+    ft = 'rust',
   },
   {
     -- A heavily modified fork of rust-tools.nvim
@@ -358,33 +381,5 @@ return {
       }
     end,
     ft = 'rust',
-  },
-  {
-    'rust-lang/rust.vim',
-    init = function() vim.g.rustfmt_autosave = 1 end,
-    ft = 'rust',
-  },
-  {
-    'pangloss/vim-javascript',
-    init = function()
-      vim.g.javascript_plugin_jsdoc = true
-      vim.g.javascript_conceal_function = 'ƒ'
-      vim.g.javascript_conceal_null = 'ø'
-      vim.g.javascript_conceal_this = '@'
-      vim.g.javascript_conceal_return = '⇚'
-      vim.g.javascript_conceal_undefined = '¿'
-      vim.g.javascript_conceal_NaN = 'ℕ'
-      vim.g.javascript_conceal_prototype = '¶'
-      vim.g.javascript_conceal_static = '•'
-      vim.g.javascript_conceal_super = 'Ω'
-      vim.g.javascript_conceal_arrow_function = '⇒'
-      vim.g.javascript_conceal_noarg_arrow_function = '🞅'
-      vim.g.javascript_conceal_underscore_arrow_function = '🞅'
-    end,
-    ft = { 'javascript', 'typescript' },
-  },
-  {
-    'leafgarland/typescript-vim',
-    ft = 'typescript',
   },
 }
