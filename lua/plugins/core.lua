@@ -75,7 +75,7 @@ return {
       u.create_command('QuakeTerm', 'ToggleTerm direction=float', {})
     end,
     keys = '<c-\\>',
-    cmd = { 'TabTerm', 'ToggleTerm' },
+    cmd = { 'QuakeTerm', 'TabTerm', 'ToggleTerm' },
   },
   {
     'atweiden/vim-fennel',
