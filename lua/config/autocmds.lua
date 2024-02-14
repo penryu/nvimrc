@@ -36,18 +36,28 @@ u.create_autocmd('FileType', {
 })
 
 u.create_autocmd('FileType', {
-  pattern = 'lua',
-  command = 'setlocal shiftwidth=2 softtabstop=2',
+  pattern = { 'json', 'javascript', 'typescript' },
+  command = 'setlocal foldmethod=syntax',
 })
 
 u.create_autocmd('FileType', {
-  pattern = 'python',
-  command = 'setlocal textwidth=88',
+  pattern = 'lua',
+  command = 'setlocal foldmethod=indent shiftwidth=2 softtabstop=2',
 })
 
 u.create_autocmd('FileType', {
   pattern = 'markdown',
   command = 'setlocal spell',
+})
+
+u.create_autocmd('FileType', {
+  pattern = 'python',
+  command = 'setlocal foldmethod=indent textwidth=88',
+})
+
+u.create_autocmd('FileType', {
+  pattern = 'rust',
+  command = 'setlocal foldmethod=syntax',
 })
 
 u.create_autocmd('FileType', {
