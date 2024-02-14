@@ -237,7 +237,7 @@ return {
         filesystem = {
           filtered_items = {
             hide_dotfiles = true,
-            hide_gitignored = false,
+            hide_gitignored = true,
             hide_by_name = { 'node_modules' },
             hide_by_pattern = { -- uses glob style patterns
               -- "*.meta"
@@ -256,6 +256,8 @@ return {
         },
       }
     end,
+    -- needs to load early to override netrw
+    lazy = false,
     cmd = 'Neotree',
     keys = {
       {
