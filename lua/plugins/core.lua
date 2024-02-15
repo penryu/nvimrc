@@ -401,9 +401,10 @@ return {
   {
     'nvim-telescope/telescope.nvim',
     dependencies = {
+      'rcarriga/nvim-notify',
+      'nvim-treesitter/nvim-treesitter',
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-symbols.nvim',
-      'nvim-treesitter/nvim-treesitter',
     },
     config = function()
       local telescope = require('telescope')
@@ -419,6 +420,7 @@ return {
           },
         },
       }
+      telescope.load_extension('notify')
     end,
     cmd = 'Telescope',
     keys = {
