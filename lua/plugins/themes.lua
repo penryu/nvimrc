@@ -6,13 +6,10 @@ return {
   {
     'adisen99/apprentice.nvim',
     dependencies = { 'rktjmp/lush.nvim' },
-    init = function()
-      -- g.apprentice_contrast_dark = 'soft'
-      vim.g.apprentice_contrast_dark = 'medium'
-      -- g.apprentice_contrast_dark = 'hard'
-    end,
     config = function()
-      -- vim.cmd 'colorscheme apprentice'
+      -- vim.g.apprentice_contrast_dark = 'soft'
+      -- vim.g.apprentice_contrast_dark = 'medium'
+      vim.g.apprentice_contrast_dark = 'hard'
       require('lush')(require('apprentice').setup {
         plugins = {
           -- 'buftabline',
@@ -47,25 +44,6 @@ return {
     lazy = true,
   },
   {
-    'ntk148v/habamax.nvim',
-    dependencies = { 'rktjmp/lush.nvim' },
-    config = function() vim.cmd('colorscheme habamax') end,
-    priority = 1000,
-    lazy = true,
-  },
-  {
-    'Shatur/neovim-ayu',
-    config = function()
-      local ayu = require('ayu')
-      ayu.setup {
-        mirage = false,
-      }
-      ayu.colorscheme()
-    end,
-    priority = 1000,
-    lazy = true,
-  },
-  {
     'shaunsingh/nord.nvim',
     config = function() vim.cmd('colorscheme nord') end,
     priority = 1000,
@@ -78,12 +56,17 @@ return {
     lazy = true,
   },
   {
-    'rakr/vim-one',
-    init = function() vim.g.one_allow_italics = 1 end,
-    config = function()
-      vim.g.one_allow_italics = true
-      vim.cmd('colorscheme one')
-    end,
+    'habamax/vim-alchemist',
+    priority = 1000,
+    lazy = true,
+  },
+  {
+    'habamax/vim-gruvbit',
+    priority = 1000,
+    lazy = true,
+  },
+  {
+    'habamax/vim-saturnite',
     priority = 1000,
     lazy = true,
   },
