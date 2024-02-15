@@ -66,6 +66,7 @@ return {
       'folke/noice.nvim',
       'rcarriga/nvim-notify',
     },
+    init = function() vim.o.termguicolors = true end,
     config = function()
       local noice = require('noice')
 
