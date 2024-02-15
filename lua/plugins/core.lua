@@ -176,7 +176,7 @@ return {
   },
   {
     'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
+    branch = 'v3.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
@@ -184,7 +184,7 @@ return {
       {
         -- only needed if you want to use the commands with "_with_window_picker" suffix
         's1n7ax/nvim-window-picker',
-        version = 'v1.*',
+        version = '2.*',
         config = function()
           require('window-picker').setup {
             autoselect_one = true,
@@ -197,10 +197,10 @@ return {
                   'neo-tree',
                   'neo-tree-popup',
                   'notify',
-                  'quickfix',
+                  'toggleterm',
                 },
                 -- if the buffer type is one of following, the window will be ignored
-                buftype = { 'terminal' },
+                buftype = { 'quickfix', 'terminal' },
               },
             },
             other_win_hl_color = '#e35e4f',
@@ -208,9 +208,7 @@ return {
         end,
       },
     },
-    init = function()
-      -- Unless you are still migrating, remove the deprecated commands from v1.x
-      vim.g.neo_tree_remove_legacy_commands = true
+    config = function()
       -- If you want icons for diagnostic errors, you'll need to define them somewhere:
       vim.fn.sign_define(
         'DiagnosticSignError',
@@ -228,33 +226,52 @@ return {
         'DiagnosticSignHint',
         { text = '', texthl = 'DiagnosticSignHint' }
       )
-    end,
-    config = function()
       require('neo-tree').setup {
-        close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+        -- Close Neo-tree if it is the last window left in the tab
+        close_if_last_window = true,
         enable_git_status = true,
         enable_diagnostics = true,
-        window = { width = 32 },
+        -- when opening files, do not use windows containing these filetypes or buftypes
+        open_files_do_not_replace_types = { 'terminal', 'trouble', 'qf' },
+        popup_border_style = 'rounded',
+        sort_case_insensitive = false,
         filesystem = {
           filtered_items = {
             hide_dotfiles = true,
             hide_gitignored = true,
             hide_by_name = { 'node_modules' },
-            hide_by_pattern = { -- uses glob style patterns
+            hide_by_pattern = {
+              -- uses glob style patterns
               -- "*.meta"
             },
-            never_show = { -- remains hidden even if visible is toggled to true
+            never_show = {
+              -- remains hidden even if visible is toggled to true
               '.DS_Store',
               'thumbs.db',
             },
           },
-          -- This will find and focus the file in the active buffer every
-          -- time the current file is changed while the tree is open.
-          follow_current_file = true,
+          follow_current_file = {
+            -- This will find and focus the file in the active buffer every
+            -- time the current file is changed while the tree is open.
+            enabled = true,
+            -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+            leave_dirs_open = true,
+          },
           -- This will use the OS level file watchers to detect changes
           -- instead of relying on nvim autocmd events.
           use_libuv_file_watcher = true,
         },
+        buffers = {
+          follow_current_file = {
+            -- This will find and focus the file in the active buffer every
+            -- time the current file is changed while the tree is open.
+            enabled = true,
+            -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+            leave_dirs_open = true,
+          },
+          show_unloaded = true,
+        },
+        window = { position = 'float', width = 40 },
       }
     end,
     -- needs to load early to override netrw
@@ -267,10 +284,9 @@ return {
           require('neo-tree.command').execute {
             toggle = true,
             source = 'filesystem',
-            position = 'left',
           }
         end,
-        desc = 'Toggle filesystem view',
+        desc = 'Toggle neotree filesystem view',
       },
       {
         '<bar>',
@@ -278,10 +294,19 @@ return {
           require('neo-tree.command').execute {
             toggle = true,
             source = 'git_status',
-            position = 'right',
           }
         end,
-        desc = 'Toggle git status view',
+        desc = 'Toggle neotree git status view',
+      },
+      {
+        '<leader>b',
+        function()
+          require('neo-tree.command').execute {
+            toggle = true,
+            source = 'buffers',
+          }
+        end,
+        desc = 'Toggle neotree buffers view',
       },
     },
   },
@@ -398,7 +423,7 @@ return {
     cmd = 'Telescope',
     keys = {
       {
-        '<leader>b',
+        '<leader>tb',
         function() require('telescope.builtin').buffers() end,
         desc = 'Telescope buffers',
       },
