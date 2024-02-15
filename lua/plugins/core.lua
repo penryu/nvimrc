@@ -395,6 +395,24 @@ return {
     ft = { 'clojure', 'fennel', 'lisp' },
   },
   {
+    'penryu/rp.nvim',
+    opts = { bin = 'hpnc' },
+    cmd = 'Rp',
+    keys = {
+      { '<leader>rp', '<cmd>Rp<cr>', desc = 'Launch RPN calculator' },
+      {
+        '<leader>ry',
+        function()
+          local rp = require('rp-nvim')
+          for k, v in pairs(package.loaded) do
+            print(k)
+          end
+          rp.open()
+        end,
+      },
+    },
+  },
+  {
     'lambdalisue/suda.vim',
     init = function() vim.g.suda_smart_edit = true end,
   },
@@ -633,5 +651,16 @@ return {
       vim.o.timeoutlen = 300
     end,
     opts = {},
+  },
+  {
+    'DreamMaoMao/yazi.nvim',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+      'nvim-lua/plenary.nvim',
+    },
+    cmd = 'Yazi',
+    keys = {
+      { '<leader>ya', '<cmd>Yazi<cr>', desc = 'Toggie Yazi' },
+    },
   },
 }

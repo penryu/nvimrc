@@ -6,26 +6,4 @@ local _disabled_plugins = {
   },
 }
 
-return {
-  {
-    'DreamMaoMao/yazi.nvim',
-    dependencies = {
-      'nvim-telescope/telescope.nvim',
-      'nvim-lua/plenary.nvim',
-    },
-    cmd = 'Yazi',
-    keys = {
-      { '<leader>gy', '<cmd>Yazi<cr>', desc = 'Toggie Yazi' },
-    },
-  },
-  {
-    'penryu/rp.nvim',
-    opts = {
-      bin = 'hpnc',
-    },
-    cmd = 'Rp',
-    keys = {
-      { '<leader>rp', '<cmd>Rp<cr>', desc = 'Launch RPN calculator' },
-    },
-  },
-}
+return {}
