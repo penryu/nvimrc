@@ -8,8 +8,8 @@ return {
     dependencies = { 'rktjmp/lush.nvim' },
     config = function()
       -- vim.g.apprentice_contrast_dark = 'soft'
-      -- vim.g.apprentice_contrast_dark = 'medium'
-      vim.g.apprentice_contrast_dark = 'hard'
+      vim.g.apprentice_contrast_dark = 'medium'
+      -- vim.g.apprentice_contrast_dark = 'hard'
       require('lush')(require('apprentice').setup {
         plugins = {
           -- 'buftabline',
