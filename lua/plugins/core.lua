@@ -81,7 +81,13 @@ return {
         },
         lualine_b = {},
         lualine_c = {},
-        lualine_x = {},
+        lualine_x = {
+          {
+            noice.api.status.message.get,
+            cond = noice.api.status.message.has,
+            color = { fg = '#eeeeee' },
+          },
+        },
         lualine_y = {},
         lualine_z = { { 'tabs', mode = 0, path = 0, use_mode_colors = true } },
       }
@@ -98,31 +104,30 @@ return {
         lualine_c = { { 'filename', path = 4 } },
         lualine_x = {
           {
-            noice.api.status.message.get,
-            cond = noice.api.status.message.has,
-            color = { fg = '#eeeeee' },
+            noice.api.status.search.get,
+            cond = noice.api.status.search.has,
+            color = { fg = '#ff9e64' },
           },
+          -- {
+          --   noice.api.status.mode.get,
+          --   cond = noice.api.status.mode.has,
+          --   color = { fg = '#ff9e64' },
+          -- },
           {
             noice.api.status.command.get,
             cond = noice.api.status.command.has,
             color = { fg = '#ff9e64' },
           },
-          {
-            noice.api.status.search.get,
-            cond = noice.api.status.search.has,
-            color = { fg = '#ff9e64' },
-          },
-          {
-            noice.api.status.mode.get,
-            cond = noice.api.status.mode.has,
-            color = { fg = '#ff9e64' },
-          },
+        },
+        lualine_y = {
           encoding, -- function only displays encoding if not utf-8
           { 'fileformat', symbols = { dos = 'dos', mac = 'mac', unix = '' } },
           'filetype',
         },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location' },
+        lualine_z = {
+          'progress',
+          'location',
+        },
       }
       require('lualine').setup {
         extensions = {
@@ -498,13 +503,12 @@ return {
     'akinsho/toggleterm.nvim',
     version = '*',
     config = function()
-      local f_width = function() return vim.o.columns end
-      local f_height = function() return math.floor(vim.o.lines * 3 / 5) end
-      local f_row = function()
-        -- bottom of term above main status
-        -- top term border + bottom term border + status line => 3
-        return vim.o.lines - f_height() - vim.o.cmdheight - 3
+      local row = 1
+      local width = function()
+        return math.floor(math.max(100, 0.64 * vim.o.columns))
       end
+      local col = function() return vim.o.columns - width() end
+      local height = function() return vim.o.lines - 4 end
 
       require('toggleterm').setup {
         -- directions: float / horizontal / tab / vertical
@@ -512,17 +516,18 @@ return {
         float_opts = {
           -- borders: single / double / shadow / curved
           border = 'single',
-          height = f_height,
-          width = f_width,
-          row = f_row,
+          height = height,
+          width = width,
+          col = col,
+          row = row,
         },
         open_mapping = [[<c-\>]],
         shade_terminals = true,
         size = function(term)
           if term.direction == 'horizontal' then
-            return vim.o.lines * 0.42
+            return vim.o.lines * 0.51
           elseif term.direction == 'vertical' then
-            return vim.o.columns
+            return math.max(math.ceil(vim.o.columns / 2), 80)
           end
         end,
       }
