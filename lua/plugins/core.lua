@@ -141,6 +141,11 @@ return {
         options = {
           globalstatus = false,
           icons_enabled = true,
+          --    
+          --      
+          --    
+          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
           -- theme = 'codedark',
           theme = 'everforest',
           -- theme = 'gruvbox',
