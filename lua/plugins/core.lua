@@ -104,7 +104,12 @@ return {
           'diff',
           {
             'diagnostics',
-            symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' },
+            symbols = {
+              error = ' ',
+              warn = ' ',
+              info = ' ',
+              hint = ' ',
+            },
           },
         },
         lualine_c = { { 'filename', path = 4 } },
@@ -114,15 +119,13 @@ return {
             cond = noice.api.status.search.has,
             color = { fg = '#ff9e64' },
           },
-          -- {
-          --   noice.api.status.mode.get,
-          --   cond = noice.api.status.mode.has,
-          --   color = { fg = '#ff9e64' },
-          -- },
         },
         lualine_y = {
           encoding, -- function only displays encoding if not utf-8
-          { 'fileformat', symbols = { dos = 'dos', mac = 'mac', unix = '' } },
+          {
+            'fileformat',
+            symbols = { dos = ' ', mac = ' ', unix = '' },
+          },
           'filetype',
         },
         lualine_z = {
@@ -148,10 +151,10 @@ return {
           section_separators = { left = '', right = '' },
           component_separators = { left = '', right = '' },
           -- theme = 'codedark',
-          theme = 'everforest',
+          -- theme = 'everforest',
           -- theme = 'gruvbox',
           -- theme = 'gruvbox_light',
-          -- theme = 'gruvbox-material',
+          theme = 'gruvbox-material',
           -- theme = 'iceberg',
           -- theme = 'nord',
           -- theme = 'wombat',
@@ -415,7 +418,7 @@ return {
         '<leader>ry',
         function()
           local rp = require('rp-nvim')
-          for k, v in pairs(package.loaded) do
+          for k, _ in pairs(package.loaded) do
             print(k)
           end
           rp.open()
