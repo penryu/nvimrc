@@ -88,7 +88,13 @@ return {
             color = { fg = '#eeeeee' },
           },
         },
-        lualine_y = {},
+        lualine_y = {
+          {
+            noice.api.status.command.get,
+            cond = noice.api.status.command.has,
+            color = { fg = '#ff9e64' },
+          },
+        },
         lualine_z = { { 'tabs', mode = 0, path = 0, use_mode_colors = true } },
       }
       local sections = {
@@ -113,11 +119,6 @@ return {
           --   cond = noice.api.status.mode.has,
           --   color = { fg = '#ff9e64' },
           -- },
-          {
-            noice.api.status.command.get,
-            cond = noice.api.status.command.has,
-            color = { fg = '#ff9e64' },
-          },
         },
         lualine_y = {
           encoding, -- function only displays encoding if not utf-8
