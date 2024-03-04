@@ -150,6 +150,9 @@ return {
       -- yarn global add @microsoft/compose-language-service
       lspconfig.docker_compose_language_service.setup {}
 
+      -- golang
+      lspconfig.gopls.setup { on_attach = lsp_on_attach }
+
       -- javascript and friends
       -- yarn global add vscode-langservers-extracted
       lspconfig.eslint.setup { on_attach = lsp_on_attach }
@@ -219,6 +222,7 @@ return {
       'edn',
       'dockerfile',
       'fennel',
+      'go',
       'yaml.docker-compose',
       'javascript',
       'javascriptreact',
@@ -307,6 +311,17 @@ return {
     end,
     event = 'LspAttach',
     cmd = 'Outline',
+  },
+  {
+    'ray-x/go.nvim',
+    dependencies = {
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function() require('go').setup() end,
+    -- event = 'CmdlineEnter',
+    ft = { 'go', 'gomod' },
   },
   {
     'rust-lang/rust.vim',

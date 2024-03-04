@@ -36,6 +36,11 @@ u.create_autocmd('FileType', {
 })
 
 u.create_autocmd('FileType', {
+  pattern = { 'go', 'gomod' },
+  command = 'setlocal noexpandtab shiftwidth=4 tabstop=4',
+})
+
+u.create_autocmd('FileType', {
   pattern = { 'json', 'javascript', 'typescript' },
   command = 'setlocal foldmethod=syntax',
 })
