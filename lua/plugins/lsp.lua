@@ -262,7 +262,7 @@ return {
           markdown = { 'comrak' },
           javascript = { 'prettierd', 'prettier' },
           lua = { 'stylua' },
-          python = { 'ruff' },
+          python = { 'ruff_format' },
         },
       }
       u.create_command(
