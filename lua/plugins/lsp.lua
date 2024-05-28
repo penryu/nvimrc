@@ -353,7 +353,7 @@ return {
     -- A heavily modified fork of rust-tools.nvim
     -- https://github.com/mrcjkb/rustaceanvim
     'mrcjkb/rustaceanvim',
-    version = '^3', -- Recommended
+    version = '^4', -- Recommended
     dependencies = {
       'nvim-lua/plenary.nvim',
       'mfussenegger/nvim-dap',
@@ -416,6 +416,7 @@ return {
         },
       }
     end,
+    -- Can set `lazy = false` per https://github.com/mrcjkb/rustaceanvim/blob/master/README.md
     ft = 'rust',
   },
 }

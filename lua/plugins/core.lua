@@ -326,6 +326,7 @@ return {
   },
   {
     'nvim-neorg/neorg',
+    enabled = false, -- ignore until I have time to dig into this
     dependencies = 'nvim-lua/plenary.nvim',
     build = ':Neorg sync-parsers',
     config = function()
@@ -399,6 +400,7 @@ return {
   'tssm/nvim-snitch', -- highlight trailing whitespace, inconsistent indents, and long lines
   {
     'nvim-treesitter/nvim-treesitter',
+    tag = 'v0.9.2', -- update if nvim-treesitter emits node type errors
     dependencies = {
       -- Additional textobjects for treesitter.
       'nvim-treesitter/nvim-treesitter-textobjects',
