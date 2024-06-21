@@ -322,6 +322,13 @@ return {
     },
     config = function()
       require('lspsaga').setup {
+        code_action = {
+          show_server_name = true,
+        },
+        lightbulb = {
+          sign = true, -- show icon on left of line
+          virtual_text = false, -- show icon on right of line
+        },
         symbol_in_winbar = {
           color_mode = true,
           enable = true,
