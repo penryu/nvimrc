@@ -20,6 +20,14 @@ if vim.g.fancy_number then
   })
 end
 
+u.create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  pattern = '*.zcp',
+  callback = function()
+    local buf = vim.api.nvim_get_current_buf()
+    vim.api.nvim_buf_set_option(buf, 'filetype', 'lua')
+  end,
+})
+
 u.create_autocmd('FileType', {
   pattern = { 'diff', 'help', 'man' },
   command = 'setlocal colorcolumn= nocursorline nonumber',
