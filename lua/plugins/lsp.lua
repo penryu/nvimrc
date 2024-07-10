@@ -4,30 +4,38 @@
 
 local u = require('util')
 
-local lsp_callbacks
+local lsp_callbacks = {
+  code_action = vim.lsp.buf.code_action,
+  code_format = function() vim.lsp.buf.format { async = true } end,
+  curr_diag = function() vim.diagnostic.open_float(nil, { focusable = false }) end,
+  goto_prev = function() vim.diagnostic.jump { count = -1, float = true } end,
+  goto_next = function() vim.diagnostic.jump { count = 1, float = true } end,
+  quick_fix = function()
+    vim.lsp.buf.code_action {
+      context = { only = { 'quickfix' } },
+      apply = true,
+    }
+  end,
+}
 
 if pcall(require, 'telescope.builtin') then
   local ts_builtin = require('telescope.builtin')
-  lsp_callbacks = {
-    definitions = ts_builtin.lsp_definitions,
-    document_symbols = ts_builtin.lsp_document_symbols,
-    implementations = ts_builtin.lsp_implementations,
-    references = ts_builtin.lsp_references,
-    type_definitions = ts_builtin.lsp_type_definitions,
-  }
+  lsp_callbacks.definitions = ts_builtin.lsp_definitions
+  lsp_callbacks.document_symbols = ts_builtin.lsp_document_symbols
+  lsp_callbacks.implementations = ts_builtin.lsp_implementations
+  lsp_callbacks.references = ts_builtin.lsp_references
+  lsp_callbacks.type_definitions = ts_builtin.lsp_type_definitions
 else
-  lsp_callbacks = {
-    definitions = vim.lsp.buf.definition,
-    document_symbols = vim.lsp.buf.document_symbol,
-    implementations = vim.lsp.buf.implementation,
-    references = vim.lsp.buf.references,
-    type_definitions = vim.lsp.buf.type_definition,
-  }
+  lsp_callbacks.definitions = vim.lsp.buf.definition
+  lsp_callbacks.document_symbols = vim.lsp.buf.document_symbol
+  lsp_callbacks.implementations = vim.lsp.buf.implementation
+  lsp_callbacks.references = vim.lsp.buf.references
+  lsp_callbacks.type_definitions = vim.lsp.buf.type_definition
 end
 
 local function lsp_on_attach(client, bufnr)
-  -- This callback is called when the LSP is atttached/enabled for this buffer
-  -- we could set keymaps related to LSP, etc here.
+  -- Called when the LSP is atttached/enabled for this buffer.
+  -- Can set keymaps related to LSP, etc here.
   local key_opts = {
     buffer = bufnr,
     noremap = true,
@@ -35,52 +43,39 @@ local function lsp_on_attach(client, bufnr)
   }
   local keyset = vim.keymap.set
 
+  -- override code_action only for rust filetypes
+  if vim.bo.filetype == 'rust' then
+    lsp_callbacks.code_action = function() vim.cmd.RustLsp('codeAction') end
+  end
+
   require('lsp-inlayhints').on_attach(client, bufnr)
 
   -- Code navigation and shortcuts
+  keyset('n', '<leader>rn', vim.lsp.buf.rename, key_opts)
   keyset('n', 'K', vim.lsp.buf.hover, key_opts)
-  keyset('n', '<c-]>', vim.lsp.buf.definition, key_opts)
-  keyset('n', 'gd', lsp_callbacks.definitions, key_opts)
-  keyset('n', 'gD', vim.lsp.buf.declaration, key_opts)
-  keyset('n', 'gi', lsp_callbacks.implementations, key_opts)
   keyset('i', '<c-k>', vim.lsp.buf.signature_help, key_opts)
+  keyset('n', 'gD', vim.lsp.buf.declaration, key_opts)
+  keyset('n', 'gd', lsp_callbacks.definitions, key_opts)
+  keyset('n', 'gi', lsp_callbacks.implementations, key_opts)
   keyset('n', 'g0', lsp_callbacks.document_symbols, key_opts)
   keyset('n', 'gr', lsp_callbacks.references, key_opts)
   keyset('n', '<leader>d', lsp_callbacks.type_definitions, key_opts)
-  keyset('n', '<leader>rn', vim.lsp.buf.rename, key_opts)
-  keyset('n', '<leader>ga', vim.lsp.buf.code_action, key_opts)
-  keyset(
-    'n',
-    '<leader>qf',
-    function()
-      vim.lsp.buf.code_action {
-        context = { only = { 'quickfix' } },
-        apply = true,
-      }
-    end,
-    key_opts
-  )
-  -- diagnostic
-  keyset(
-    'n',
-    '<leader>e',
-    function() vim.diagnostic.open_float(nil, { focusable = false }) end,
-    key_opts
-  )
-  keyset('n', '<leader>q', vim.diagnostic.setloclist, key_opts)
-  keyset('n', '[d', vim.diagnostic.goto_prev, key_opts)
-  keyset('n', ']d', vim.diagnostic.goto_next, key_opts)
 
-  u.create_command(
-    'LspFormat',
-    function() vim.lsp.buf.format { async = true } end,
-    { nargs = 0 }
-  )
+  -- diagnostic
+  keyset('n', '<leader>e', lsp_callbacks.curr_diag, key_opts)
+  keyset('n', '[d', lsp_callbacks.goto_prev, key_opts)
+  keyset('n', ']d', lsp_callbacks.goto_next, key_opts)
+  keyset('n', '<leader>gl', vim.diagnostic.setloclist, key_opts)
+
+  -- code actions
+  keyset('n', '<leader>ga', lsp_callbacks.code_action, key_opts)
+  keyset('n', '<leader>gq', lsp_callbacks.quick_fix, key_opts)
+
+  u.create_command('LspFormat', lsp_callbacks.code_format, { nargs = 0 })
 end
 
 return {
   -- NeoVIM LSP config
-
   -- Collection of common configurations for the Nvim LSP client
   {
     'neovim/nvim-lspconfig',
@@ -352,6 +347,7 @@ return {
     ft = { 'go', 'gomod' },
   },
   {
+    -- This plugin _seems_ to be unnecessary... but keeping for now
     'rust-lang/rust.vim',
     init = function() vim.g.rustfmt_autosave = 1 end,
     ft = 'rust',

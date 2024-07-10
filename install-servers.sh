@@ -21,7 +21,7 @@ install_cargo_bins(){
 install_brew_deps(){
   deps="clojure-lsp/brew/clojure-lsp-native lua-language-server"
 
-  if [ "$OS_SYS" = "Darwin" ]; then
+  if [ "$OS_SYS" = Darwin ]; then
     for dep in $deps; do
       brew install "$dep"
     done
