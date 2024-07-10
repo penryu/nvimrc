@@ -77,7 +77,12 @@ return {
 
       local tabline_sections = {
         lualine_a = {
-          { 'buffers', show_filename_only = false, use_mode_colors = true },
+          {
+            'buffers',
+            mode = 4,
+            show_filename_only = true,
+            use_mode_colors = true,
+          },
         },
         lualine_b = {},
         lualine_c = {},
@@ -112,7 +117,7 @@ return {
             },
           },
         },
-        lualine_c = { { 'filename', path = 4 } },
+        lualine_c = { { 'filename', file_status = false, path = 3 } },
         lualine_x = {
           {
             noice.api.status.search.get,
