@@ -322,7 +322,7 @@ return {
         },
         lightbulb = {
           sign = true, -- show icon on left of line
-          virtual_text = false, -- show icon on right of line
+          virtual_text = true, -- show icon on right of line
         },
         symbol_in_winbar = {
           color_mode = true,

@@ -117,7 +117,19 @@ return {
             },
           },
         },
-        lualine_c = { { 'filename', file_status = true, path = 3 } },
+        lualine_c = {
+          {
+            'filename',
+            file_status = true,
+            path = 3,
+            symbols = {
+              modified = '',
+              readonly = '',
+              unnamed = '[No Name]',
+              newfile = '',
+            },
+          },
+        },
         lualine_x = {
           {
             noice.api.status.search.get,
