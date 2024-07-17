@@ -17,6 +17,43 @@ return {
     },
   },
   {
+    'folke/flash.nvim',
+    opts = {},
+    event = 'VeryLazy',
+    keys = {
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function() require('flash').jump() end,
+        desc = 'Flash',
+      },
+      {
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function() require('flash').treesitter() end,
+        desc = 'Flash Treesitter',
+      },
+      {
+        'r',
+        mode = 'o',
+        function() require('flash').remote() end,
+        desc = 'Remote Flash',
+      },
+      {
+        'R',
+        mode = { 'o', 'x' },
+        function() require('flash').treesitter_search() end,
+        desc = 'Treesitter Search',
+      },
+      {
+        '<c-s>',
+        mode = { 'c' },
+        function() require('flash').toggle() end,
+        desc = 'Toggle Flash Search',
+      },
+    },
+  },
+  {
     'junegunn/fzf.vim',
     dependencies = 'junegunn/fzf',
     -- only loaded if explicitly desired; see telescope for alternatives
@@ -416,6 +453,16 @@ return {
   },
   'tssm/nvim-snitch', -- highlight trailing whitespace, inconsistent indents, and long lines
   {
+    'kylechui/nvim-surround',
+    version = '*', -- '*' for stability; omit to use `main` branch for the latest features
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
     tag = 'v0.9.2', -- update if nvim-treesitter emits node type errors
     dependencies = {
@@ -634,16 +681,6 @@ return {
       vim.g.vim_markdown_folding_disabled = 0
     end,
     ft = 'markdown',
-  },
-  {
-    'machakann/vim-sandwich',
-    keys = {
-      { 'sa', desc = 'Add surroundings (sandwich)' },
-      { 'sd', desc = 'Delete surroundings provided (sandwich)' },
-      { 'sdb', desc = 'Add surroundings detected (sandwich)' },
-      { 'sr', desc = 'Add surroundings provided (sandwich)' },
-      { 'srb', desc = 'Add surroundings detected (sandwich)' },
-    },
   },
   {
     'mhinz/vim-startify', -- a functional "splash page"
