@@ -161,9 +161,9 @@ return {
             path = 3,
             symbols = {
               modified = '',
-              readonly = '',
-              unnamed = '[No Name]',
-              newfile = '',
+              readonly = '',
+              unnamed = '',
+              newfile = '󰄗',
             },
           },
         },
