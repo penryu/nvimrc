@@ -116,7 +116,6 @@ return {
         lualine_a = {
           {
             'buffers',
-            mode = 4,
             show_filename_only = true,
             use_mode_colors = true,
           },
@@ -127,7 +126,7 @@ return {
           {
             noice.api.status.message.get,
             cond = noice.api.status.message.has,
-            color = { fg = '#eeeeee' },
+            color = { fg = '#dddddd' },
           },
         },
         lualine_y = {
@@ -139,6 +138,7 @@ return {
         },
         lualine_z = { { 'tabs', mode = 0, path = 0, use_mode_colors = true } },
       }
+
       local sections = {
         lualine_a = { 'mode' },
         lualine_b = {
