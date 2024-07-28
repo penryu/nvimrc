@@ -324,6 +324,9 @@ return {
           sign = true, -- show icon on left of line
           virtual_text = true, -- show icon on right of line
         },
+        outline = {
+          win_width = 42,
+        },
         symbol_in_winbar = {
           color_mode = true,
           enable = true,
