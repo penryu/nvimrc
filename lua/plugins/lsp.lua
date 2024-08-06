@@ -318,11 +318,12 @@ return {
     config = function()
       require('lspsaga').setup {
         code_action = {
+          extend_gitsigns = true,
           show_server_name = true,
         },
         lightbulb = {
-          sign = true, -- show icon on left of line
-          virtual_text = true, -- show icon on right of line
+          sign = false, -- show icon on left of line
+          virtual_text = false, -- show icon on right of line
         },
         outline = {
           win_width = 42,
