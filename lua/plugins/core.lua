@@ -69,32 +69,32 @@ return {
       local harpoon = require('harpoon')
       harpoon:setup()
 
-      keyset('n', '<leader>ha', function() harpoon:list():append() end)
+      keyset('n', '<leader>aa', function() harpoon:list():append() end)
       keyset(
         'n',
-        '<leader>he',
+        '<leader>ae',
         function() harpoon.ui:toggle_quick_menu(harpoon:list()) end
       )
 
       -- recall harpooned buffers
-      keyset('n', '<leader>j', function() harpoon:list():select(1) end)
-      keyset('n', '<leader>k', function() harpoon:list():select(2) end)
-      keyset('n', '<leader>l', function() harpoon:list():select(3) end)
-      keyset('n', '<leader>;', function() harpoon:list():select(4) end)
+      keyset('n', '<leader>aj', function() harpoon:list():select(1) end)
+      keyset('n', '<leader>ak', function() harpoon:list():select(2) end)
+      keyset('n', '<leader>al', function() harpoon:list():select(3) end)
+      keyset('n', '<leader>a;', function() harpoon:list():select(4) end)
 
       -- toggle next/prev within harpoon
-      keyset('n', '<leader>hp', function() harpoon:list():prev() end)
-      keyset('n', '<leader>hn', function() harpoon:list():next() end)
+      keyset('n', '<leader>ap', function() harpoon:list():prev() end)
+      keyset('n', '<leader>an', function() harpoon:list():next() end)
     end,
     keys = {
-      { '<leader>ha', desc = 'Harpoon current file' },
-      { '<leader>he', desc = 'edit Harpoon list' },
-      { '<leader>hp', desc = 'goto previous Harpoon' },
-      { '<leader>hn', desc = 'goto next Harpoon' },
-      { '<leader>j', desc = 'goto Harpoon 1' },
-      { '<leader>k', desc = 'goto Harpoon 2' },
-      { '<leader>l', desc = 'goto Harpoon 3' },
-      { '<leader>;', desc = 'goto Harpoon 4' },
+      { '<leader>aa', desc = 'Harpoon current file' },
+      { '<leader>ae', desc = 'edit Harpoon list' },
+      { '<leader>ap', desc = 'goto previous Harpoon' },
+      { '<leader>an', desc = 'goto next Harpoon' },
+      { '<leader>aj', desc = 'goto Harpoon 1' },
+      { '<leader>ak', desc = 'goto Harpoon 2' },
+      { '<leader>al', desc = 'goto Harpoon 3' },
+      { '<leader>a;', desc = 'goto Harpoon 4' },
     },
   },
   {
