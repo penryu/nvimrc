@@ -578,18 +578,27 @@ return {
     'akinsho/toggleterm.nvim',
     version = '*',
     config = function()
-      local row = 1
-      local width = function()
-        return math.floor(math.max(100, 0.64 * vim.o.columns))
+      -- float on bottom
+      local width = function() return vim.o.columns end
+      local height = function()
+        return math.floor(math.max(42, 0.42 * vim.o.lines))
       end
-      local col = function() return vim.o.columns - width() end
-      local height = function() return vim.o.lines - 4 end
+      local col = 0
+      local row = function() return vim.o.lines - height() - 3 end
+
+      -- float on the right
+      -- local height = function() return vim.o.lines end
+      -- local width = function()
+      --   return math.floor(math.max(100, 0.64 * vim.o.columns))
+      -- end
+      -- local col = function() return vim.o.columns end
+      -- local row = 0
 
       require('toggleterm').setup {
         -- directions: float / horizontal / tab / vertical
         direction = 'float',
         float_opts = {
-          -- borders: single / double / shadow / curved
+          -- borders: 'none' / 'single' / 'double' / 'shadow' / 'curved'
           border = 'single',
           height = height,
           width = width,
@@ -598,13 +607,6 @@ return {
         },
         open_mapping = [[<c-\>]],
         shade_terminals = true,
-        size = function(term)
-          if term.direction == 'horizontal' then
-            return vim.o.lines * 0.51
-          elseif term.direction == 'vertical' then
-            return math.max(math.ceil(vim.o.columns / 2), 80)
-          end
-        end,
       }
       u.tmap('<esc>', [[<c-\><c-n>:let b:insertMode = 'no'<cr>]])
       u.tmap('<c-h>', '<c-\\><c-n>:wincmd h<cr>')
