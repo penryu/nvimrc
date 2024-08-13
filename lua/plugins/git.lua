@@ -82,6 +82,7 @@ return {
       signs_staged_enable = true,
       word_diff = false,
     },
+    lazy = false,
     keys = {
       { '<leader>[c', desc = 'previous change' },
       { '<leader>]c', desc = 'next change' },
