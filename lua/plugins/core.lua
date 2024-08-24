@@ -4,8 +4,6 @@
 
 local u = require('util')
 
-local keyset = vim.keymap.set
-
 return {
   {
     'sindrets/diffview.nvim',
@@ -14,43 +12,6 @@ return {
     keys = {
       { '<leader>dv', ':DiffviewOpen<cr>', desc = 'DiffViewOpen (current)' },
       { '<leader>dV', ':DiffviewClose<cr>', desc = 'DiffViewClose' },
-    },
-  },
-  {
-    'folke/flash.nvim',
-    opts = {},
-    event = 'VeryLazy',
-    keys = {
-      {
-        's',
-        mode = { 'n', 'x', 'o' },
-        function() require('flash').jump() end,
-        desc = 'Flash',
-      },
-      {
-        'S',
-        mode = { 'n', 'x', 'o' },
-        function() require('flash').treesitter() end,
-        desc = 'Flash Treesitter',
-      },
-      {
-        'r',
-        mode = 'o',
-        function() require('flash').remote() end,
-        desc = 'Remote Flash',
-      },
-      {
-        'R',
-        mode = { 'o', 'x' },
-        function() require('flash').treesitter_search() end,
-        desc = 'Treesitter Search',
-      },
-      {
-        '<c-s>',
-        mode = { 'c' },
-        function() require('flash').toggle() end,
-        desc = 'Toggle Flash Search',
-      },
     },
   },
   {
@@ -68,33 +29,55 @@ return {
     config = function()
       local harpoon = require('harpoon')
       harpoon:setup()
-
-      keyset('n', '<leader>aa', function() harpoon:list():append() end)
-      keyset(
-        'n',
-        '<leader>ae',
-        function() harpoon.ui:toggle_quick_menu(harpoon:list()) end
-      )
-
-      -- recall harpooned buffers
-      keyset('n', '<leader>aj', function() harpoon:list():select(1) end)
-      keyset('n', '<leader>ak', function() harpoon:list():select(2) end)
-      keyset('n', '<leader>al', function() harpoon:list():select(3) end)
-      keyset('n', '<leader>a;', function() harpoon:list():select(4) end)
-
-      -- toggle next/prev within harpoon
-      keyset('n', '<leader>ap', function() harpoon:list():prev() end)
-      keyset('n', '<leader>an', function() harpoon:list():next() end)
     end,
     keys = {
-      { '<leader>aa', desc = 'Harpoon current file' },
-      { '<leader>ae', desc = 'edit Harpoon list' },
-      { '<leader>ap', desc = 'goto previous Harpoon' },
-      { '<leader>an', desc = 'goto next Harpoon' },
-      { '<leader>aj', desc = 'goto Harpoon 1' },
-      { '<leader>ak', desc = 'goto Harpoon 2' },
-      { '<leader>al', desc = 'goto Harpoon 3' },
-      { '<leader>a;', desc = 'goto Harpoon 4' },
+      {
+        '<leader>aa',
+        function() require('harpoon'):list():add() end,
+        desc = 'harpoon add current buffer',
+      },
+      {
+        '<leader>ae',
+        function()
+          local harpoon = require('harpoon')
+          harpoon.ui:toggle_quick_menu(harpoon:list())
+        end,
+        desc = 'harpoon edit list',
+      },
+
+      -- recall harpooned buffers
+      {
+        '<leader>aj',
+        function() require('harpoon'):list():select(1) end,
+        desc = 'harpoon 1',
+      },
+      {
+        '<leader>ak',
+        function() require('harpoon'):list():select(2) end,
+        desc = 'harpoon 2',
+      },
+      {
+        '<leader>al',
+        function() require('harpoon'):list():select(3) end,
+        desc = 'harpoon 3',
+      },
+      {
+        '<leader>a;',
+        function() require('harpoon'):list():select(4) end,
+        desc = 'harpoon 4',
+      },
+
+      -- toggle next/prev within harpoon
+      {
+        '<leader>ap',
+        function() require('harpoon'):list():prev() end,
+        desc = 'harpoon previous',
+      },
+      {
+        '<leader>an',
+        function() require('harpoon'):list():next() end,
+        desc = 'harpoon next',
+      },
     },
   },
   {
@@ -221,24 +204,6 @@ return {
     priority = 1000,
   },
   {
-    'jakewvincent/mkdnflow.nvim',
-    dependencies = {
-      'ellisonleao/glow.nvim',
-      'nvim-lua/plenary.nvim',
-    },
-    config = function()
-      require('mkdnflow').setup {
-        perspective = {
-          priority = 'root',
-          root_tell = 'index.md',
-        },
-      }
-      u.create_command('Notes', 'Files ~/Dropbox/Notes', {})
-    end,
-    cmd = 'Notes',
-    ft = 'markdown',
-  },
-  {
     'chentoast/marks.nvim',
     opts = {},
   },
@@ -354,7 +319,7 @@ return {
             source = 'filesystem',
           }
         end,
-        desc = 'Toggle neotree filesystem view',
+        desc = 'Neotree toggle',
       },
       {
         '<bar>',
@@ -364,7 +329,7 @@ return {
             source = 'git_status',
           }
         end,
-        desc = 'Toggle neotree git status view',
+        desc = 'Neotree git toggle',
       },
       {
         '<leader>b',
@@ -374,32 +339,9 @@ return {
             source = 'buffers',
           }
         end,
-        desc = 'Toggle neotree buffers view',
+        desc = 'Neotree buffers toggle',
       },
     },
-  },
-  {
-    'nvim-neorg/neorg',
-    enabled = false, -- ignore until I have time to dig into this
-    dependencies = 'nvim-lua/plenary.nvim',
-    build = ':Neorg sync-parsers',
-    config = function()
-      require('neorg').setup {
-        load = {
-          ['core.defaults'] = {},
-          ['core.concealer'] = {},
-          ['core.dirman'] = {
-            config = {
-              workspaces = {
-                notes = '~/Dropbox/Notes',
-              },
-            },
-          },
-        },
-      }
-    end,
-    cmd = 'Neorg',
-    ft = 'norg',
   },
   {
     'ii14/neorepl.nvim',
@@ -453,43 +395,11 @@ return {
   },
   'tssm/nvim-snitch', -- highlight trailing whitespace, inconsistent indents, and long lines
   {
-    'kylechui/nvim-surround',
-    version = '*', -- '*' for stability; omit to use `main` branch for the latest features
-    event = 'VeryLazy',
-    config = function()
-      require('nvim-surround').setup {
-        -- Configuration here, or leave empty to use defaults
-      }
-    end,
-  },
-  {
     'nvim-treesitter/nvim-treesitter',
     tag = 'v0.9.2', -- update if nvim-treesitter emits node type errors
     dependencies = {
       -- Additional textobjects for treesitter.
       'nvim-treesitter/nvim-treesitter-textobjects',
-    },
-  },
-  {
-    'kovisoft/paredit',
-    ft = { 'clojure', 'fennel', 'lisp' },
-  },
-  {
-    'penryu/rp.nvim',
-    opts = { bin = 'hpnc' },
-    cmd = 'Rp',
-    keys = {
-      { '<leader>rp', '<cmd>Rp<cr>', desc = 'Launch RPN calculator' },
-      {
-        '<leader>ry',
-        function()
-          local rp = require('rp-nvim')
-          for k, _ in pairs(package.loaded) do
-            print(k)
-          end
-          rp.open()
-        end,
-      },
     },
   },
   {
@@ -570,29 +480,40 @@ return {
     config = function()
       local todo = require('todo-comments')
       todo.setup {}
-      u.nmap(']t', function() todo.jump_next() end, { desc = 'Next TODO' })
-      u.nmap('[t', function() todo.jump_prev() end, { desc = 'Prev TODO' })
     end,
+    event = 'VeryLazy',
+    keys = {
+      {
+        ']t',
+        function() require('todo-comments').jump_next() end,
+        desc = 'Next TODO',
+      },
+      {
+        '[t',
+        function() require('todo-comments').jump_prev() end,
+        desc = 'Prev TODO',
+      },
+    },
   },
   {
     'akinsho/toggleterm.nvim',
     version = '*',
     config = function()
       -- float on bottom
-      local width = function() return vim.o.columns end
-      local height = function()
-        return math.floor(math.max(42, 0.42 * vim.o.lines))
-      end
-      local col = 0
-      local row = function() return vim.o.lines - height() - 3 end
+      -- local width = function() return vim.o.columns end
+      -- local height = function()
+      --   return math.floor(math.max(42, 0.42 * vim.o.lines))
+      -- end
+      -- local col = 0
+      -- local row = function() return vim.o.lines - height() - 3 end
 
       -- float on the right
-      -- local height = function() return vim.o.lines end
-      -- local width = function()
-      --   return math.floor(math.max(100, 0.64 * vim.o.columns))
-      -- end
-      -- local col = function() return vim.o.columns end
-      -- local row = 0
+      local height = function() return vim.o.lines end
+      local width = function()
+        return math.floor(math.max(100, 0.64 * vim.o.columns))
+      end
+      local col = function() return vim.o.columns end
+      local row = 0
 
       require('toggleterm').setup {
         -- directions: float / horizontal / tab / vertical
@@ -635,7 +556,7 @@ return {
     keys = { -- load the plugin only when using it's keybinding:
       {
         '<leader>u',
-        "<cmd>lua require('undotree').toggle()<cr>",
+        function() require('undotree').toggle() end,
         desc = 'Undotree',
       },
     },
@@ -667,22 +588,6 @@ return {
     'tpope/vim-dotenv',
     dependencies = 'tpope/vim-dispatch',
     cmd = 'Dotenv',
-  },
-  {
-    'atweiden/vim-fennel',
-    ft = 'fennel',
-  },
-  {
-    'fladson/vim-kitty',
-    ft = 'kitty',
-  },
-  {
-    'preservim/vim-markdown',
-    init = function()
-      vim.g.vim_markdown_conceal = false
-      vim.g.vim_markdown_folding_disabled = 0
-    end,
-    ft = 'markdown',
   },
   {
     'mhinz/vim-startify', -- a functional "splash page"
@@ -718,12 +623,17 @@ return {
   },
   {
     'folke/which-key.nvim',
-    dependencies = 'nvim-tree/nvim-web-devicons',
+    dependencies = {
+      { 'echasnovski/mini.icons', version = false },
+      'nvim-tree/nvim-web-devicons',
+    },
     init = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
     end,
-    opts = {},
+    opts = {
+      icons = {},
+    },
   },
   {
     'DreamMaoMao/yazi.nvim',

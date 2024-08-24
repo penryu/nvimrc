@@ -41,7 +41,13 @@ local function lsp_on_attach(client, bufnr)
     noremap = true,
     silent = true,
   }
-  local keyset = vim.keymap.set
+
+  local function _map(mode, key, cmd, opts)
+    opts = vim.tbl_extend('keep', opts or {}, key_opts)
+    return u.keymapset(mode, key, cmd, vim.tbl_extend('keep', opts, key_opts))
+  end
+  local lsp_nmap = function(...) return _map('n', ...) end
+  local lsp_imap = function(...) return _map('i', ...) end
 
   -- override code_action only for rust filetypes
   if vim.bo.filetype == 'rust' then
@@ -51,25 +57,45 @@ local function lsp_on_attach(client, bufnr)
   require('lsp-inlayhints').on_attach(client, bufnr)
 
   -- Code navigation and shortcuts
-  keyset('n', '<leader>rn', vim.lsp.buf.rename, key_opts)
-  keyset('n', 'K', vim.lsp.buf.hover, key_opts)
-  keyset('i', '<c-k>', vim.lsp.buf.signature_help, key_opts)
-  keyset('n', 'gD', vim.lsp.buf.declaration, key_opts)
-  keyset('n', 'gd', lsp_callbacks.definitions, key_opts)
-  keyset('n', 'gi', lsp_callbacks.implementations, key_opts)
-  keyset('n', 'g0', lsp_callbacks.document_symbols, key_opts)
-  keyset('n', 'gr', lsp_callbacks.references, key_opts)
-  keyset('n', '<leader>d', lsp_callbacks.type_definitions, key_opts)
+  lsp_nmap('<leader>rn', vim.lsp.buf.rename, { desc = 'LSP rename' })
+  lsp_nmap('K', vim.lsp.buf.hover, { desc = 'LSP hover' })
+  lsp_imap('<c-k>', vim.lsp.buf.signature_help, { desc = 'LSP signature' })
+  lsp_nmap('gD', vim.lsp.buf.declaration, { desc = 'LSP declarations' })
+  lsp_nmap('gd', lsp_callbacks.definitions, { desc = 'LSP definitions' })
+  lsp_nmap(
+    'gi',
+    lsp_callbacks.implementations,
+    { desc = 'LSP implementations' }
+  )
+  lsp_nmap(
+    'g0',
+    lsp_callbacks.document_symbols,
+    { desc = 'LSP document symbols' }
+  )
+  lsp_nmap('gr', lsp_callbacks.references, { desc = 'LSP references' })
+  lsp_nmap(
+    '<leader>d',
+    lsp_callbacks.type_definitions,
+    { desc = 'LSP type definitions' }
+  )
 
   -- diagnostic
-  keyset('n', '<leader>e', lsp_callbacks.curr_diag, key_opts)
-  keyset('n', '[d', lsp_callbacks.goto_prev, key_opts)
-  keyset('n', ']d', lsp_callbacks.goto_next, key_opts)
-  keyset('n', '<leader>gl', vim.diagnostic.setloclist, key_opts)
+  lsp_nmap(
+    '<leader>e',
+    lsp_callbacks.curr_diag,
+    { desc = 'LSP diagnostic under cursor' }
+  )
+  lsp_nmap('[d', lsp_callbacks.goto_prev, { desc = 'LSP previous diagnostic' })
+  lsp_nmap(']d', lsp_callbacks.goto_next, { desc = 'LSP next diagnostic' })
+  lsp_nmap('<leader>gl', vim.diagnostic.setloclist, { desc = 'Show loclist' })
 
   -- code actions
-  keyset('n', '<leader>ga', lsp_callbacks.code_action, key_opts)
-  keyset('n', '<leader>gq', lsp_callbacks.quick_fix, key_opts)
+  lsp_nmap(
+    '<leader>ga',
+    lsp_callbacks.code_action,
+    { desc = 'lsp code action' }
+  )
+  lsp_nmap('<leader>gq', lsp_callbacks.quick_fix, { desc = 'lsp quickfix' })
 
   u.create_command('LspFormat', lsp_callbacks.code_format, { nargs = 0 })
 end

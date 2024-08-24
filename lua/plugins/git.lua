@@ -2,6 +2,8 @@
 -- git-related plugins
 --
 
+local u = require('util')
+
 vim.env.GIT_EDITOR = 'nvr --remote-tab-wait'
 
 return {
@@ -16,58 +18,81 @@ return {
       on_attach = function(bufnr)
         local gitsigns = require('gitsigns')
 
-        local function map(mode, l, r, opts)
+        local function kmap(mode, l, r, opts)
           opts = opts or {}
           opts.buffer = bufnr
-          vim.keymap.set(mode, l, r, opts)
+          u.keymapset(mode, l, r, opts)
         end
+        local nmap = function(...) return kmap('n', ...) end
+        local vmap = function(...) return kmap('v', ...) end
 
         -- Navigation
-        map('n', ']c', function()
+        nmap(']c', function()
           if vim.wo.diff then
             vim.cmd.normal { ']c', bang = true }
           else
             gitsigns.nav_hunk('next')
           end
-        end)
+        end, { desc = 'Git next change' })
 
-        map('n', '[c', function()
+        nmap('[c', function()
           if vim.wo.diff then
             vim.cmd.normal { '[c', bang = true }
           else
             gitsigns.nav_hunk('prev')
           end
-        end)
+        end, { desc = 'Git previous change' })
 
         -- Actions
-        map('n', '<leader>hs', gitsigns.stage_hunk)
-        map('n', '<leader>hr', gitsigns.reset_hunk)
-        map(
-          'v',
+        nmap('<leader>hs', gitsigns.stage_hunk, { desc = 'Git stage hunk' })
+        nmap('<leader>hr', gitsigns.reset_hunk, { desc = 'Git reset hunk' })
+        vmap(
           '<leader>hs',
-          function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end
+          function() gitsigns.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end,
+          { desc = 'Git stage selected hunk' }
         )
-        map(
-          'v',
+        vmap(
           '<leader>hr',
-          function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end
+          function() gitsigns.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end,
+          { desc = 'Git reset selected hunk' }
         )
-        map('n', '<leader>hS', gitsigns.stage_buffer)
-        map('n', '<leader>hu', gitsigns.undo_stage_hunk)
-        map('n', '<leader>hR', gitsigns.reset_buffer)
-        map('n', '<leader>hp', gitsigns.preview_hunk)
-        map(
-          'n',
+        nmap('<leader>hS', gitsigns.stage_buffer, { desc = 'Git stage buffer' })
+        nmap(
+          '<leader>hu',
+          gitsigns.undo_stage_hunk,
+          { desc = 'Git undo stage hunk' }
+        )
+        nmap('<leader>hR', gitsigns.reset_buffer, { desc = 'Git reset buffer' })
+        nmap('<leader>hp', gitsigns.preview_hunk, { desc = 'Git preview hunk' })
+        nmap(
           '<leader>hb',
-          function() gitsigns.blame_line { full = true } end
+          function() gitsigns.blame_line { full = true } end,
+          { desc = 'Git blame line' }
         )
-        map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-        map('n', '<leader>hd', gitsigns.diffthis)
-        map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
-        map('n', '<leader>td', gitsigns.toggle_deleted)
+        nmap(
+          '<leader>tb',
+          gitsigns.toggle_current_line_blame,
+          { desc = 'Git toggle blame' }
+        )
+        nmap('<leader>hd', gitsigns.diffthis, { desc = 'Git diff this' })
+        nmap(
+          '<leader>hD',
+          function() gitsigns.diffthis('~') end,
+          { desc = 'Git diff this ~' }
+        )
+        nmap(
+          '<leader>td',
+          gitsigns.toggle_deleted,
+          { desc = 'Git toggle deleted' }
+        )
 
         -- Text object
-        map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        kmap(
+          { 'o', 'x' },
+          'ih',
+          ':<C-U>Gitsigns select_hunk<CR>',
+          { desc = 'Git select hunk' }
+        )
       end,
       auto_attach = true,
       current_line_blame = true,
@@ -82,20 +107,7 @@ return {
       signs_staged_enable = true,
       word_diff = false,
     },
-    lazy = false,
-    keys = {
-      { '<leader>[c', desc = 'previous change' },
-      { '<leader>]c', desc = 'next change' },
-      { '<leader>hp', desc = 'preview hunk' },
-      { '<leader>hr', desc = 'reset hunk' },
-      { '<leader>hR', desc = 'reset buffer' },
-      { '<leader>hs', desc = 'stage hunk' },
-      { '<leader>hS', desc = 'stage buffer' },
-      { '<leader>hu', desc = 'undo stage hunk' },
-      { '<leader>hr', desc = 'reset hunk', mode = 'v' },
-      { '<leader>hs', desc = 'stage hunk', mode = 'v' },
-      { 'ih', desc = 'select hunk', mode = { 'o', 'x' } },
-    },
+    event = 'VeryLazy',
   },
   {
     'tpope/vim-fugitive',

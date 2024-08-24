@@ -1,8 +1,10 @@
 -- Utility functions
 
-local keymapset = function(mode, key, cmd, opts)
-  if type(opts) == 'number' then opts = { buffer = opts } end
-  vim.keymap.set(mode, key, cmd, opts or { noremap = true, silent = true })
+local default_keymap_opts = { noremap = true, silent = true }
+
+local function keymapset(mode, key, cmd, opts)
+  opts = vim.tbl_extend('keep', opts or {}, default_keymap_opts)
+  vim.keymap.set(mode, key, cmd, opts)
 end
 
 return {
