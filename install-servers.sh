@@ -1,17 +1,22 @@
 #!/bin/sh
 set -eu
 
+OS_MACH=$(uname -m)
 OS_SYS=$(uname -s)
-OS_VER=$(uname -r | sed 's/\..*//')
-export OS_SYS OS_VER
 
 install_yarn_pkgs(){
-  yarn global add bash-language-server
-  yarn global add dockerfile-language-server-nodejs
-  yarn global add @microsoft/compose-language-service
-  yarn global add vscode-langservers-extracted
-  yarn global add typescript typescript-language-server
-  yarn global add yaml-language-server
+  pkg_names="
+    bash-language-server
+    dockerfile-language-server-nodejs
+    @microsoft/compose-language-service
+    typescript
+    typescript-language-server
+    vscode-langservers-extracted
+    yaml-language-server
+  "
+  # we know there are no unexpected spaces in the string we just built
+  # shellcheck disable=SC2086
+  yarn global add $pkg_names
 }
 
 install_cargo_bins(){
@@ -19,22 +24,45 @@ install_cargo_bins(){
 }
 
 install_brew_deps(){
-  deps="clojure-lsp/brew/clojure-lsp-native lua-language-server"
-
   if [ "$OS_SYS" = Darwin ]; then
-    for dep in $deps; do
-      brew install "$dep"
-    done
+    deps="
+      clojure-lsp/brew/clojure-lsp-native
+      lua-language-server
+    "
+    # we know there are no unexpected spaces in the string we just built
+    # shellcheck disable=SC2086
+    brew install $deps
   else
-    echo "Not a macOS system; skipping brew deps: $deps"
+    echo "Not a macOS system; skipping brew deps"
   fi
 }
 
-# https://github.com/artempyanykh/marksman/releases/
+install_marksman(){
+  dest="$HOME/.local/bin/marksman"
 
+  if [ -x "$dest" ]; then
+    echo "Found $dest; not reinstalling"
+    return 0
+  fi
+
+  tuple="$OS_SYS:$OS_MACH"
+  mkdir -p "$(dirname "$dest")"
+
+  case $tuple in
+    Darwin:arm64)   filename="marksman-macos";;
+    Linux:aarch64)  filename="marksman-linux-arm64";;
+    Linux:x86_64)   filename="marksman-linux-x64";;
+    *)
+      echo "Unrecognized platform $tuple for marksman!"
+      return 1
+      ;;
+  esac
+
+  curl -Lo "$dest" "https://github.com/artempyanykh/marksman/releases/latest/download/$filename"
+  chmod 755 "$dest"
+}
 
 install_yarn_pkgs
-
 install_cargo_bins
-
 install_brew_deps
+install_marksman
