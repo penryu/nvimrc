@@ -403,6 +403,36 @@ return {
     },
   },
   {
+    'folke/persistence.nvim',
+    event = 'BufReadPre',
+    opts = {
+      branch = true,
+      need = 3,
+    },
+    keys = {
+      {
+        '<leader>qs',
+        function() require('persistence').load() end,
+        desc = 'Persistence load',
+      },
+      {
+        '<leader>qS',
+        function() require('persistence').select() end,
+        desc = 'Persistence select',
+      },
+      {
+        '<leader>ql',
+        function() require('persistence').load { last = true } end,
+        desc = 'Persistence load last',
+      },
+      {
+        '<leader>qd',
+        function() require('persistence').stop() end,
+        desc = 'Persistence disable',
+      },
+    },
+  },
+  {
     'lambdalisue/suda.vim',
     init = function() vim.g.suda_smart_edit = true end,
   },
@@ -593,12 +623,12 @@ return {
     'mhinz/vim-startify', -- a functional "splash page"
     init = function()
       vim.g.startify_bookmarks = {
-        -- { ['.'] = '.' },
         { ['.'] = '.' },
         { v = '~/.config/nvim' },
         { r = '~/code/rcfiles' },
         { s = '~/.ssh' },
         { n = '~/Dropbox/Notes/index.md' },
+        { y = '~/.config/yadm/bootstrap' },
       }
       vim.g.startify_lists = {
         { type = 'sessions', header = { '   Sessions' } },
@@ -611,8 +641,9 @@ return {
         { type = 'bookmarks', header = { '   Bookmarks' } },
       }
       vim.g.startify_custom_header = false
-      vim.g.startify_session_autoload = false
-      vim.g.startify_session_persistence = true
+      vim.g.startify_files_number = 11
+      vim.g.startify_session_autoload = true
+      vim.g.startify_session_persistence = false
       vim.g.startify_skiplist = { 'Library/CloudStorage' }
     end,
   },
