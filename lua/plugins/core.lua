@@ -21,66 +21,6 @@ return {
     cmd = 'FZF',
   },
   {
-    'ThePrimeagen/harpoon',
-    branch = 'harpoon2',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    config = function()
-      local harpoon = require('harpoon')
-      harpoon:setup()
-    end,
-    keys = {
-      {
-        '<leader>aa',
-        function() require('harpoon'):list():add() end,
-        desc = 'harpoon add current buffer',
-      },
-      {
-        '<leader>ae',
-        function()
-          local harpoon = require('harpoon')
-          harpoon.ui:toggle_quick_menu(harpoon:list())
-        end,
-        desc = 'harpoon edit list',
-      },
-
-      -- recall harpooned buffers
-      {
-        '<leader>aj',
-        function() require('harpoon'):list():select(1) end,
-        desc = 'harpoon 1',
-      },
-      {
-        '<leader>ak',
-        function() require('harpoon'):list():select(2) end,
-        desc = 'harpoon 2',
-      },
-      {
-        '<leader>al',
-        function() require('harpoon'):list():select(3) end,
-        desc = 'harpoon 3',
-      },
-      {
-        '<leader>a;',
-        function() require('harpoon'):list():select(4) end,
-        desc = 'harpoon 4',
-      },
-
-      -- toggle next/prev within harpoon
-      {
-        '<leader>ap',
-        function() require('harpoon'):list():prev() end,
-        desc = 'harpoon previous',
-      },
-      {
-        '<leader>an',
-        function() require('harpoon'):list():next() end,
-        desc = 'harpoon next',
-      },
-    },
-  },
-  {
     'nvim-lualine/lualine.nvim',
     dependencies = {
       'folke/noice.nvim',
