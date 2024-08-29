@@ -336,6 +336,17 @@ return {
     event = 'LspAttach',
   },
   {
+    'ray-x/go.nvim',
+    dependencies = {
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function() require('go').setup() end,
+    -- event = 'CmdlineEnter',
+    ft = { 'go', 'gomod' },
+  },
+  {
     'nvimdev/lspsaga.nvim',
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
@@ -366,15 +377,17 @@ return {
     cmd = 'Outline',
   },
   {
-    'ray-x/go.nvim',
+    'mawkler/refjump.nvim',
     dependencies = {
-      'ray-x/guihua.lua',
-      'neovim/nvim-lspconfig',
       'nvim-treesitter/nvim-treesitter',
+      'nvim-treesitter/nvim-treesitter-textobjects',
     },
-    config = function() require('go').setup() end,
-    -- event = 'CmdlineEnter',
-    ft = { 'go', 'gomod' },
+    opts = {
+      highlights = {
+        enable = false,
+      },
+    },
+    keys = { ']r', '[r' }, -- Uncomment to lazy load
   },
   {
     -- This plugin _seems_ to be unnecessary... but keeping for now

@@ -6,6 +6,15 @@ local u = require('util')
 
 return {
   {
+    'mawkler/demicolon.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
+    opts = {},
+    keys = { ';', ',', 't', 'f', 'T', 'F', ']', '[', ']d', '[d' },
+  },
+  {
     'sindrets/diffview.nvim',
     dependencies = 'nvim-lua/plenary.nvim',
     cmd = 'DiffviewOpen',
@@ -19,6 +28,68 @@ return {
     dependencies = 'junegunn/fzf',
     -- only loaded if explicitly desired; see telescope for alternatives
     cmd = 'FZF',
+  },
+  {
+    'cbochs/grapple.nvim',
+    dependencies = {
+      { 'nvim-tree/nvim-web-devicons', lazy = true },
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      require('grapple').setup {
+        statusline = {
+          icon = '󰛢',
+          active = '%s',
+          inactive = ' %s ',
+        },
+      }
+
+      require('telescope').load_extension('grapple')
+    end,
+    -- event = { 'BufNewFile', 'BufReadPost' },
+    cmd = 'Grapple',
+    keys = {
+      {
+        '<leader>at',
+        function() require('grapple').toggle() end,
+        desc = 'Grapple toggle tag',
+      },
+      {
+        '<leader>ae',
+        function() require('grapple').toggle_tags() end,
+        desc = 'Grapple view tags',
+      },
+      {
+        '<leader>j',
+        function() require('grapple').select { index = 1 } end,
+        desc = 'Grapple view tags',
+      },
+      {
+        '<leader>k',
+        function() require('grapple').select { index = 2 } end,
+        desc = 'Grapple view tags',
+      },
+      {
+        '<leader>l',
+        function() require('grapple').select { index = 3 } end,
+        desc = 'Grapple view tags',
+      },
+      {
+        '<leader>;',
+        function() require('grapple').select { index = 4 } end,
+        desc = 'Grapple view tags',
+      },
+      {
+        '<leader>an',
+        function() require('grapple').cycle_tags('next') end,
+        desc = 'Grapple next tag',
+      },
+      {
+        '<leader>ap',
+        function() require('grapple').cycle_tags('prev') end,
+        desc = 'Grapple prev tag',
+      },
+    },
   },
   {
     'nvim-lualine/lualine.nvim',
@@ -73,7 +144,7 @@ return {
               error = ' ',
               warn = ' ',
               info = ' ',
-              hint = ' ',
+              hint = ' ',
             },
           },
         },
@@ -83,14 +154,15 @@ return {
             file_status = true,
             path = 3,
             symbols = {
-              modified = '',
-              readonly = '',
-              unnamed = '',
-              newfile = '󰄗',
+              modified = ' ',
+              readonly = ' ',
+              unnamed = 'Untitled  ',
+              newfile = '󰄗 ',
             },
           },
         },
         lualine_x = {
+          'grapple',
           {
             noice.api.status.search.get,
             cond = noice.api.status.search.has,
@@ -581,7 +653,7 @@ return {
         { type = 'bookmarks', header = { '   Bookmarks' } },
       }
       vim.g.startify_custom_header = false
-      vim.g.startify_files_number = 11
+      vim.g.startify_files_number = 7
       vim.g.startify_session_autoload = true
       vim.g.startify_session_persistence = false
       vim.g.startify_skiplist = { 'Library/CloudStorage' }
