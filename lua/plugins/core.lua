@@ -6,6 +6,47 @@ local u = require('util')
 
 return {
   {
+    'rmagatti/auto-session',
+    dependencies = {
+      'nvim-telescope/telescope.nvim', -- Only needed if you want to use session lens
+    },
+    init = function()
+      vim.o.sessionoptions =
+        'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+    end,
+    opts = {
+      args_allow_files_auto_save = false,
+      args_allow_single_directory = true,
+      auto_create = true,
+      auto_restore = true,
+      auto_restore_last_session = false,
+      auto_save = true,
+      log_level = 'warn',
+      suppressed_dirs = { '/', '/Volumes', '~/Downloads' },
+      use_git_branch = true,
+
+      session_lens = {
+        load_on_startup = true,
+        mappings = {
+          -- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode
+          alternate_session = { 'i', '<C-S>' },
+          delete_session = { 'i', '<C-D>' },
+        },
+      },
+    },
+    lazy = false,
+    keys = {
+      { '<leader>qr', ':SessionRestore<cr>', desc = 'AutoSession restore' },
+      { '<leader>qs', ':SessionSave<cr>', desc = 'AutoSession save' },
+      { '<leader>ql', ':SessionSearch<cr>', desc = 'AutoSession search' },
+      {
+        '<leader>qd',
+        ':SessionDisableAutoSave<cr>',
+        desc = 'AutoSession disable',
+      },
+    },
+  },
+  {
     'mawkler/demicolon.nvim',
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
@@ -46,7 +87,7 @@ return {
 
       require('telescope').load_extension('grapple')
     end,
-    -- event = { 'BufNewFile', 'BufReadPost' },
+    event = { 'BufNewFile', 'BufReadPost' },
     cmd = 'Grapple',
     keys = {
       {
@@ -415,36 +456,6 @@ return {
     },
   },
   {
-    'folke/persistence.nvim',
-    event = 'BufReadPre',
-    opts = {
-      branch = true,
-      need = 3,
-    },
-    keys = {
-      {
-        '<leader>qs',
-        function() require('persistence').load() end,
-        desc = 'Persistence load',
-      },
-      {
-        '<leader>qS',
-        function() require('persistence').select() end,
-        desc = 'Persistence select',
-      },
-      {
-        '<leader>ql',
-        function() require('persistence').load { last = true } end,
-        desc = 'Persistence load last',
-      },
-      {
-        '<leader>qd',
-        function() require('persistence').stop() end,
-        desc = 'Persistence disable',
-      },
-    },
-  },
-  {
     'lambdalisue/suda.vim',
     init = function() vim.g.suda_smart_edit = true end,
   },
@@ -463,9 +474,6 @@ return {
           layout_strategy = 'vertical',
           sorting_strategy = 'ascending',
           layout_config = {
-            height = function() return math.min(vim.o.lines - 10, 60) end,
-            width = function() return math.min(vim.o.columns - 10, 132) end,
-            preview_height = 0.6,
             prompt_position = 'top',
           },
         },
@@ -637,7 +645,6 @@ return {
       vim.g.startify_bookmarks = {
         { ['.'] = '.' },
         { v = '~/.config/nvim' },
-        { r = '~/code/rcfiles' },
         { s = '~/.ssh' },
         { n = '~/Dropbox/Notes/index.md' },
         { y = '~/.config/yadm/bootstrap' },
@@ -654,7 +661,7 @@ return {
       }
       vim.g.startify_custom_header = false
       vim.g.startify_files_number = 7
-      vim.g.startify_session_autoload = true
+      vim.g.startify_session_autoload = false
       vim.g.startify_session_persistence = false
       vim.g.startify_skiplist = { 'Library/CloudStorage' }
     end,
