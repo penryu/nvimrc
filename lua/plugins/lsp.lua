@@ -178,7 +178,7 @@ return {
       -- yarn global add vscode-langservers-extracted
       lspconfig.eslint.setup { on_attach = lsp_on_attach }
       -- yarn global add typescript typescript-language-server
-      lspconfig.tsserver.setup { on_attach = lsp_on_attach }
+      lspconfig.ts_ls.setup { on_attach = lsp_on_attach }
 
       -- lua
       -- brew install lua-language-server
