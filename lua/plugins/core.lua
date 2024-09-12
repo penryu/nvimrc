@@ -310,7 +310,7 @@ return {
       )
       vim.fn.sign_define(
         'DiagnosticSignHint',
-        { text = '', texthl = 'DiagnosticSignHint' }
+        { text = ' ', texthl = 'DiagnosticSignHint' }
       )
       require('neo-tree').setup {
         -- Close Neo-tree if it is the last window left in the tab
