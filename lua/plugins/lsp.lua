@@ -280,8 +280,9 @@ return {
           },
         },
         formatters_by_ft = {
-          markdown = { 'comrak' },
+          clojure = { 'joker' },
           javascript = { 'prettierd', 'prettier' },
+          markdown = { 'comrak' },
           lua = { 'stylua' },
           python = { 'ruff_format' },
         },
