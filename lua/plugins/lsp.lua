@@ -180,6 +180,8 @@ return {
       -- yarn global add typescript typescript-language-server
       lspconfig.ts_ls.setup { on_attach = lsp_on_attach }
 
+      lspconfig.kotlin_language_server.setup { on_attach = lsp_on_attach }
+
       -- lua
       -- brew install lua-language-server
       lspconfig.lua_ls.setup {
@@ -211,7 +213,14 @@ return {
 
       -- python
       -- pip install ruff-lsp
-      lspconfig.pyright.setup { on_attach = lsp_on_attach }
+      lspconfig.pyright.setup {
+        on_attach = lsp_on_attach,
+        settings = {
+          python = {
+            venvPath = vim.env.HOME .. '/.pyenv/versions',
+          },
+        },
+      }
       lspconfig.ruff_lsp.setup {
         init_options = {
           settings = {
@@ -278,10 +287,15 @@ return {
             command = 'comrak',
             args = { '--width=72', '--to=commonmark' },
           },
+          ktlint = {
+            command = 'ktlint',
+            args = { '--format' },
+          },
         },
         formatters_by_ft = {
           clojure = { 'joker' },
           javascript = { 'prettierd', 'prettier' },
+          kotlin = { 'ktfmt', 'ktlint' },
           markdown = { 'comrak' },
           lua = { 'stylua' },
           python = { 'ruff_format' },
