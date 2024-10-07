@@ -383,6 +383,9 @@ return {
         symbol_in_winbar = {
           color_mode = true,
           enable = true,
+          folder_level = 0,
+          hide_keyword = false,
+          separator = '  ',
           show_file = true,
         },
       }
