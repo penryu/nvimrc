@@ -427,6 +427,12 @@ return {
       },
     },
     config = function()
+      local clippy_extraArgs = {
+        '--no-deps',
+        '--',
+        '-Wclippy::all',
+        '-Wclippy::pedantic',
+      }
       vim.g.rustaceanvim = {
         inlay_hints = {
           auto = true,
@@ -442,18 +448,9 @@ return {
             -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
             ['rust-analyzer'] = {
               cargo = { autoReload = true },
-              check = {
-                command = 'clippy',
-                extraArgs = { '--no-deps', '--', '-Wclippy::pedantic' },
-              },
-              checkOnSave = {
-                command = 'clippy',
-                extraArgs = { '--no-deps', '--', '-Wclippy::pedantic' },
-              },
-              imports = {
-                merge = { glob = false },
-                prefix = 'crate',
-              },
+              check = { command = 'clippy', extraArgs = clippy_extraArgs },
+              checkOnSave = { command = 'clippy', extraArgs = clippy_extraArgs },
+              imports = { merge = { glob = false }, prefix = 'crate' },
               inlayHints = {
                 bindingModeHints = { enable = true },
                 closingBraceHints = { minLines = 1 },
@@ -467,17 +464,11 @@ return {
                   trait = { enable = true },
                 },
               },
-              rustfmt = {
-                rangeFormatting = { enable = true },
-              },
+              rustfmt = { rangeFormatting = { enable = true } },
             },
           },
         },
-        tools = {
-          hover_actions = {
-            auto_focus = true,
-          },
-        },
+        tools = { hover_actions = { auto_focus = true } },
       }
     end,
     -- Can set `lazy = false` per https://github.com/mrcjkb/rustaceanvim/blob/master/README.md
