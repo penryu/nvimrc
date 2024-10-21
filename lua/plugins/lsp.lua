@@ -410,7 +410,7 @@ return {
   {
     -- This plugin _seems_ to be unnecessary... but keeping for now
     'rust-lang/rust.vim',
-    init = function() vim.g.rustfmt_autosave = 1 end,
+    init = function() vim.g.rustfmt_autosave = 0 end,
     ft = 'rust',
   },
   {
