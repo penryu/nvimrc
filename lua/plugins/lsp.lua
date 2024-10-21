@@ -427,12 +427,6 @@ return {
       },
     },
     config = function()
-      local clippy_extraArgs = {
-        '--no-deps',
-        '--',
-        '-Wclippy::all',
-        '-Wclippy::pedantic',
-      }
       vim.g.rustaceanvim = {
         inlay_hints = {
           auto = true,
@@ -448,8 +442,24 @@ return {
             -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
             ['rust-analyzer'] = {
               cargo = { autoReload = true },
-              check = { command = 'clippy', extraArgs = clippy_extraArgs },
-              checkOnSave = { command = 'clippy', extraArgs = clippy_extraArgs },
+              check = {
+                command = 'clippy',
+                extraArgs = {
+                  '--no-deps',
+                  '--',
+                  '-Wclippy::all',
+                  '-Wclippy::pedantic',
+                },
+              },
+              checkOnSave = {
+                command = 'clippy',
+                extraArgs = {
+                  '--no-deps',
+                  '--',
+                  '-Wclippy::all',
+                  '-Wclippy::pedantic',
+                },
+              },
               imports = { merge = { glob = false }, prefix = 'crate' },
               inlayHints = {
                 bindingModeHints = { enable = true },
