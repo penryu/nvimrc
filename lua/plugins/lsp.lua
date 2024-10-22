@@ -165,6 +165,10 @@ return {
       -- brew install clojure-lsp/brew/clojure-lsp-native
       lspconfig.clojure_lsp.setup { on_attach = lsp_on_attach }
 
+      -- deno
+      -- brew install deno
+      lspconfig.denols.setup { on_attach = lsp_on_attach }
+
       -- docker
       -- yarn global add dockerfile-language-server-nodejs
       lspconfig.dockerls.setup { on_attach = lsp_on_attach }
@@ -178,7 +182,7 @@ return {
       -- yarn global add vscode-langservers-extracted
       lspconfig.eslint.setup { on_attach = lsp_on_attach }
       -- yarn global add typescript typescript-language-server
-      lspconfig.ts_ls.setup { on_attach = lsp_on_attach }
+      -- lspconfig.ts_ls.setup { on_attach = lsp_on_attach }
 
       lspconfig.kotlin_language_server.setup { on_attach = lsp_on_attach }
 
