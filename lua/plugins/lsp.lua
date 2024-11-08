@@ -42,6 +42,8 @@ local function lsp_on_attach(client, bufnr)
     silent = true,
   }
 
+  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
   local function _map(mode, key, cmd, opts)
     opts = vim.tbl_extend('keep', opts or {}, key_opts)
     return u.keymapset(mode, key, cmd, vim.tbl_extend('keep', opts, key_opts))
@@ -53,8 +55,6 @@ local function lsp_on_attach(client, bufnr)
   if vim.bo.filetype == 'rust' then
     lsp_callbacks.code_action = function() vim.cmd.RustLsp('codeAction') end
   end
-
-  require('lsp-inlayhints').on_attach(client, bufnr)
 
   -- Code navigation and shortcuts
   lsp_nmap('<leader>rn', vim.lsp.buf.rename, { desc = 'LSP rename' })
@@ -425,10 +425,6 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
       'mfussenegger/nvim-dap',
-      {
-        'lvimuser/lsp-inlayhints.nvim',
-        opts = {},
-      },
     },
     config = function()
       vim.g.rustaceanvim = {
