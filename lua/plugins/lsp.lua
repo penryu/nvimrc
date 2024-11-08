@@ -216,7 +216,7 @@ return {
       lspconfig.marksman.setup { on_attach = lsp_on_attach }
 
       -- python
-      -- pip install ruff-lsp
+      -- pip install ruff
       lspconfig.pyright.setup {
         on_attach = lsp_on_attach,
         settings = {
@@ -225,12 +225,12 @@ return {
           },
         },
       }
-      lspconfig.ruff_lsp.setup {
-        init_options = {
-          settings = {
-            args = {},
-          },
-        },
+      lspconfig.ruff.setup {
+        -- init_options = {
+        --   settings = {
+        --     args = {},
+        --   },
+        -- },
         on_attach = function(client, bufnr)
           client.server_capabilities.hoverProvider = false
           lsp_on_attach(client, bufnr)
