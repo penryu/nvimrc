@@ -6,47 +6,6 @@ local u = require('util')
 
 return {
   {
-    'rmagatti/auto-session',
-    dependencies = {
-      'nvim-telescope/telescope.nvim', -- Only needed if you want to use session lens
-    },
-    init = function()
-      vim.o.sessionoptions =
-        'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
-    end,
-    opts = {
-      args_allow_files_auto_save = false,
-      args_allow_single_directory = true,
-      auto_create = true,
-      auto_restore = true,
-      auto_restore_last_session = false,
-      auto_save = true,
-      log_level = 'warn',
-      suppressed_dirs = { '/', '/Volumes', '~/Downloads' },
-      use_git_branch = true,
-
-      session_lens = {
-        load_on_startup = true,
-        mappings = {
-          -- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode
-          alternate_session = { 'i', '<C-S>' },
-          delete_session = { 'i', '<C-D>' },
-        },
-      },
-    },
-    lazy = false,
-    keys = {
-      { '<leader>qr', ':SessionRestore<cr>', desc = 'AutoSession restore' },
-      { '<leader>qs', ':SessionSave<cr>', desc = 'AutoSession save' },
-      { '<leader>ql', ':SessionSearch<cr>', desc = 'AutoSession search' },
-      {
-        '<leader>qd',
-        ':SessionDisableAutoSave<cr>',
-        desc = 'AutoSession disable',
-      },
-    },
-  },
-  {
     'mawkler/demicolon.nvim',
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
@@ -699,9 +658,16 @@ return {
       vim.g.startify_custom_header = false
       vim.g.startify_files_number = 7
       vim.g.startify_session_autoload = false
-      vim.g.startify_session_persistence = false
+      vim.g.startify_session_persistence = true
       vim.g.startify_skiplist = { 'Library/CloudStorage' }
     end,
+    event = 'VimEnter',
+    keys = {
+      { '<leader>qc', ':SClose<cr>', desc = 'Session close' },
+      { '<leader>qd', ':SDelete!<cr>', desc = 'Session delete' },
+      { '<leader>ql', ':SLoad<cr>', desc = 'Session load' },
+      { '<leader>qs', ':SSave!<cr>', desc = 'Session save' },
+    },
   },
   {
     -- enhances netrw
