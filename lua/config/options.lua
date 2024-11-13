@@ -19,9 +19,7 @@ o.linebreak = true
 o.number = true
 o.relativenumber = false
 o.scrolloff = 7
-o.shada = "%11,'42,r/Volumes,r/mnt,r/tmp,n"
-  .. vim.fn.stdpath('state')
-  .. '/shada'
+o.shada = "'42,r/Volumes,r/mnt,r/tmp,n" .. vim.fn.stdpath('state') .. '/shada'
 o.shiftwidth = 2
 o.shortmess = 'acFostI'
 o.sidescrolloff = 21
