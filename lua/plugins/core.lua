@@ -39,8 +39,8 @@ return {
       require('grapple').setup {
         statusline = {
           icon = '󰛢',
-          active = '%s',
-          inactive = ' %s ',
+          active = ' %s ',
+          inactive = ' %s ',
         },
       }
 
