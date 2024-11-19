@@ -215,6 +215,9 @@ return {
       -- https://github.com/artempyanykh/marksman/releases/
       lspconfig.marksman.setup { on_attach = lsp_on_attach }
 
+      -- mojo
+      lspconfig.mojo.setup {}
+
       -- python
       -- pip install ruff
       lspconfig.pyright.setup {
@@ -266,6 +269,7 @@ return {
       'typescript.tsx',
       'lua',
       'markdown',
+      'mojo',
       'python',
       'rust',
       'tex',
