@@ -293,7 +293,11 @@ return {
         formatters = {
           comrak = {
             command = 'comrak',
-            args = { '--width=72', '--to=commonmark' },
+            args = {
+              '--width=72',
+              '--to=commonmark',
+              '--front-matter-delimiter=+++',
+            },
           },
           ktlint = {
             command = 'ktlint',
