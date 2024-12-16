@@ -8,6 +8,22 @@ vim.env.GIT_EDITOR = 'nvr --remote-tab-wait'
 
 return {
   {
+    'swaits/lazyjj.nvim',
+    dependencies = 'nvim-lua/plenary.nvim',
+    opts = {
+      mapping = '<localleader>jj',
+    },
+    cmd = 'LazyJJ',
+    keys = {
+      { '<localleader>jj' },
+    },
+  },
+  {
+    'julienvincent/hunk.nvim',
+    config = function() end,
+    cmd = 'DiffEditor',
+  },
+  {
     'junegunn/gv.vim',
     dependencies = 'tpope/vim-fugitive',
     cmd = 'GV',
